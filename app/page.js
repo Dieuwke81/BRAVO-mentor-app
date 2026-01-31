@@ -191,3 +191,18 @@ export default function Home() {
                       <FileText size={14} />
                       Info
                     </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+        
+        <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '0.75rem', marginTop: '30px' }}>
+            <p>Gegevens worden lokaal opgeslagen</p>
+            <p>© BRAVO Mentor App</p>
+        </div>
+      </div>
+    </div>
+  );
+}
