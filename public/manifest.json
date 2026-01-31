@@ -1,0 +1,22 @@
+{
+  "name": "BRAVO Mentor",
+  "short_name": "Mentor",
+  "theme_color": "#542e91",
+  "background_color": "#f3f4f6",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
