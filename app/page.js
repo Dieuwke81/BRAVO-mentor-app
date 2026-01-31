@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, CreditCard, Radio } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio } from 'lucide-react';
 
-// HIER STAAT DE INHOUD VAN JE LIJSTEN
 const initialCategories = [
   {
     id: 'systeem',
@@ -57,7 +56,6 @@ export default function Home() {
   const [completed, setCompleted] = useState([]);
   const [mounted, setMounted] = useState(false);
 
-  // Data ophalen uit telefoon geheugen bij opstarten
   useEffect(() => {
     const saved = localStorage.getItem('bravoMentorProgress_v1');
     if (saved) {
@@ -66,7 +64,6 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  // Vinkje zetten of weghalen
   const toggleItem = (id) => {
     let newCompleted;
     if (completed.includes(id)) {
@@ -78,29 +75,51 @@ export default function Home() {
     localStorage.setItem('bravoMentorProgress_v1', JSON.stringify(newCompleted));
   };
 
-  // Berekenen hoeveel procent af is
   const totalItems = initialCategories.reduce((acc, cat) => acc + cat.items.length, 0);
   const progress = Math.round((completed.length / totalItems) * 100) || 0;
 
-  // Voorkom 'hydration mismatch' door te wachten tot scherm geladen is
   if (!mounted) return null;
 
   return (
     <div>
-      {/* HEADER GEDEELTE */}
+      {/* HEADER MET LOGO */}
       <div className="header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <div style={{ background: 'white', padding: '6px', borderRadius: '8px', color: 'var(--bravo-purple)', display: 'flex' }}>
-                <Bus size={28} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
+            {/* Hier wordt het logo geladen */}
+            <div style={{ 
+                background: 'white', 
+                padding: '8px', 
+                borderRadius: '10px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                minWidth: '50px',
+                minHeight: '50px'
+            }}>
+                {/* Zorg dat je logo.png in de 'public' map zet! */}
+                <img 
+                  src="/logo.png" 
+                  alt="Logo" 
+                  style={{ height: '35px', objectFit: 'contain' }} 
+                  onError={(e) => {
+                    e.target.style.display = 'none'; // Verbergt img als hij niet bestaat
+                    e.target.nextSibling.style.display = 'block'; // Toont icoon als fallback
+                  }}
+                />
+                <div style={{ display: 'none', color: 'var(--bravo-purple)' }}>
+                   <Bus size={32} />
+                </div>
             </div>
+            
             <div>
-              <h1>BRAVO Mentor</h1>
-              <span style={{ fontSize: '0.8rem', opacity: 0.8, textTransform: 'uppercase', letterSpacing: '1px' }}>Opleidingskaart</span>
+              <h1 style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>BRAVO Mentor</h1>
+              <span style={{ fontSize: '0.8rem', opacity: 0.9, textTransform: 'uppercase', letterSpacing: '1px' }}>Opleidingskaart</span>
             </div>
         </div>
         
         <div className="progress-container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '5px' }}>
             <span>VOORTGANG</span>
             <span>{progress}% VOLTOOID</span>
           </div>
@@ -110,7 +129,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* KAARTEN GEDEELTE */}
       <div className="container">
         {initialCategories.map((category) => (
           <div key={category.id} className="card">
@@ -122,7 +140,6 @@ export default function Home() {
             <div>
               {category.items.map((item) => (
                 <div key={item.id} className="checkbox-item" onClick={() => toggleItem(item.id)}>
-                  {/* Het vinkje rondje */}
                   <div style={{ 
                     width: '24px', 
                     height: '24px', 
@@ -140,7 +157,6 @@ export default function Home() {
                     {completed.includes(item.id) && <CheckCircle2 size={16} />}
                   </div>
                   
-                  {/* De tekst */}
                   <span style={{ 
                     textDecoration: completed.includes(item.id) ? 'line-through' : 'none',
                     color: completed.includes(item.id) ? '#9ca3af' : 'inherit',
