@@ -199,7 +199,7 @@ export default function Home() {
                     {item.map && (
                       <a href={item.map} target="_blank" className="pdf-btn" onClick={(e) => e.stopPropagation()}>
                         <MapPin size={14} />
-                        Nav
+                        Maps
                       </a>
                     )}
 
@@ -207,7 +207,7 @@ export default function Home() {
                     {item.pdf && (
                       <a href={item.pdf} target="_blank" className="pdf-btn" onClick={(e) => e.stopPropagation()}>
                         <FileText size={14} />
-                        Info
+                        PDF
                       </a>
                     )}
                   </div>
