@@ -82,7 +82,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* HEADER MET LOGO */}
+      {/* HEADER ME T LOGO */}
       <div className="header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
             {/* Hier wordt het logo geladen */}
