@@ -1,8 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin } from 'lucide-react';
 
+/* 
+   BELANGRIJK:
+   - Vul bij 'pdf' de naam van je bestand in (bijv '/routes/2.pdf')
+   - Vul bij 'map' de Google Maps link in (bijv 'https://goo.gl/...')
+*/
 const initialCategories = [
   {
     id: 'systeem',
@@ -44,31 +49,32 @@ const initialCategories = [
     title: 'Routekennis & Kaarten',
     icon: <Map size={22} />,
     items: [
-      { id: 'r2', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf' },
-      { id: 'r3', text: '3 Blixembosch West', pdf: '/routes/3.pdf' },
-      { id: 'r4', text: '4 Heesterakker', pdf: '/routes/4.pdf' },
-      { id: 'r5', text: "5 't Hofke", pdf: '/routes/5.pdf' },
-      { id: 'r6', text: '6 Nuenen', pdf: '/routes/6.pdf' },
-      { id: 'r7', text: '7 Veldhoven MMC via Aalst/Waalre', pdf: '/routes/7.pdf' },
-      { id: 'r8', text: '8 Acht', pdf: '/routes/8.pdf' },
-      { id: 'r10', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf' },
-      { id: 'r12', text: '12 Gijzenrooi', pdf: '/routes/12.pdf' },
-      { id: 'r14', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf' },
-      { id: 'r15', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf' },
-      { id: 'r16', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf' },
-      { id: 'r17', text: '17 Roosten', pdf: '/routes/17.pdf' },
-      { id: 'r114', text: '114 De Hurk', pdf: '/routes/114.pdf' },
-      { id: 'r119', text: '119 ASML', pdf: '/routes/119.pdf' },
-      { id: 'r324', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf' },
-      { id: 'r400', text: '400 Airport Shuttle', pdf: '/routes/400.pdf' },
-      { id: 'r401', text: '401 Airport', pdf: '/routes/401.pdf' },
-      { id: 'r402', text: '402 Veldhoven Zonderwijk', pdf: '/routes/402.pdf' },
-      { id: 'r403', text: '403 Veldhoven De Dom/Berg', pdf: '/routes/403.pdf' },
-      { id: 'r404', text: '404 Nuenen Centrum', pdf: '/routes/404.pdf' },
-      { id: 'r405', text: '405 Achtse Barrier', pdf: '/routes/405.pdf' },
-      { id: 'r406', text: '406 Ekkersrijt', pdf: '/routes/406.pdf' },
-      { id: 'r407', text: '407 High Tech Campus', pdf: '/routes/407.pdf' },
-      { id: 'r408', text: '408 High Tech Campus', pdf: '/routes/408.pdf' }
+      /* HIERONDER MOET JE DE LINKS TOEVOEGEN BIJ 'map' */
+      { id: 'r2', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
+      { id: 'r3', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
+      { id: 'r4', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: '' },
+      { id: 'r5', text: "5 't Hofke", pdf: '/routes/5.pdf', map: '' },
+      { id: 'r6', text: '6 Nuenen', pdf: '/routes/6.pdf', map: '' },
+      { id: 'r7', text: '7 Veldhoven MMC via Aalst/Waalre', pdf: '/routes/7.pdf', map: '' },
+      { id: 'r8', text: '8 Acht', pdf: '/routes/8.pdf', map: '' },
+      { id: 'r10', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf', map: '' },
+      { id: 'r12', text: '12 Gijzenrooi', pdf: '/routes/12.pdf', map: '' },
+      { id: 'r14', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: '' },
+      { id: 'r15', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: '' },
+      { id: 'r16', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: '' },
+      { id: 'r17', text: '17 Roosten', pdf: '/routes/17.pdf', map: '' },
+      { id: 'r114', text: '114 De Hurk', pdf: '/routes/114.pdf', map: '' },
+      { id: 'r119', text: '119 ASML', pdf: '/routes/119.pdf', map: '' },
+      { id: 'r324', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: '' },
+      { id: 'r400', text: '400 Airport Shuttle', pdf: '/routes/400.pdf', map: '' },
+      { id: 'r401', text: '401 Airport', pdf: '/routes/401.pdf', map: '' },
+      { id: 'r402', text: '402 Veldhoven Zonderwijk', pdf: '/routes/402.pdf', map: '' },
+      { id: 'r403', text: '403 Veldhoven De Dom/Berg', pdf: '/routes/403.pdf', map: '' },
+      { id: 'r404', text: '404 Nuenen Centrum', pdf: '/routes/404.pdf', map: '' },
+      { id: 'r405', text: '405 Achtse Barrier', pdf: '/routes/405.pdf', map: '' },
+      { id: 'r406', text: '406 Ekkersrijt', pdf: '/routes/406.pdf', map: '' },
+      { id: 'r407', text: '407 High Tech Campus', pdf: '/routes/407.pdf', map: '' },
+      { id: 'r408', text: '408 High Tech Campus', pdf: '/routes/408.pdf', map: '' }
     ]
   }
 ];
@@ -158,6 +164,7 @@ export default function Home() {
             <div>
               {category.items.map((item) => (
                 <div key={item.id} className="checkbox-item">
+                  {/* Klikgedeelte voor afvinken */}
                   <div className="checkbox-content" onClick={() => toggleItem(item.id)}>
                     <div style={{ 
                       width: '24px', 
@@ -186,12 +193,24 @@ export default function Home() {
                     </span>
                   </div>
 
-                  {item.pdf && (
-                    <a href={item.pdf} target="_blank" className="pdf-btn" onClick={(e) => e.stopPropagation()}>
-                      <FileText size={14} />
-                      Info
-                    </a>
-                  )}
+                  {/* Knoppen rechts */}
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    {/* Google Maps Knop */}
+                    {item.map && (
+                      <a href={item.map} target="_blank" className="pdf-btn" onClick={(e) => e.stopPropagation()}>
+                        <MapPin size={14} />
+                        Nav
+                      </a>
+                    )}
+
+                    {/* PDF Knop */}
+                    {item.pdf && (
+                      <a href={item.pdf} target="_blank" className="pdf-btn" onClick={(e) => e.stopPropagation()}>
+                        <FileText size={14} />
+                        Info
+                      </a>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
