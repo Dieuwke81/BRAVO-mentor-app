@@ -50,7 +50,7 @@ const initialCategories = [
     icon: <Map size={22} />,
     items: [
       /* VOORBEELDEN: Pas de bestandsnaam aan naar jouw upload */
-      { id: 'r1', text: 'Stadslijnen: route & haltes', pdf: '/routes/2.pdf' }, 
+      { id: 'r1', text: 'Stadslijnen: 2 Bliksembosch oost', pdf: '/routes/2.pdf' }, 
       { id: 'r2', text: 'Streeklijnen: bijzonderheden', pdf: '/routes/streeklijnen.pdf' },
       { id: 'r3', text: 'Omleidingen (Markt/Evenementen)' }, /* Geen PDF hier */
       { id: 'r4', text: 'Knooppunten & aansluitingen', pdf: '/routes/knooppunten.pdf' }
