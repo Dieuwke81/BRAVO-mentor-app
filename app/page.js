@@ -14,11 +14,11 @@ const initialCategories = [
     title: 'Systemen & Apparatuur',
     icon: <Radio size={22} />,
     items: [
-      { id: 's1', text: 'Inloggen boordcomputer (IVU/Albatros)' },
-      { id: 's2', text: 'Gebruik mobilofoon & codes' },
+      { id: 's1', text: 'Inloggen boordcomputer (Viribus/Ticketbox)' },
+      { id: 's2', text: '......' },
       { id: 's3', text: 'Kaartverkoop & PIN procedures' },
-      { id: 's4', text: 'Spiegels & stoel instellen' },
-      { id: 's5', text: 'Bestemmingsfilm instellen' }
+      { id: 's4', text: 'Spiegels/cameras & stoel instellen' },
+      { id: 's5', text: '......' }
     ]
   },
   {
@@ -27,10 +27,10 @@ const initialCategories = [
     icon: <ShieldAlert size={22} />,
     items: [
       { id: 'v1', text: 'Procedure bij ongeval/schade' },
-      { id: 'v2', text: 'Omgaan met agressie' },
-      { id: 'v3', text: 'Locatie EHBO & brandblusser' },
-      { id: 'v4', text: 'Waarschuwingslichten gebruik' },
-      { id: 'v5', text: 'Veiligheidsvest gebruik' }
+      { id: 'v2', text: ',.....' },
+      { id: 'v3', text: 'Locatie EHBO, brandblusser en papieren/vergunningen' },
+      { id: 'v4', text: '.......' },
+      { id: 'v5', text: ',......' }
     ]
   },
   {
@@ -41,12 +41,12 @@ const initialCategories = [
       { id: 'd1', text: 'Klantvriendelijkheid & houding' },
       { id: 'd2', text: 'Omgaan met rolstoelers/rollators' },
       { id: 'd3', text: 'Pauze locaties & regels' },
-      { id: 'd4', text: 'Rijstijl (Het Nieuwe Rijden)' }
+      { id: 'd4', text: 'Rijstijl (rijwijzer)' }
     ]
   },
   {
     id: 'routes',
-    title: 'Routekennis & Kaarten',
+    title: 'Routekennis & Kaarten STAD',
     icon: <Map size={22} />,
     items: [
       /* HIERONDER MOET JE DE LINKS TOEVOEGEN BIJ 'map' */
