@@ -124,7 +124,7 @@ const contactData = [
     contacts: [
       { name: 'Michel van Bakel', phone: '088-6255735' },
       { name: 'Schadetelefoon', phone: '06-38076828' },
-      { name: 'E-mail schades', info: 'Schade_eindhoven@connexxion.nl' },
+      { name: 'E-mail schades', email: 'Schade_eindhoven@connexxion.nl' }, // Nu met 'email' veld
       { name: 'Klantenservice (tegenpartij)', phone: '0800-0222277' }
     ]
   },
@@ -161,7 +161,7 @@ export default function Home() {
   const [tallies, setTallies] = useState({});
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
-  const [mainTab, setMainTab] = useState('routes'); // ROUTES | CHECKLIST | INFO
+  const [mainTab, setMainTab] = useState('routes');
   const [routeSubTab, setRouteSubTab] = useState('stad');
   const [videoModal, setVideoModal] = useState(null);
 
@@ -292,7 +292,7 @@ export default function Home() {
           <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
 
-        {/* MAIN TAB NAVIGATIE (NU MET INFO) */}
+        {/* MAIN TAB NAVIGATIE */}
         <div style={{ display: 'flex', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }}>
           <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '0.75rem' }}>
             <Map size={18} /> Lijnen
@@ -377,13 +377,17 @@ export default function Home() {
                   {group.contacts.map((c, i) => (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{c.name}</span>
-                      {c.phone ? (
+                      {c.phone && (
                         <a href={`tel:${c.phone}`} className="pdf-btn" style={{ background: 'white', color: 'var(--bravo-purple)', borderColor: 'var(--bravo-purple)', padding: '6px 12px' }}>
                           <Phone size={14} /> {c.phone}
                         </a>
-                      ) : (
-                        <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>{c.info}</span>
                       )}
+                      {c.email && (
+                        <a href={`mailto:${c.email}`} className="pdf-btn" style={{ background: '#f0f9ff', color: '#0369a1', borderColor: '#bae6fd', padding: '6px 12px' }}>
+                          <Mail size={14} /> E-mail
+                        </a>
+                      )}
+                      {!c.phone && !c.email && <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>{c.info}</span>}
                     </div>
                   ))}
                 </div>
