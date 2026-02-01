@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, LayoutGrid } from 'lucide-react';
+/* Nieuw: Youtube icoon toegevoegd */
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube } from 'lucide-react';
 
 const initialCategories = [
   {
@@ -87,7 +88,18 @@ const initialCategories = [
     icon: <Map size={22} />,
     isRouteCategory: true,
     items: [
-      /* STADSLIJNEN */
+      /* LIJN 400 MET FILMPJES ALS VOORBEELD */
+      { 
+        id: 'r400', 
+        type: 'stad', 
+        text: '400 Airport Shuttle', 
+        pdf: '/routes/400.pdf', 
+        map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9?g_st=ac',
+        videos: [
+          { label: 'Video 1', url: 'https://youtu.be/UodaTz-F8g8?si=_L5Is9Fhn4qJ4IQr' }
+        ]
+      },
+      /* ANDERE STADSLIJNEN (Je kunt 'videos: [...]' toevoegen waar nodig) */
       { id: 'r2', type: 'stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
       { id: 'r3', type: 'stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
       { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
@@ -104,7 +116,6 @@ const initialCategories = [
       { id: 'r114', type: 'stad', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7?g_st=ac' },
       { id: 'r119', type: 'stad', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7?g_st=ac' },
       { id: 'r324', type: 'stad', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7?g_st=ac' },
-      { id: 'r400', type: 'stad', text: '400 Airport Shuttle', pdf: '/routes/400.pdf', map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9?g_st=ac' },
       { id: 'r401', type: 'stad', text: '401 Airport', pdf: '/routes/401.pdf', map: 'https://goo.gl/maps/wZXxBwX7d1jpmdfQ6?g_st=ac' },
       { id: 'r402', type: 'stad', text: '402 Veldhoven Zonderwijk', pdf: '/routes/402.pdf', map: 'https://goo.gl/maps/AzkdnKNpGggagMym6?g_st=ac' },
       { id: 'r403', type: 'stad', text: '403 Veldhoven De Dom/Berg', pdf: '/routes/403.pdf', map: 'https://goo.gl/maps/t2tt2P7CTcL61hKa7?g_st=ac' },
@@ -114,7 +125,7 @@ const initialCategories = [
       { id: 'r407', type: 'stad', text: '407 HTC (terug als 408)', pdf: '/routes/407.pdf', map: 'https://goo.gl/maps/kF7NkrEyib22hX8E7?g_st=ac' },
       { id: 'r408', type: 'stad', text: '408 HTC (terug als 407)', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9?g_st=ac' },
 
-      /* STREEKLIJNEN (HIER KAN JE ER MEER TOEVOEGEN) */
+      /* STREEKLIJNEN */
       { id: 'r20', type: 'streek', text: '20 Best NS - HTC', map: '#' },
       { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', map: '#' },
       { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond', map: '#' },
@@ -130,7 +141,7 @@ export default function Home() {
   const [completed, setCompleted] = useState([]);
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
-  const [routeTab, setRouteTab] = useState('stad'); // Nieuwe state voor de route toggle
+  const [routeTab, setRouteTab] = useState('stad');
 
   useEffect(() => {
     const savedStudents = localStorage.getItem('bravo_student_list');
@@ -204,7 +215,7 @@ export default function Home() {
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
             <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none' }} />
-            <button onClick={addStudent} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '5px' }}><Plus size={18} /> Voeg toe</button>
+            <button onClick={addStudent} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '5px' }}><Plus size={18} /> Voeg</button>
           </div>
         </div>
         
@@ -225,17 +236,10 @@ export default function Home() {
               <span className="category-title">{category.title}</span>
             </div>
             
-            {/* Specifieke Toggle voor de Route Categorie */}
             {category.isRouteCategory && (
               <div style={{ display: 'flex', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px' }}>
-                <button 
-                  onClick={() => setRouteTab('stad')}
-                  style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'stad' ? 'white' : 'transparent', boxShadow: routeTab === 'stad' ? '0 2px 4px rgba(0,0,0,0.1)' : 'none', color: routeTab === 'stad' ? 'var(--bravo-purple)' : '#6b7280' }}
-                >Stadslijnen</button>
-                <button 
-                  onClick={() => setRouteTab('streek')}
-                  style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'streek' ? 'white' : 'transparent', boxShadow: routeTab === 'streek' ? '0 2px 4px rgba(0,0,0,0.1)' : 'none', color: routeTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}
-                >Streeklijnen</button>
+                <button onClick={() => setRouteTab('stad')} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'stad' ? 'white' : 'transparent', color: routeTab === 'stad' ? 'var(--bravo-purple)' : '#6b7280' }}>Stadslijnen</button>
+                <button onClick={() => setRouteTab('streek')} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'streek' ? 'white' : 'transparent', color: routeTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}>Streeklijnen</button>
               </div>
             )}
 
@@ -250,9 +254,26 @@ export default function Home() {
                     </div>
                     <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '0.95rem' }}>{item.text}</span>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  
+                  {/* Knoppen Sectie */}
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'nowrap' }}>
+                    {/* Maps & PDF knoppen */}
                     {item.map && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={14} /></a>}
                     {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={14} /></a>}
+                    
+                    {/* YouTube Video Knoppen (Nieuw) */}
+                    {item.videos && item.videos.map((vid, idx) => (
+                      <a 
+                        key={idx} 
+                        href={vid.url} 
+                        target="_blank" 
+                        className="pdf-btn" 
+                        style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca' }}
+                        title={vid.label}
+                      >
+                        <Youtube size={14} />
+                      </a>
+                    ))}
                   </div>
                 </div>
               ))}
