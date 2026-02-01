@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info } from 'lucide-react';
 
 const initialCategories = [
   {
@@ -10,7 +10,6 @@ const initialCategories = [
     icon: <Map size={22} />,
     isRouteCategory: true,
     items: [
-      /* STADS- EN HOOGWAARDIGE LIJNEN */
       { id: 'r2', type: 'stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
       { id: 'r3', type: 'stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
       { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9' },
@@ -38,31 +37,31 @@ const initialCategories = [
       { id: 'r408', type: 'stad', text: '408 HTC (terug als 407)', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9' },
 
       /* STREEKLIJNEN */
-      { id: 'r9', type: 'streek', text: '9 Eindhoven - Best', pdf: '/routes/9.pdf', map: '#' },
-      { id: 'r11', type: 'streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: '#' },
-      { id: 'r18', type: 'streek', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf', map: '#' },
-      { id: 'r19', type: 'streek', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: '#' },
-      { id: 'r20', type: 'streek', text: '20 Best NS - HTC', pdf: '/routes/20.pdf', map: '#' },
-      { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', pdf: '/routes/23.pdf', map: '#' },
-      { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: '#' },
-      { id: 'r25', type: 'streek', text: '25 Helmond - Gemert Pelgrimsrust', pdf: '/routes/25.pdf', map: '#' },
-      { id: 'r26', type: 'streek', text: '26 Helmond - Gemert', pdf: '/routes/26.pdf', map: '#' },
-      { id: 'r28', type: 'streek', text: '28 Deurne - Meijel', pdf: '/routes/28.pdf', map: '#' },
-      { id: 'r51', type: 'streek', text: '51 Helmond Eeuwsels', pdf: '/routes/51.pdf', map: '#' },
-      { id: 'r52', type: 'streek', text: '52 Helmond Rijpelberg', pdf: '/routes/52.pdf', map: '#' },
-      { id: 'r53', type: 'streek', text: '53 Helmond Straakven', pdf: '/routes/53.pdf', map: '#' },
-      { id: 'r54', type: 'streek', text: '54 Helmond Brouwhuis', pdf: '/routes/54.pdf', map: '#' },
-      { id: 'r55', type: 'streek', text: '55 Helmond Stiphout', pdf: '/routes/55.pdf', map: '#' },
-      { id: 'r120', type: 'streek', text: '120 Best NS - ASML gebouw 4', pdf: '/routes/120.pdf', map: '#' },
-      { id: 'r123', type: 'streek', text: '123 Gemert Pelgrimsrust - Boxmeer', pdf: '/routes/123.pdf', map: '#' },
-      { id: 'r150', type: 'streek', text: '150 Helmond - Helmond \'t Hout', pdf: '/routes/150.pdf', map: '#' },
-      { id: 'r317', type: 'streek', text: '317 Eindhoven - Dommelen', pdf: '/routes/317.pdf', map: '#' },
-      { id: 'r318', type: 'streek', text: '318 Eindhoven - Luyksgestel', pdf: '/routes/318.pdf', map: '#' },
-      { id: 'r319', type: 'streek', text: '319 Eindhoven - Reusel', pdf: '/routes/319.pdf', map: '#' },
-      { id: 'r320', type: 'streek', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf', map: '#' },
-      { id: 'r321', type: 'streek', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf', map: '#' },
-      { id: 'r322', type: 'streek', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: '#' },
-      { id: 'r323', type: 'streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: '#' }
+      { id: 'r9', type: 'streek', text: '9 Eindhoven - Best', pdf: '/routes/9.pdf' },
+      { id: 'r11', type: 'streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf' },
+      { id: 'r18', type: 'streek', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf' },
+      { id: 'r19', type: 'streek', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf' },
+      { id: 'r20', type: 'streek', text: '20 Best NS - HTC', pdf: '/routes/20.pdf' },
+      { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', pdf: '/routes/23.pdf' },
+      { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf' },
+      { id: 'r25', type: 'streek', text: '25 Helmond - Gemert Pelgrimsrust', pdf: '/routes/25.pdf' },
+      { id: 'r26', type: 'streek', text: '26 Helmond - Gemert', pdf: '/routes/26.pdf' },
+      { id: 'r28', type: 'streek', text: '28 Deurne - Meijel', pdf: '/routes/28.pdf' },
+      { id: 'r51', type: 'streek', text: '51 Helmond Eeuwsels', pdf: '/routes/51.pdf' },
+      { id: 'r52', type: 'streek', text: '52 Helmond Rijpelberg', pdf: '/routes/52.pdf' },
+      { id: 'r53', type: 'streek', text: '53 Helmond Straakven', pdf: '/routes/53.pdf' },
+      { id: 'r54', type: 'streek', text: '54 Helmond Brouwhuis', pdf: '/routes/54.pdf' },
+      { id: 'r55', type: 'streek', text: '55 Helmond Stiphout', pdf: '/routes/55.pdf' },
+      { id: 'r120', type: 'streek', text: '120 Best NS - ASML gebouw 4', pdf: '/routes/120.pdf' },
+      { id: 'r123', type: 'streek', text: '123 Gemert Pelgrimsrust - Boxmeer', pdf: '/routes/123.pdf' },
+      { id: 'r150', type: 'streek', text: '150 Helmond - Helmond \'t Hout', pdf: '/routes/150.pdf' },
+      { id: 'r317', type: 'streek', text: '317 Eindhoven - Dommelen', pdf: '/routes/317.pdf' },
+      { id: 'r318', type: 'streek', text: '318 Eindhoven - Luyksgestel', pdf: '/routes/318.pdf' },
+      { id: 'r319', type: 'streek', text: '319 Eindhoven - Reusel', pdf: '/routes/319.pdf' },
+      { id: 'r320', type: 'streek', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf' },
+      { id: 'r321', type: 'streek', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf' },
+      { id: 'r322', type: 'streek', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf' },
+      { id: 'r323', type: 'streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf' }
     ]
   },
   {
@@ -104,42 +103,53 @@ const initialCategories = [
       { id: 's6', text: 'Sycada/Rijwijzer: rijstijl opvolgen' },
       { id: 's7', text: 'Gebruik omroepberichten' }
     ]
-  },
+  }
+];
+
+// DATA VOOR CONTACT TABBLAD
+const contactData = [
   {
-    id: 'dienst',
-    title: 'Tijdens de Dienst (Rijstijl)',
-    icon: <Users size={22} />,
-    items: [
-      { id: 'd1', text: 'Vertrek op tijd vanaf beginpunt' },
-      { id: 'd2', text: 'Rijstijl: Het Nieuwe Rijden (HNR) & uitrollen' },
-      { id: 'd3', text: 'Halteren: juiste deurbediening & stoep-afstand' },
-      { id: 'd4', text: 'Bediening rolstoelplank (aut. & handmatig)' },
-      { id: 'd5', text: 'Aanrijden van halten (overbouw)' },
-      { id: 'd6', text: 'Punctualiteit & omgaan met vertraging' }
+    category: 'ALGEMEEN',
+    contacts: [
+      { name: 'ROV UTRECHT', phone: '030-2849494' },
+      { name: 'Chauffeursverblijf Neckerspoel', phone: '088-6255737' },
+      { name: 'Opkomstlokaal Dorgelolaan 50', phone: '040-2466373' },
+      { name: 'Kantoor MER en ARM', phone: '088-6255736' },
+      { name: 'Planning Dorgelolaan 50', phone: '040-2358630' },
+      { name: 'Hermes Verlofelofon', phone: '040-2358639' }
     ]
   },
   {
-    id: 'elektrisch',
-    title: 'Elektrische Bus & Laden',
-    icon: <Zap size={22} />,
-    items: [
-      { id: 'e1', text: 'Juiste positionering op laadplek' },
-      { id: 'e2', text: 'In- en uitschakelen alle verbruikers voor laden' },
-      { id: 'e3', text: 'Aan- en afkoppelen pantograaf' },
-      { id: 'e4', text: 'Controleren SOC (batterijniveau)' },
-      { id: 'e5', text: 'Wachten tot bus aangeeft dat deze laadt' }
+    category: 'LOGISTIEK & SCHADE',
+    contacts: [
+      { name: 'Michel van Bakel', phone: '088-6255735' },
+      { name: 'Schadetelefoon', phone: '06-38076828' },
+      { name: 'E-mail schades', info: 'Schade_eindhoven@connexxion.nl' },
+      { name: 'Klantenservice (tegenpartij)', phone: '0800-0222277' }
     ]
   },
   {
-    id: 'veiligheid',
-    title: 'Reizigers & Veiligheid',
-    icon: <ShieldAlert size={22} />,
-    items: [
-      { id: 'v_s1', text: 'Klantvriendelijkheid & klachtenafhandeling' },
-      { id: 'v_s2', text: 'Begeleiding rolstoelen & blinden' },
-      { id: 'v_s3', text: 'Procedure bij ongeval (formulier & foto\'s)' },
-      { id: 'v_s4', text: 'Contact met ROV bij incidenten' },
-      { id: 'v_s5', text: 'Controle vervoerbewijzen (OV-chip/OVpay)' }
+    category: 'GPD (Management)',
+    contacts: [
+      { name: 'Thirza van Diepen', phone: '040-2358628' },
+      { name: 'Erik Feijen', phone: '040-2358638' },
+      { name: 'John Gijsbers', phone: '040-2358657' }
+    ]
+  },
+  {
+    category: 'STREEK',
+    contacts: [
+      { name: 'Michiel Bles', phone: '088-6255731' },
+      { name: 'Johan Cuijpers', phone: '088-6255740' },
+      { name: 'Debbie Flower', phone: '088-6255730' }
+    ]
+  },
+  {
+    category: 'STAD',
+    contacts: [
+      { name: 'Twan Smid', phone: '088-6522732' },
+      { name: 'Mathieu Verberkt', phone: '088-6255733' },
+      { name: 'Patrick Houthooft', phone: '088-6255734' }
     ]
   }
 ];
@@ -151,8 +161,8 @@ export default function Home() {
   const [tallies, setTallies] = useState({});
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
-  const [mainTab, setMainTab] = useState('routes'); // HOOFD TAB (routes of checklist)
-  const [routeSubTab, setRouteSubTab] = useState('stad'); // SUB TAB voor routes
+  const [mainTab, setMainTab] = useState('routes'); // ROUTES | CHECKLIST | INFO
+  const [routeSubTab, setRouteSubTab] = useState('stad');
   const [videoModal, setVideoModal] = useState(null);
 
   useEffect(() => {
@@ -162,11 +172,8 @@ export default function Home() {
       if (parsed.length > 0) {
         setStudents(parsed);
         const lastActive = localStorage.getItem('bravo_active_student');
-        if (lastActive && parsed.includes(lastActive)) {
-          setActiveStudent(lastActive);
-        } else {
-          setActiveStudent(parsed[0]);
-        }
+        if (lastActive && parsed.includes(lastActive)) setActiveStudent(lastActive);
+        else setActiveStudent(parsed[0]);
       }
     }
     setMounted(true);
@@ -195,7 +202,7 @@ export default function Home() {
   };
 
   const deleteStudent = (name) => {
-    if (students.length > 1 && confirm(`Weet je zeker dat je ${name} wilt verwijderen?`)) {
+    if (students.length > 1 && confirm(`Verwijder ${name}?`)) {
       const newList = students.filter(s => s !== name);
       setStudents(newList);
       localStorage.setItem('bravo_student_list', JSON.stringify(newList));
@@ -213,10 +220,7 @@ export default function Home() {
 
   const updateTally = (routeId, type) => {
     const currentRouteTally = tallies[routeId] || { m: 0, z: 0 };
-    const newTallies = {
-      ...tallies,
-      [routeId]: { ...currentRouteTally, [type]: currentRouteTally[type] + 1 }
-    };
+    const newTallies = { ...tallies, [routeId]: { ...currentRouteTally, [type]: currentRouteTally[type] + 1 } };
     setTallies(newTallies);
     localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(newTallies));
   };
@@ -225,21 +229,14 @@ export default function Home() {
   const baseCategories = initialCategories.filter(c => !c.isRouteCategory);
   const baseItems = baseCategories.flatMap(c => c.items);
   const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
-
   const routeCategory = initialCategories.find(c => c.id === 'routes');
   const stadRoutes = routeCategory.items.filter(i => i.type === 'stad');
   const streekRoutes = routeCategory.items.filter(i => i.type === 'streek');
-
   const stadDone = stadRoutes.filter(i => completed.includes(i.id)).length;
   const streekDone = streekRoutes.filter(i => completed.includes(i.id)).length;
-
   const pathStad = ((baseDone + stadDone) / (baseItems.length + stadRoutes.length)) * 100;
   const pathStreek = ((baseDone + streekDone) / (baseItems.length + streekRoutes.length)) * 100;
-
   const totalProgress = Math.round(Math.max(pathStad, pathStreek)) || 0;
-  const progressStadOnly = Math.round((stadDone / stadRoutes.length) * 100) || 0;
-  const progressStreekOnly = Math.round((streekDone / streekRoutes.length) * 100) || 0;
-  const progressChecklistOnly = Math.round((baseDone / baseItems.length) * 100) || 0;
 
   return (
     <div>
@@ -274,7 +271,6 @@ export default function Home() {
             </div>
         </div>
 
-        {/* STUDENT SELECTOR */}
         <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '10px', marginBottom: '15px' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
             <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', background: 'white', color: 'black', fontWeight: 'bold' }}>
@@ -296,75 +292,47 @@ export default function Home() {
           <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
 
-        {/* MAIN TABS NAVIGATIE */}
-        <div style={{ display: 'flex', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '5px' }}>
-          <button 
-            onClick={() => setMainTab('routes')}
-            style={{ flex: 1, padding: '12px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', transition: 'all 0.3s' }}
-          >
+        {/* MAIN TAB NAVIGATIE (NU MET INFO) */}
+        <div style={{ display: 'flex', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }}>
+          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '0.75rem' }}>
             <Map size={18} /> Lijnen
           </button>
-          <button 
-            onClick={() => setMainTab('checklist')}
-            style={{ flex: 1, padding: '12px', border: 'none', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', transition: 'all 0.3s' }}
-          >
+          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '0.75rem' }}>
             <ClipboardCheck size={18} /> Checklists
+          </button>
+          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '0.75rem' }}>
+            <Phone size={18} /> Info
           </button>
         </div>
       </div>
 
       <div className="container">
         
-        {/* WEERGAVE ROUTES TAB */}
+        {/* ROUTES TAB */}
         {mainTab === 'routes' && (
           <div className="card">
-            <div className="category-header">
-              <Map size={22} />
-              <span className="category-title">Lijnverkenning</span>
-            </div>
-            
+            <div className="category-header"><Map size={22} /><span className="category-title">Lijnverkenning</span></div>
             <div style={{ display: 'flex', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '10px', gap: '4px' }}>
               <button onClick={() => setRouteSubTab('stad')} style={{ flex: 1, padding: '10px', borderRadius: '6px', border: 'none', fontSize: '0.9rem', fontWeight: 'bold', background: routeSubTab === 'stad' ? 'white' : 'transparent', color: routeSubTab === 'stad' ? 'var(--bravo-purple)' : '#6b7280' }}>Stadslijnen</button>
               <button onClick={() => setRouteSubTab('streek')} style={{ flex: 1, padding: '10px', borderRadius: '6px', border: 'none', fontSize: '0.9rem', fontWeight: 'bold', background: routeSubTab === 'streek' ? 'white' : 'transparent', color: routeSubTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}>Streeklijnen</button>
             </div>
-            
-            <div style={{ marginBottom: '20px', padding: '0 5px' }}>
-               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
-                  <span>VOORTGANG {routeSubTab.toUpperCase()}</span>
-                  <span>{routeSubTab === 'stad' ? progressStadOnly : progressStreekOnly}%</span>
-               </div>
-               <div style={{ height: '8px', background: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
-                  <div style={{ height: '100%', background: 'var(--bravo-purple)', width: `${routeSubTab === 'stad' ? progressStadOnly : progressStreekOnly}%`, transition: 'width 0.5s ease' }}></div>
-               </div>
-            </div>
-
             <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '10px' }}>
-              {routeCategory.items
-                .filter(item => item.type === routeSubTab)
-                .map((item) => (
+              {routeCategory.items.filter(item => item.type === routeSubTab).map((item) => (
                 <div key={item.id} className="checkbox-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div className="checkbox-content" onClick={() => toggleItem(item.id)} style={{ flex: 1 }}>
-                      <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-                        {completed.includes(item.id) && <CheckCircle2 size={16} />}
-                      </div>
+                      <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(item.id) && <CheckCircle2 size={16} />}</div>
                       <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '1rem', fontWeight: '500' }}>{item.text}</span>
                     </div>
-                    
                     <div style={{ display: 'flex', gap: '8px' }}>
                       {item.map && item.map !== '#' && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={16} /></a>}
                       {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={16} /></a>}
                       {item.videos && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca' }}><Youtube size={16} /></button>}
                     </div>
                   </div>
-
                   <div style={{ display: 'flex', gap: '15px', marginLeft: '39px', padding: '10px 0 5px 0' }}>
-                    <button onClick={() => updateTally(item.id, 'm')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', padding: '6px 12px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 'bold' }}>
-                      <Eye size={14} /> M: {tallies[item.id]?.m || 0}
-                    </button>
-                    <button onClick={() => updateTally(item.id, 'z')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0', padding: '6px 12px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 'bold' }}>
-                      <Navigation size={14} /> Z: {tallies[item.id]?.z || 0}
-                    </button>
+                    <button onClick={() => updateTally(item.id, 'm')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', padding: '6px 12px', borderRadius: '8px', fontSize: '0.85rem' }}><Eye size={14} /> M: {tallies[item.id]?.m || 0}</button>
+                    <button onClick={() => updateTally(item.id, 'z')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0', padding: '6px 12px', borderRadius: '8px', fontSize: '0.85rem' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</button>
                   </div>
                 </div>
               ))}
@@ -372,39 +340,50 @@ export default function Home() {
           </div>
         )}
 
-        {/* WEERGAVE CHECKLISTS TAB */}
+        {/* CHECKLIST TAB */}
         {mainTab === 'checklist' && (
           <div>
-            <div className="card" style={{ padding: '15px', marginBottom: '20px', background: 'var(--bravo-purple)', color: 'white' }}>
-               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px' }}>
-                  <span>VOORTGANG CHECKLISTS</span>
-                  <span>{progressChecklistOnly}%</span>
-               </div>
-               <div style={{ height: '8px', background: 'rgba(255,255,255,0.3)', borderRadius: '4px', overflow: 'hidden' }}>
-                  <div style={{ height: '100%', background: 'white', width: `${progressChecklistOnly}%`, transition: 'width 0.5s ease' }}></div>
-               </div>
-            </div>
-
             {baseCategories.map((category) => (
               <div key={category.id} className="card">
-                <div className="category-header">
-                  {category.icon}
-                  <span className="category-title">{category.title}</span>
-                </div>
-                <div>
-                  {category.items.map((item) => (
-                    <div key={item.id} className="checkbox-item" onClick={() => toggleItem(item.id)}>
-                      <div className="checkbox-content">
-                        <div style={{ 
-                          width: '24px', height: '24px', borderRadius: '6px', 
-                          border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', 
-                          background: completed.includes(item.id) ? 'var(--success)' : 'transparent', 
-                          marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' 
-                        }}>
-                          {completed.includes(item.id) && <CheckCircle2 size={16} />}
-                        </div>
-                        <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '0.95rem' }}>{item.text}</span>
-                      </div>
+                <div className="category-header">{category.icon}<span className="category-title">{category.title}</span></div>
+                {category.items.map((item) => (
+                  <div key={item.id} className="checkbox-item" onClick={() => toggleItem(item.id)}>
+                    <div className="checkbox-content">
+                      <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(item.id) && <CheckCircle2 size={16} />}</div>
+                      <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '0.95rem' }}>{item.text}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* INFO / CONTACT TAB */}
+        {mainTab === 'info' && (
+          <div>
+            <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px' }}>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', color: '#dc2626', fontWeight: 'bold', marginBottom: '8px' }}>
+                <ShieldAlert size={20} /> ZIEKMELDEN
+              </div>
+              <p style={{ margin: '4px 0', fontSize: '0.9rem' }}><b>Binnen kantooruren:</b> Bij je leidinggevende</p>
+              <p style={{ margin: '4px 0', fontSize: '0.9rem' }}><b>Buiten kantooruren:</b> Bel ROV (030-2849494)</p>
+            </div>
+
+            {contactData.map((group, idx) => (
+              <div key={idx} className="card">
+                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '2px solid #f3f4f6', paddingBottom: '8px', marginBottom: '10px' }}>{group.category}</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {group.contacts.map((c, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{c.name}</span>
+                      {c.phone ? (
+                        <a href={`tel:${c.phone}`} className="pdf-btn" style={{ background: 'white', color: 'var(--bravo-purple)', borderColor: 'var(--bravo-purple)', padding: '6px 12px' }}>
+                          <Phone size={14} /> {c.phone}
+                        </a>
+                      ) : (
+                        <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>{c.info}</span>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -412,6 +391,7 @@ export default function Home() {
             ))}
           </div>
         )}
+
       </div>
     </div>
   );
