@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-/* Nieuw: Youtube icoon toegevoegd */
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X } from 'lucide-react';
 
 const initialCategories = [
   {
@@ -96,10 +95,11 @@ const initialCategories = [
         pdf: '/routes/400.pdf', 
         map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9?g_st=ac',
         videos: [
-          { label: 'Video 1', url: 'https://youtu.be/UodaTz-F8g8?si=_L5Is9Fhn4qJ4IQr' }
+          { label: 'Heenrit (Video)', url: 'https://youtu.be/UodaTz-F8g8?si=_L5Is9Fhn4qJ4IQr' },
+          { label: 'Terugrit (Video)', url: 'https://youtu.be/example' },
+          { label: 'Knooppunt Airport', url: 'https://youtu.be/example2' }
         ]
       },
-      /* ANDERE STADSLIJNEN (Je kunt 'videos: [...]' toevoegen waar nodig) */
       { id: 'r2', type: 'stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
       { id: 'r3', type: 'stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
       { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
@@ -142,6 +142,7 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
   const [routeTab, setRouteTab] = useState('stad');
+  const [videoModal, setVideoModal] = useState(null); // Voor het video-lijstje
 
   useEffect(() => {
     const savedStudents = localStorage.getItem('bravo_student_list');
@@ -195,6 +196,26 @@ export default function Home() {
 
   return (
     <div>
+      {/* VIDEO MODAL OVERLAY */}
+      {videoModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+           <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px', animation: 'slideUp 0.3s ease-out' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                <h3 style={{ margin: 0, color: 'black' }}>Video's: {videoModal.text}</h3>
+                <button onClick={() => setVideoModal(null)} style={{ background: '#f3f4f6', border: 'none', padding: '5px', borderRadius: '50%' }}><X size={20} color="black" /></button>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {videoModal.videos.map((vid, i) => (
+                  <a key={i} href={vid.url} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '15px', background: '#fee2e2', color: '#dc2626', textDecoration: 'none', borderRadius: '10px', fontWeight: 'bold' }}>
+                    <Youtube size={20} />
+                    {vid.label}
+                  </a>
+                ))}
+              </div>
+           </div>
+        </div>
+      )}
+
       <div className="header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
             <div style={{ background: 'white', padding: '8px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '50px', minHeight: '50px' }}>
@@ -255,25 +276,20 @@ export default function Home() {
                     <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '0.95rem' }}>{item.text}</span>
                   </div>
                   
-                  {/* Knoppen Sectie */}
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'nowrap' }}>
-                    {/* Maps & PDF knoppen */}
+                  <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
                     {item.map && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={14} /></a>}
                     {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={14} /></a>}
                     
-                    {/* YouTube Video Knoppen (Nieuw) */}
-                    {item.videos && item.videos.map((vid, idx) => (
-                      <a 
-                        key={idx} 
-                        href={vid.url} 
-                        target="_blank" 
+                    {/* Eén Video knop per lijn die het lijstje opent */}
+                    {item.videos && (
+                      <button 
+                        onClick={() => setVideoModal(item)} 
                         className="pdf-btn" 
-                        style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca' }}
-                        title={vid.label}
+                        style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca', cursor: 'pointer' }}
                       >
                         <Youtube size={14} />
-                      </a>
-                    ))}
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -281,6 +297,14 @@ export default function Home() {
           </div>
         ))}
       </div>
+      
+      {/* Kleine CSS animatie voor het venstertje */}
+      <style jsx global>{`
+        @keyframes slideUp {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }
