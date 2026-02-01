@@ -87,7 +87,6 @@ const initialCategories = [
     icon: <Map size={22} />,
     isRouteCategory: true,
     items: [
-      /* STADS- EN HOOGWAARDIGE LIJNEN */
       { id: 'r2', type: 'stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
       { id: 'r3', type: 'stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
       { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
@@ -220,19 +219,30 @@ export default function Home() {
     localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(newTallies));
   };
 
-  const totalItems = initialCategories.reduce((acc, cat) => acc + cat.items.length, 0);
-  const totalProgress = Math.round((completed.length / totalItems) * 100) || 0;
+  // ----- VOORTGANG LOGICA -----
+  // 1. Algemene taken (Categorie 1 t/m 6)
+  const baseCategories = initialCategories.filter(c => !c.isRouteCategory);
+  const baseItems = baseCategories.flatMap(c => c.items);
+  const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
 
-  // Voortgang berekening voor Routes specifiek
+  // 2. Routes (Stad vs Streek)
   const routeCategory = initialCategories.find(c => c.id === 'routes');
   const stadRoutes = routeCategory.items.filter(i => i.type === 'stad');
   const streekRoutes = routeCategory.items.filter(i => i.type === 'streek');
 
-  const stadCompleted = stadRoutes.filter(i => completed.includes(i.id)).length;
-  const streekCompleted = streekRoutes.filter(i => completed.includes(i.id)).length;
+  const stadDone = stadRoutes.filter(i => completed.includes(i.id)).length;
+  const streekDone = streekRoutes.filter(i => completed.includes(i.id)).length;
 
-  const progressStad = Math.round((stadCompleted / stadRoutes.length) * 100) || 0;
-  const progressStreek = Math.round((streekCompleted / streekRoutes.length) * 100) || 0;
+  // 3. Bereken paden (OF stad OF streek is nodig voor 100%)
+  const pathStad = ((baseDone + stadDone) / (baseItems.length + stadRoutes.length)) * 100;
+  const pathStreek = ((baseDone + streekDone) / (baseItems.length + streekRoutes.length)) * 100;
+
+  // De hoofdbalk pakt de hoogste voortgang
+  const totalProgress = Math.round(Math.max(pathStad, pathStreek)) || 0;
+
+  // Individuele balken voor de routekaart
+  const progressStadOnly = Math.round((stadDone / stadRoutes.length) * 100) || 0;
+  const progressStreekOnly = Math.round((streekDone / streekRoutes.length) * 100) || 0;
 
   return (
     <div>
@@ -255,7 +265,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* HEADER MET ALGEMENE VOORTGANG */}
+      {/* HEADER */}
       <div className="header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
             <div style={{ background: 'white', padding: '8px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '50px', minHeight: '50px' }}>
@@ -310,13 +320,13 @@ export default function Home() {
                 <div style={{ marginBottom: '15px', padding: '0 5px' }}>
                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
                       <span style={{ textTransform: 'uppercase' }}>Voortgang {routeTab}</span>
-                      <span>{routeTab === 'stad' ? progressStad : progressStreek}%</span>
+                      <span>{routeTab === 'stad' ? progressStadOnly : progressStreekOnly}%</span>
                    </div>
                    <div style={{ height: '6px', background: '#e5e7eb', borderRadius: '3px', overflow: 'hidden' }}>
                       <div style={{ 
                         height: '100%', 
                         background: 'var(--bravo-purple)', 
-                        width: `${routeTab === 'stad' ? progressStad : progressStreek}%`,
+                        width: `${routeTab === 'stad' ? progressStadOnly : progressStreekOnly}%`,
                         transition: 'width 0.3s ease'
                       }}></div>
                    </div>
