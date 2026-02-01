@@ -175,10 +175,8 @@ export default function Home() {
     if (mounted) {
       const savedProgress = localStorage.getItem(`bravo_progress_${activeStudent}`);
       setCompleted(savedProgress ? JSON.parse(savedProgress) : []);
-      
       const savedTallies = localStorage.getItem(`bravo_tallies_${activeStudent}`);
       setTallies(savedTallies ? JSON.parse(savedTallies) : {});
-      
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
@@ -223,10 +221,22 @@ export default function Home() {
   };
 
   const totalItems = initialCategories.reduce((acc, cat) => acc + cat.items.length, 0);
-  const progress = Math.round((completed.length / totalItems) * 100) || 0;
+  const totalProgress = Math.round((completed.length / totalItems) * 100) || 0;
+
+  // Voortgang berekening voor Routes specifiek
+  const routeCategory = initialCategories.find(c => c.id === 'routes');
+  const stadRoutes = routeCategory.items.filter(i => i.type === 'stad');
+  const streekRoutes = routeCategory.items.filter(i => i.type === 'streek');
+
+  const stadCompleted = stadRoutes.filter(i => completed.includes(i.id)).length;
+  const streekCompleted = streekRoutes.filter(i => completed.includes(i.id)).length;
+
+  const progressStad = Math.round((stadCompleted / stadRoutes.length) * 100) || 0;
+  const progressStreek = Math.round((streekCompleted / streekRoutes.length) * 100) || 0;
 
   return (
     <div>
+      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
@@ -245,6 +255,7 @@ export default function Home() {
         </div>
       )}
 
+      {/* HEADER MET ALGEMENE VOORTGANG */}
       <div className="header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
             <div style={{ background: 'white', padding: '8px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '50px', minHeight: '50px' }}>
@@ -256,6 +267,7 @@ export default function Home() {
             </div>
         </div>
 
+        {/* STUDENT SELECTOR */}
         <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '10px', marginBottom: '15px' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
             <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', background: 'white', color: 'black', fontWeight: 'bold' }}>
@@ -271,10 +283,10 @@ export default function Home() {
         
         <div className="progress-container">
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '5px' }}>
-            <span>VOORTGANG: {activeStudent}</span>
-            <span>{progress}%</span>
+            <span>TOTALE VOORTGANG</span>
+            <span>{totalProgress}%</span>
           </div>
-          <div className="progress-bar"><div className="progress-fill" style={{ width: `${progress}%` }}></div></div>
+          <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
       </div>
 
@@ -286,10 +298,29 @@ export default function Home() {
               <span className="category-title">{category.title}</span>
             </div>
             
+            {/* ROUTE TAB KIEZER EN SPECIFIEKE VOORTGANG */}
             {category.isRouteCategory && (
-              <div style={{ display: 'flex', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px' }}>
-                <button onClick={() => setRouteTab('stad')} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'stad' ? 'white' : 'transparent', color: routeTab === 'stad' ? 'var(--bravo-purple)' : '#6b7280' }}>Stadslijnen</button>
-                <button onClick={() => setRouteTab('streek')} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'streek' ? 'white' : 'transparent', color: routeTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}>Streeklijnen</button>
+              <div>
+                <div style={{ display: 'flex', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '10px', gap: '4px' }}>
+                  <button onClick={() => setRouteTab('stad')} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'stad' ? 'white' : 'transparent', color: routeTab === 'stad' ? 'var(--bravo-purple)' : '#6b7280' }}>Stadslijnen</button>
+                  <button onClick={() => setRouteTab('streek')} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'streek' ? 'white' : 'transparent', color: routeTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}>Streeklijnen</button>
+                </div>
+                
+                {/* Dynamische Voortgangsbalk voor Routes */}
+                <div style={{ marginBottom: '15px', padding: '0 5px' }}>
+                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
+                      <span style={{ textTransform: 'uppercase' }}>Voortgang {routeTab}</span>
+                      <span>{routeTab === 'stad' ? progressStad : progressStreek}%</span>
+                   </div>
+                   <div style={{ height: '6px', background: '#e5e7eb', borderRadius: '3px', overflow: 'hidden' }}>
+                      <div style={{ 
+                        height: '100%', 
+                        background: 'var(--bravo-purple)', 
+                        width: `${routeTab === 'stad' ? progressStad : progressStreek}%`,
+                        transition: 'width 0.3s ease'
+                      }}></div>
+                   </div>
+                </div>
               </div>
             )}
 
