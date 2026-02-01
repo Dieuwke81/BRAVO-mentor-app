@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, SteeringWheel } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, User } from 'lucide-react';
 
 const initialCategories = [
   {
@@ -116,26 +116,59 @@ const initialCategories = [
 ];
 
 export default function Home() {
+  const [students, setStudents] = useState(['Standaard']);
+  const [activeStudent, setActiveStudent] = useState('Standaard');
   const [completed, setCompleted] = useState([]);
   const [mounted, setMounted] = useState(false);
+  const [newStudentName, setNewStudentName] = useState('');
 
+  // Initial load
   useEffect(() => {
-    const saved = localStorage.getItem('bravoMentorProgress_v2'); // Versie v2 voor de nieuwe structuur
-    if (saved) {
-      setCompleted(JSON.parse(saved));
+    const savedStudents = localStorage.getItem('bravo_student_list');
+    if (savedStudents) {
+      const parsed = JSON.parse(savedStudents);
+      setStudents(parsed);
+      const lastActive = localStorage.getItem('bravo_active_student') || parsed[0];
+      setActiveStudent(lastActive);
     }
     setMounted(true);
   }, []);
 
-  const toggleItem = (id) => {
-    let newCompleted;
-    if (completed.includes(id)) {
-      newCompleted = completed.filter(item => item !== id);
-    } else {
-      newCompleted = [...completed, id];
+  // Load progress when student changes
+  useEffect(() => {
+    if (mounted) {
+      const savedProgress = localStorage.getItem(`bravo_progress_${activeStudent}`);
+      setCompleted(savedProgress ? JSON.parse(savedProgress) : []);
+      localStorage.setItem('bravo_active_student', activeStudent);
     }
+  }, [activeStudent, mounted]);
+
+  const addStudent = () => {
+    if (newStudentName.trim() && !students.includes(newStudentName.trim())) {
+      const newList = [...students, newStudentName.trim()];
+      setStudents(newList);
+      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
+      setActiveStudent(newStudentName.trim());
+      setNewStudentName('');
+    }
+  };
+
+  const deleteStudent = (name) => {
+    if (students.length > 1 && confirm(`Weet je zeker dat je ${name} wilt verwijderen?`)) {
+      const newList = students.filter(s => s !== name);
+      setStudents(newList);
+      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
+      localStorage.removeItem(`bravo_progress_${name}`);
+      setActiveStudent(newList[0]);
+    }
+  };
+
+  const toggleItem = (id) => {
+    const newCompleted = completed.includes(id) 
+      ? completed.filter(i => i !== id) 
+      : [...completed, id];
     setCompleted(newCompleted);
-    localStorage.setItem('bravoMentorProgress_v2', JSON.stringify(newCompleted));
+    localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(newCompleted));
   };
 
   const totalItems = initialCategories.reduce((acc, cat) => acc + cat.items.length, 0);
@@ -147,41 +180,48 @@ export default function Home() {
     <div>
       <div className="header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-            <div style={{ 
-                background: 'white', 
-                padding: '8px', 
-                borderRadius: '10px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-                minWidth: '50px',
-                minHeight: '50px'
-            }}>
-                <img 
-                  src="/logo.png" 
-                  alt="Logo" 
-                  style={{ height: '35px', objectFit: 'contain' }} 
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-                <div style={{ display: 'none', color: 'var(--bravo-purple)' }}>
-                   <Bus size={32} />
-                </div>
+            <div style={{ background: 'white', padding: '8px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '50px', minHeight: '50px' }}>
+                <img src="/logo.png" alt="Logo" style={{ height: '35px', objectFit: 'contain' }} />
             </div>
-            
             <div>
               <h1 style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>BRAVO Mentor</h1>
-              <span style={{ fontSize: '0.8rem', opacity: 0.9, textTransform: 'uppercase', letterSpacing: '1px' }}>Opleidingskaart</span>
+              <span style={{ fontSize: '0.8rem', opacity: 0.9 }}>STAD / STREEK EINDHOVEN</span>
             </div>
+        </div>
+
+        {/* Student Selector */}
+        <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '10px', marginBottom: '15px' }}>
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+            <select 
+              value={activeStudent} 
+              onChange={(e) => setActiveStudent(e.target.value)}
+              style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', background: 'white', color: 'black', fontWeight: 'bold' }}
+            >
+              {students.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <button onClick={() => deleteStudent(activeStudent)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}>
+              <Trash2 size={18} />
+            </button>
+          </div>
+          
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <input 
+              type="text" 
+              value={newStudentName}
+              onChange={(e) => setNewStudentName(e.target.value)}
+              placeholder="Nieuwe leerling..."
+              style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none' }}
+            />
+            <button onClick={addStudent} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Plus size={18} /> Voeg toe
+            </button>
+          </div>
         </div>
         
         <div className="progress-container">
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '5px' }}>
-            <span>VOORTGANG</span>
-            <span>{progress}% VOLTOOID</span>
+            <span>VOORTGANG: {activeStudent}</span>
+            <span>{progress}%</span>
           </div>
           <div className="progress-bar">
             <div className="progress-fill" style={{ width: `${progress}%` }}></div>
@@ -202,56 +242,29 @@ export default function Home() {
                 <div key={item.id} className="checkbox-item">
                   <div className="checkbox-content" onClick={() => toggleItem(item.id)}>
                     <div style={{ 
-                      width: '24px', 
-                      height: '24px', 
-                      borderRadius: '6px', 
+                      width: '24px', height: '24px', borderRadius: '6px', 
                       border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db',
                       background: completed.includes(item.id) ? 'var(--success)' : 'transparent',
-                      marginRight: '15px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      flexShrink: 0,
-                      transition: 'all 0.2s'
+                      marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
                     }}>
                       {completed.includes(item.id) && <CheckCircle2 size={16} />}
                     </div>
-                    
                     <span style={{ 
                       textDecoration: completed.includes(item.id) ? 'line-through' : 'none',
                       color: completed.includes(item.id) ? '#9ca3af' : 'inherit',
-                      fontSize: '0.95rem',
-                      lineHeight: '1.4'
-                    }}>
-                      {item.text}
-                    </span>
+                      fontSize: '0.95rem'
+                    }}>{item.text}</span>
                   </div>
 
                   <div style={{ display: 'flex', gap: '8px' }}>
-                    {item.map && (
-                      <a href={item.map} target="_blank" className="pdf-btn" onClick={(e) => e.stopPropagation()}>
-                        <MapPin size={14} />
-                        Maps
-                      </a>
-                    )}
-                    {item.pdf && (
-                      <a href={item.pdf} target="_blank" className="pdf-btn" onClick={(e) => e.stopPropagation()}>
-                        <FileText size={14} />
-                        PDF
-                      </a>
-                    )}
+                    {item.map && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={14} /></a>}
+                    {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={14} /></a>}
                   </div>
                 </div>
               ))}
             </div>
           </div>
         ))}
-        
-        <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '0.75rem', marginTop: '30px' }}>
-            <p>Gegevens worden lokaal opgeslagen op dit apparaat</p>
-            <p>© BRAVO Mentor App - Rayon Eindhoven</p>
-        </div>
       </div>
     </div>
   );
