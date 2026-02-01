@@ -267,7 +267,7 @@ export default function Home() {
             </div>
             <div>
               <h1 style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>BRAVO Mentor</h1>
-              <span style={{ fontSize: '0.8rem', opacity: 0.9 }}>RAYON EINDHOVEN</span>
+              <span style={{ fontSize: '0.8rem', opacity: 0.9 }}>HERMES</span>
             </div>
         </div>
 
