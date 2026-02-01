@@ -1,47 +1,84 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, SteeringWheel } from 'lucide-react';
 
-/* 
-   BELANGRIJK:
-   - Vul bij 'pdf' de naam van je bestand in (bijv '/routes/2.pdf')
-   - Vul bij 'map' de Google Maps link in (bijv 'https://goo.gl/...')
-*/
 const initialCategories = [
   {
-    id: 'systeem',
-    title: 'Systemen & Apparatuur',
-    icon: <Radio size={22} />,
+    id: 'aanvang',
+    title: '1. Aanvang Dienst & Voorbereiding',
+    icon: <Clock size={22} />,
     items: [
-      { id: 's1', text: 'Inloggen boordcomputer (Viribus/Ticketbox)' },
-      { id: 's2', text: '......' },
-      { id: 's3', text: 'Kaartverkoop & PIN procedures' },
-      { id: 's4', text: 'Spiegels/cameras & stoel instellen' },
-      { id: 's5', text: '......' }
+      { id: 'a1', text: 'Kledingvoorschrift & schoenen (kleur) in orde' },
+      { id: 'a2', text: 'Zich aanmelden via computer & dienstblaadje pakken' },
+      { id: 'a3', text: 'Mededelingen en aanschrijvingen lezen' },
+      { id: 'a4', text: 'Controleren van stallingsplan (Eindhoven/streek)' },
+      { id: 'a5', text: 'Juiste voertuigtype & omloopbordje plaatsen' }
     ]
   },
   {
-    id: 'veiligheid',
-    title: 'Veiligheid',
-    icon: <ShieldAlert size={22} />,
+    id: 'voertuig',
+    title: '2. Voertuig & Bediening',
+    icon: <Bus size={22} />,
     items: [
-      { id: 'v1', text: 'Procedure bij ongeval/schade' },
-      { id: 'v2', text: ',.....' },
-      { id: 'v3', text: 'Locatie EHBO, brandblusser en papieren/vergunningen' },
-      { id: 'v4', text: '.......' },
-      { id: 'v5', text: ',......' }
+      { id: 'v1', text: 'Instellen stoel (A t/m L: hoogte, demping, lende, etc.)' },
+      { id: 'v2', text: 'Instellen stuurwiel & spiegels' },
+      { id: 'v3', text: 'Controle op schade (exterieur & interieur)' },
+      { id: 'v4', text: 'Bediening verlichting (chauffeurscabine & interieur)' },
+      { id: 'v5', text: 'Klimaatbediening & ontwaseming' },
+      { id: 'v6', text: 'Werking diverse bussen (Iveco, Citea SLFA/LF)' },
+      { id: 'v7', text: 'Controle banden, lekkage en vloeistoffen' }
+    ]
+  },
+  {
+    id: 'systemen',
+    title: '3. Boordcomputer & Systemen',
+    icon: <Radio size={22} />,
+    items: [
+      { id: 's1', text: 'Inloggen Viribus (pincode via ROV opvragen)' },
+      { id: 's2', text: 'Juiste omloop invoeren & rit selecteren' },
+      { id: 's3', text: 'Gebruik handaanmelding verkeerslicht (KAR/VETAG)' },
+      { id: 's4', text: 'Kaartverkoop & Ticketbox procedures' },
+      { id: 's5', text: 'Tekst- en spraakoproep / Noodoproep' },
+      { id: 's6', text: 'Sycada/Rijwijzer: opvolgen rijstijl lampjes' },
+      { id: 's7', text: 'Gebruik omroepberichten' }
     ]
   },
   {
     id: 'dienst',
-    title: 'Tijdens de dienst',
+    title: '4. Tijdens de Dienst (Rijstijl)',
     icon: <Users size={22} />,
     items: [
-      { id: 'd1', text: 'Klantvriendelijkheid & houding' },
-      { id: 'd2', text: 'Omgaan met rolstoelers/rollators' },
-      { id: 'd3', text: 'Pauze locaties & regels' },
-      { id: 'd4', text: 'Rijstijl (rijwijzer)' }
+      { id: 'd1', text: 'Vertrek op tijd vanaf beginpunt' },
+      { id: 'd2', text: 'Rijstijl: Het Nieuwe Rijden (HNR) & uitrollen' },
+      { id: 'd3', text: 'Halteren: juiste deurbediening & afstand tot stoep' },
+      { id: 'd4', text: 'Bediening rolstoelplank (automatisch & handmatig)' },
+      { id: 'd5', text: 'Aanrijden van halten (overbouw achterkant)' },
+      { id: 'd6', text: 'Punctualiteit & omgaan met vertraging' }
+    ]
+  },
+  {
+    id: 'elektrisch',
+    title: '5. Elektrische Bus & Laden',
+    icon: <Zap size={22} />,
+    items: [
+      { id: 'e1', text: 'Juiste positionering op laadplek' },
+      { id: 'e2', text: 'In- en uitschakelen alle verbruikers voor laden' },
+      { id: 'e3', text: 'Aan- en afkoppelen pantograaf (indien aanwezig)' },
+      { id: 'e4', text: 'Controleren SOC (State of Charge / batterijniveau)' },
+      { id: 'e5', text: 'Wachten tot bus aangeeft dat deze laadt' }
+    ]
+  },
+  {
+    id: 'veiligheid',
+    title: '6. Reizigers & Veiligheid',
+    icon: <ShieldAlert size={22} />,
+    items: [
+      { id: 'v_s1', text: 'Klantvriendelijkheid & omgang met klachten' },
+      { id: 'v_s2', text: 'Begeleiding kinderwagens, rolstoelen & blinden' },
+      { id: 'v_s3', text: 'Procedure bij ongeval (formulier & foto\'s maken)' },
+      { id: 'v_s4', text: 'Contact met ROV bij grote incidenten/storingen' },
+      { id: 'v_s5', text: 'Controle vervoerbewijzen (OV-chip/OVpay)' }
     ]
   },
   {
@@ -49,7 +86,6 @@ const initialCategories = [
     title: 'Routekennis & Kaarten STAD',
     icon: <Map size={22} />,
     items: [
-      /* HIERONDER MOET JE DE LINKS TOEVOEGEN BIJ 'map' */
       { id: 'r2', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
       { id: 'r3', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
       { id: 'r4', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
@@ -84,7 +120,7 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('bravoMentorProgress_v1');
+    const saved = localStorage.getItem('bravoMentorProgress_v2'); // Versie v2 voor de nieuwe structuur
     if (saved) {
       setCompleted(JSON.parse(saved));
     }
@@ -99,7 +135,7 @@ export default function Home() {
       newCompleted = [...completed, id];
     }
     setCompleted(newCompleted);
-    localStorage.setItem('bravoMentorProgress_v1', JSON.stringify(newCompleted));
+    localStorage.setItem('bravoMentorProgress_v2', JSON.stringify(newCompleted));
   };
 
   const totalItems = initialCategories.reduce((acc, cat) => acc + cat.items.length, 0);
@@ -164,7 +200,6 @@ export default function Home() {
             <div>
               {category.items.map((item) => (
                 <div key={item.id} className="checkbox-item">
-                  {/* Klikgedeelte voor afvinken */}
                   <div className="checkbox-content" onClick={() => toggleItem(item.id)}>
                     <div style={{ 
                       width: '24px', 
@@ -193,17 +228,13 @@ export default function Home() {
                     </span>
                   </div>
 
-                  {/* Knoppen rechts */}
                   <div style={{ display: 'flex', gap: '8px' }}>
-                    {/* Google Maps Knop */}
                     {item.map && (
                       <a href={item.map} target="_blank" className="pdf-btn" onClick={(e) => e.stopPropagation()}>
                         <MapPin size={14} />
                         Maps
                       </a>
                     )}
-
-                    {/* PDF Knop */}
                     {item.pdf && (
                       <a href={item.pdf} target="_blank" className="pdf-btn" onClick={(e) => e.stopPropagation()}>
                         <FileText size={14} />
@@ -218,8 +249,8 @@ export default function Home() {
         ))}
         
         <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '0.75rem', marginTop: '30px' }}>
-            <p>Gegevens worden lokaal opgeslagen</p>
-            <p>© BRAVO Mentor App</p>
+            <p>Gegevens worden lokaal opgeslagen op dit apparaat</p>
+            <p>© BRAVO Mentor App - Rayon Eindhoven</p>
         </div>
       </div>
     </div>
