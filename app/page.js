@@ -1,41 +1,41 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, Navigation, Eye, Phone, Mail, Info } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck } from 'lucide-react';
 
 const initialCategories = [
   {
     id: 'routes',
-    title: '1. Routekennis & Turven',
+    title: 'Routekennis & Lijnverkenning',
     icon: <Map size={22} />,
     isRouteCategory: true,
     items: [
       /* STADS- EN HOOGWAARDIGE LIJNEN */
       { id: 'r2', type: 'stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
       { id: 'r3', type: 'stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
-      { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
-      { id: 'r5', type: 'stad', text: "5 't Hofke", pdf: '/routes/5.pdf', map: 'https://goo.gl/maps/ZVRxNdkkF84TTFcr9?g_st=ac' },
-      { id: 'r6', type: 'stad', text: '6 Nuenen', pdf: '/routes/6.pdf', map: 'https://goo.gl/maps/rinLtqdqrpNdFrHu6?g_st=ac' },
-      { id: 'r7', type: 'stad', text: '7 Veldhoven MMC via Aalst', pdf: '/routes/7.pdf', map: 'https://goo.gl/maps/2wn2ri42YPjDRTkc7?g_st=ac' },
-      { id: 'r8', type: 'stad', text: '8 Acht', pdf: '/routes/8.pdf', map: 'https://goo.gl/maps/KDJdAMPYmtCU793o6?g_st=ac' },
-      { id: 'r10', type: 'stad', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf', map: 'https://goo.gl/maps/u1VCM98XLR4gibQy6?g_st=ac' },
-      { id: 'r12', type: 'stad', text: '12 Gijzenrooi', pdf: '/routes/12.pdf', map: 'https://goo.gl/maps/pvcsGEmrZuyuidX3A?g_st=ac' },
-      { id: 'r14', type: 'stad', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: 'https://goo.gl/maps/b3rHcKpHwrB7sqR18?g_st=ac' },
-      { id: 'r15', type: 'stad', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: 'https://goo.gl/maps/zT7RyaGGEfFwBFNA8?g_st=ac' },
-      { id: 'r16', type: 'stad', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: 'https://goo.gl/maps/NB9B2serhaqnsz6b8?g_st=ac' },
-      { id: 'r17', type: 'stad', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8?g_st=ac' },
-      { id: 'r114', type: 'stad', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7?g_st=ac' },
-      { id: 'r119', type: 'stad', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7?g_st=ac' },
-      { id: 'r324', type: 'stad', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7?g_st=ac' },
-      { id: 'r400', type: 'stad', text: '400 Airport Shuttle', pdf: '/routes/400.pdf', map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/UodaTz-F8g8' }] },
-      { id: 'r401', type: 'stad', text: '401 Airport', pdf: '/routes/401.pdf', map: 'https://goo.gl/maps/wZXxBwX7d1jpmdfQ6?g_st=ac' },
-      { id: 'r402', type: 'stad', text: '402 Veldhoven Zonderwijk', pdf: '/routes/402.pdf', map: 'https://goo.gl/maps/AzkdnKNpGggagMym6?g_st=ac' },
-      { id: 'r403', type: 'stad', text: '403 Veldhoven De Dom/Berg', pdf: '/routes/403.pdf', map: 'https://goo.gl/maps/t2tt2P7CTcL61hKa7?g_st=ac' },
-      { id: 'r404', type: 'stad', text: '404 Nuenen Centrum', pdf: '/routes/404.pdf', map: 'https://goo.gl/maps/BnVdowtnS5JXrogm7?g_st=ac' },
-      { id: 'r405', type: 'stad', text: '405 Achtse Barrier', pdf: '/routes/405.pdf', map: 'https://goo.gl/maps/MYakec5RN3dmyHKA9?g_st=ac' },
-      { id: 'r406', type: 'stad', text: '406 Ekkersrijt', pdf: '/routes/406.pdf', map: 'https://goo.gl/maps/8ZBA4gaG6xzNEcck7?g_st=ac' },
-      { id: 'r407', type: 'stad', text: '407 HTC (terug als 408)', pdf: '/routes/407.pdf', map: 'https://goo.gl/maps/kF7NkrEyib22hX8E7?g_st=ac' },
-      { id: 'r408', type: 'stad', text: '408 HTC (terug als 407)', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9?g_st=ac' },
+      { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9' },
+      { id: 'r5', type: 'stad', text: "5 't Hofke", pdf: '/routes/5.pdf', map: 'https://goo.gl/maps/ZVRxNdkkF84TTFcr9' },
+      { id: 'r6', type: 'stad', text: '6 Nuenen', pdf: '/routes/6.pdf', map: 'https://goo.gl/maps/rinLtqdqrpNdFrHu6' },
+      { id: 'r7', type: 'stad', text: '7 Veldhoven MMC via Aalst', pdf: '/routes/7.pdf', map: 'https://goo.gl/maps/2wn2ri42YPjDRTkc7' },
+      { id: 'r8', type: 'stad', text: '8 Acht', pdf: '/routes/8.pdf', map: 'https://goo.gl/maps/KDJdAMPYmtCU793o6' },
+      { id: 'r10', type: 'stad', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf', map: 'https://goo.gl/maps/u1VCM98XLR4gibQy6' },
+      { id: 'r12', type: 'stad', text: '12 Gijzenrooi', pdf: '/routes/12.pdf', map: 'https://goo.gl/maps/pvcsGEmrZuyuidX3A' },
+      { id: 'r14', type: 'stad', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: 'https://goo.gl/maps/b3rHcKpHwrB7sqR18' },
+      { id: 'r15', type: 'stad', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: 'https://goo.gl/maps/zT7RyaGGEfFwBFNA8' },
+      { id: 'r16', type: 'stad', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: 'https://goo.gl/maps/NB9B2serhaqnsz6b8' },
+      { id: 'r17', type: 'stad', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8' },
+      { id: 'r114', type: 'stad', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7' },
+      { id: 'r119', type: 'stad', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7' },
+      { id: 'r324', type: 'stad', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7' },
+      { id: 'r400', type: 'stad', text: '400 Airport Shuttle', pdf: '/routes/400.pdf', map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9', videos: [{ label: 'Heenrit', url: 'https://youtu.be/UodaTz-F8g8' }] },
+      { id: 'r401', type: 'stad', text: '401 Airport', pdf: '/routes/401.pdf', map: 'https://goo.gl/maps/wZXxBwX7d1jpmdfQ6' },
+      { id: 'r402', type: 'stad', text: '402 Veldhoven Zonderwijk', pdf: '/routes/402.pdf', map: 'https://goo.gl/maps/AzkdnKNpGggagMym6' },
+      { id: 'r403', type: 'stad', text: '403 Veldhoven De Dom/Berg', pdf: '/routes/403.pdf', map: 'https://goo.gl/maps/t2tt2P7CTcL61hKa7' },
+      { id: 'r404', type: 'stad', text: '404 Nuenen Centrum', pdf: '/routes/404.pdf', map: 'https://goo.gl/maps/BnVdowtnS5JXrogm7' },
+      { id: 'r405', type: 'stad', text: '405 Achtse Barrier', pdf: '/routes/405.pdf', map: 'https://goo.gl/maps/MYakec5RN3dmyHKA9' },
+      { id: 'r406', type: 'stad', text: '406 Ekkersrijt', pdf: '/routes/406.pdf', map: 'https://goo.gl/maps/8ZBA4gaG6xzNEcck7' },
+      { id: 'r407', type: 'stad', text: '407 HTC (terug als 408)', pdf: '/routes/407.pdf', map: 'https://goo.gl/maps/kF7NkrEyib22hX8E7' },
+      { id: 'r408', type: 'stad', text: '408 HTC (terug als 407)', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9' },
 
       /* STREEKLIJNEN */
       { id: 'r9', type: 'streek', text: '9 Eindhoven - Best', pdf: '/routes/9.pdf', map: '#' },
@@ -67,7 +67,7 @@ const initialCategories = [
   },
   {
     id: 'aanvang',
-    title: '2. Aanvang Dienst & Voorbereiding',
+    title: 'Aanvang Dienst & Voorbereiding',
     icon: <Clock size={22} />,
     items: [
       { id: 'a1', text: 'Kledingvoorschrift & schoenen (kleur) in orde' },
@@ -79,13 +79,13 @@ const initialCategories = [
   },
   {
     id: 'voertuig',
-    title: '3. Voertuig & Bediening',
+    title: 'Voertuig & Bediening',
     icon: <Bus size={22} />,
     items: [
-      { id: 'v1', text: 'Instellen stoel (A t/m L: hoogte, demping, lende, etc.)' },
+      { id: 'v1', text: 'Stoelinstelling (A t/m L: hoogte, demping, lende, etc.)' },
       { id: 'v2', text: 'Instellen stuurwiel & spiegels' },
       { id: 'v3', text: 'Controle op schade (exterieur & interieur)' },
-      { id: 'v4', text: 'Bediening verlichting (chauffeurscabine & interieur)' },
+      { id: 'v4', text: 'Bediening verlichting (cabine & interieur)' },
       { id: 'v5', text: 'Klimaatbediening & ontwaseming' },
       { id: 'v6', text: 'Werking diverse bussen (Iveco, Citea SLFA/LF)' },
       { id: 'v7', text: 'Controle banden, lekkage en vloeistoffen' }
@@ -93,103 +93,55 @@ const initialCategories = [
   },
   {
     id: 'systemen',
-    title: '4. Boordcomputer & Systemen',
+    title: 'Boordcomputer & Systemen',
     icon: <Radio size={22} />,
     items: [
-      { id: 's1', text: 'Inloggen Viribus (pincode via ROV opvragen)' },
+      { id: 's1', text: 'Inloggen Viribus (pincode via ROV)' },
       { id: 's2', text: 'Juiste omloop invoeren & rit selecteren' },
-      { id: 's3', text: 'Gebruik handaanmelding verkeerslicht (KAR/VETAG)' },
+      { id: 's3', text: 'Gebruik KAR/VETAG verkeerslicht' },
       { id: 's4', text: 'Kaartverkoop & Ticketbox procedures' },
       { id: 's5', text: 'Tekst- en spraakoproep / Noodoproep' },
-      { id: 's6', text: 'Sycada/Rijwijzer: opvolgen rijstijl lampjes' },
+      { id: 's6', text: 'Sycada/Rijwijzer: rijstijl opvolgen' },
       { id: 's7', text: 'Gebruik omroepberichten' }
     ]
   },
   {
     id: 'dienst',
-    title: '5. Tijdens de Dienst (Rijstijl)',
+    title: 'Tijdens de Dienst (Rijstijl)',
     icon: <Users size={22} />,
     items: [
       { id: 'd1', text: 'Vertrek op tijd vanaf beginpunt' },
       { id: 'd2', text: 'Rijstijl: Het Nieuwe Rijden (HNR) & uitrollen' },
-      { id: 'd3', text: 'Halteren: juiste deurbediening & afstand tot stoep' },
-      { id: 'd4', text: 'Bediening rolstoelplank (automatisch & handmatig)' },
-      { id: 'd5', text: 'Aanrijden van halten (overbouw achterkant)' },
+      { id: 'd3', text: 'Halteren: juiste deurbediening & stoep-afstand' },
+      { id: 'd4', text: 'Bediening rolstoelplank (aut. & handmatig)' },
+      { id: 'd5', text: 'Aanrijden van halten (overbouw)' },
       { id: 'd6', text: 'Punctualiteit & omgaan met vertraging' }
     ]
   },
   {
     id: 'elektrisch',
-    title: '6. Elektrische Bus & Laden',
+    title: 'Elektrische Bus & Laden',
     icon: <Zap size={22} />,
     items: [
       { id: 'e1', text: 'Juiste positionering op laadplek' },
       { id: 'e2', text: 'In- en uitschakelen alle verbruikers voor laden' },
-      { id: 'e3', text: 'Aan- en afkoppelen pantograaf (indien aanwezig)' },
-      { id: 'e4', text: 'Controleren SOC (State of Charge / batterijniveau)' },
+      { id: 'e3', text: 'Aan- en afkoppelen pantograaf' },
+      { id: 'e4', text: 'Controleren SOC (batterijniveau)' },
       { id: 'e5', text: 'Wachten tot bus aangeeft dat deze laadt' }
     ]
   },
   {
     id: 'veiligheid',
-    title: '7. Reizigers & Veiligheid',
+    title: 'Reizigers & Veiligheid',
     icon: <ShieldAlert size={22} />,
     items: [
-      { id: 'v_s1', text: 'Klantvriendelijkheid & omgang met klachten' },
-      { id: 'v_s2', text: 'Begeleiding kinderwagens, rolstoelen & blinden' },
-      { id: 'v_s3', text: 'Procedure bij ongeval (formulier & foto\'s maken)' },
-      { id: 'v_s4', text: 'Contact met ROV bij grote incidenten/storingen' },
+      { id: 'v_s1', text: 'Klantvriendelijkheid & klachtenafhandeling' },
+      { id: 'v_s2', text: 'Begeleiding rolstoelen & blinden' },
+      { id: 'v_s3', text: 'Procedure bij ongeval (formulier & foto\'s)' },
+      { id: 'v_s4', text: 'Contact met ROV bij incidenten' },
       { id: 'v_s5', text: 'Controle vervoerbewijzen (OV-chip/OVpay)' }
     ]
   }
-];
-
-// Telefoongids data
-const phoneContacts = [
-  {
-    category: "ALGEMEEN",
-    numbers: [
-      { label: "ROV UTRECHT", num: "030-2849494" },
-      { label: "Chauffeursverblijf Neckerspoel", num: "088-6255737" },
-      { label: "Opkomstlokaal Dorgelolaan 50", num: "040-2466373" },
-      { label: "Kantoor MER en ARM", num: "088-6255736" },
-      { label: "Planning Dorgelolaan 50", num: "040-2358630" },
-      { label: "Hermes Verloftelefoon", num: "040-2358639" },
-    ]
-  },
-  {
-    category: "LOGISTIEK",
-    numbers: [
-      { label: "Michel van Bakel", num: "088-6255735" },
-      { label: "Schadetelefoon", num: "06-38076828" },
-      { label: "Klantenservice (tegenpartij schade)", num: "0800-0222277" },
-      { label: "E-mail schades", num: "Schade_eindhoven@connexxion.nl", isEmail: true },
-    ]
-  },
-  {
-    category: "GPD",
-    numbers: [
-      { label: "Thirza van Diepen", num: "040-2358628" },
-      { label: "Erik Feijen", num: "040-2358638" },
-      { label: "John Gijsbers", num: "040-2358657" },
-    ]
-  },
-  {
-    category: "STREEK",
-    numbers: [
-      { label: "Michiel Bles", num: "088-6255731" },
-      { label: "Johan Cuijpers", num: "088-6255740" },
-      { label: "Debbie Flower", num: "088-6255730" },
-    ]
-  },
-  {
-    category: "STAD",
-    numbers: [
-      { label: "Twan Smid", num: "088-6522732" },
-      { label: "Mathieu Verberkt", num: "088-6255733" },
-      { label: "Patrick Houthooft", num: "088-6255734" },
-    ]
-  },
 ];
 
 export default function Home() {
@@ -199,7 +151,8 @@ export default function Home() {
   const [tallies, setTallies] = useState({});
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
-  const [routeTab, setRouteTab] = useState('stad');
+  const [mainTab, setMainTab] = useState('routes'); // HOOFD TAB (routes of checklist)
+  const [routeSubTab, setRouteSubTab] = useState('stad'); // SUB TAB voor routes
   const [videoModal, setVideoModal] = useState(null);
 
   useEffect(() => {
@@ -286,6 +239,7 @@ export default function Home() {
   const totalProgress = Math.round(Math.max(pathStad, pathStreek)) || 0;
   const progressStadOnly = Math.round((stadDone / stadRoutes.length) * 100) || 0;
   const progressStreekOnly = Math.round((streekDone / streekRoutes.length) * 100) || 0;
+  const progressChecklistOnly = Math.round((baseDone / baseItems.length) * 100) || 0;
 
   return (
     <div>
@@ -341,44 +295,52 @@ export default function Home() {
           </div>
           <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
+
+        {/* MAIN TABS NAVIGATIE */}
+        <div style={{ display: 'flex', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '5px' }}>
+          <button 
+            onClick={() => setMainTab('routes')}
+            style={{ flex: 1, padding: '12px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', transition: 'all 0.3s' }}
+          >
+            <Map size={18} /> Lijnen
+          </button>
+          <button 
+            onClick={() => setMainTab('checklist')}
+            style={{ flex: 1, padding: '12px', border: 'none', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', transition: 'all 0.3s' }}
+          >
+            <ClipboardCheck size={18} /> Checklists
+          </button>
+        </div>
       </div>
 
       <div className="container">
-        {initialCategories.map((category) => (
-          <div key={category.id} className="card">
+        
+        {/* WEERGAVE ROUTES TAB */}
+        {mainTab === 'routes' && (
+          <div className="card">
             <div className="category-header">
-              {category.icon}
-              <span className="category-title">{category.title}</span>
+              <Map size={22} />
+              <span className="category-title">Lijnverkenning</span>
             </div>
             
-            {/* ROUTE TAB KIEZER EN SPECIFIEKE VOORTGANG */}
-            {category.isRouteCategory && (
-              <div>
-                <div style={{ display: 'flex', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '10px', gap: '4px' }}>
-                  <button onClick={() => setRouteTab('stad')} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'stad' ? 'white' : 'transparent', color: routeTab === 'stad' ? 'var(--bravo-purple)' : '#6b7280' }}>Stadslijnen</button>
-                  <button onClick={() => setRouteTab('streek')} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'streek' ? 'white' : 'transparent', color: routeTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}>Streeklijnen</button>
-                </div>
-                
-                <div style={{ marginBottom: '15px', padding: '0 5px' }}>
-                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
-                      <span style={{ textTransform: 'uppercase' }}>Voortgang {routeTab}</span>
-                      <span>{routeTab === 'stad' ? progressStadOnly : progressStreekOnly}%</span>
-                   </div>
-                   <div style={{ height: '6px', background: '#e5e7eb', borderRadius: '3px', overflow: 'hidden' }}>
-                      <div style={{ 
-                        height: '100%', 
-                        background: 'var(--bravo-purple)', 
-                        width: `${routeTab === 'stad' ? progressStadOnly : progressStreekOnly}%`,
-                        transition: 'width 0.3s ease'
-                      }}></div>
-                   </div>
-                </div>
-              </div>
-            )}
+            <div style={{ display: 'flex', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '10px', gap: '4px' }}>
+              <button onClick={() => setRouteSubTab('stad')} style={{ flex: 1, padding: '10px', borderRadius: '6px', border: 'none', fontSize: '0.9rem', fontWeight: 'bold', background: routeSubTab === 'stad' ? 'white' : 'transparent', color: routeSubTab === 'stad' ? 'var(--bravo-purple)' : '#6b7280' }}>Stadslijnen</button>
+              <button onClick={() => setRouteSubTab('streek')} style={{ flex: 1, padding: '10px', borderRadius: '6px', border: 'none', fontSize: '0.9rem', fontWeight: 'bold', background: routeSubTab === 'streek' ? 'white' : 'transparent', color: routeSubTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}>Streeklijnen</button>
+            </div>
+            
+            <div style={{ marginBottom: '20px', padding: '0 5px' }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
+                  <span>VOORTGANG {routeSubTab.toUpperCase()}</span>
+                  <span>{routeSubTab === 'stad' ? progressStadOnly : progressStreekOnly}%</span>
+               </div>
+               <div style={{ height: '8px', background: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', background: 'var(--bravo-purple)', width: `${routeSubTab === 'stad' ? progressStadOnly : progressStreekOnly}%`, transition: 'width 0.5s ease' }}></div>
+               </div>
+            </div>
 
-            <div>
-              {category.items
-                .filter(item => !category.isRouteCategory || item.type === routeTab)
+            <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '10px' }}>
+              {routeCategory.items
+                .filter(item => item.type === routeSubTab)
                 .map((item) => (
                 <div key={item.id} className="checkbox-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -386,76 +348,70 @@ export default function Home() {
                       <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
                         {completed.includes(item.id) && <CheckCircle2 size={16} />}
                       </div>
-                      <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '0.95rem', fontWeight: '500' }}>{item.text}</span>
+                      <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '1rem', fontWeight: '500' }}>{item.text}</span>
                     </div>
                     
-                    <div style={{ display: 'flex', gap: '6px' }}>
-                      {item.map && item.map !== '#' && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={14} /></a>}
-                      {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={14} /></a>}
-                      {item.videos && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca' }}><Youtube size={14} /></button>}
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      {item.map && item.map !== '#' && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={16} /></a>}
+                      {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={16} /></a>}
+                      {item.videos && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca' }}><Youtube size={16} /></button>}
                     </div>
                   </div>
 
-                  {category.isRouteCategory && (
-                    <div style={{ display: 'flex', gap: '10px', marginLeft: '39px', padding: '8px 0 4px 0' }}>
-                      <button onClick={() => updateTally(item.id, 'm')} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                        <Eye size={12} /> M: {tallies[item.id]?.m || 0}
-                      </button>
-                      <button onClick={() => updateTally(item.id, 'z')} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                        <Navigation size={12} /> Z: {tallies[item.id]?.z || 0}
-                      </button>
-                    </div>
-                  )}
+                  <div style={{ display: 'flex', gap: '15px', marginLeft: '39px', padding: '10px 0 5px 0' }}>
+                    <button onClick={() => updateTally(item.id, 'm')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', padding: '6px 12px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 'bold' }}>
+                      <Eye size={14} /> M: {tallies[item.id]?.m || 0}
+                    </button>
+                    <button onClick={() => updateTally(item.id, 'z')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0', padding: '6px 12px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 'bold' }}>
+                      <Navigation size={14} /> Z: {tallies[item.id]?.z || 0}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-        ))}
+        )}
 
-        {/* NIEUWE SECTIE: TELEFOONGIDS (HELEMAAL ONDERAAN) */}
-        <div className="card" style={{ marginBottom: '40px' }}>
-          <div className="category-header">
-            <Phone size={22} />
-            <span className="category-title">Belangrijke Contactgegevens</span>
-          </div>
-
-          <div style={{ background: '#fffbeb', border: '1px solid #fef3c7', padding: '12px', borderRadius: '8px', marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-            <Info size={18} color="#d97706" style={{ flexShrink: 0, marginTop: '2px' }} />
-            <div>
-               <p style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#92400e', marginBottom: '4px' }}>ZIEKMELDEN:</p>
-               <p style={{ fontSize: '0.85rem', color: '#92400e' }}>Binnen kantooruren: <b>Bij je leidinggevende</b></p>
-               <p style={{ fontSize: '0.85rem', color: '#92400e' }}>Buiten kantooruren: <a href="tel:0302849494" style={{ color: 'inherit', fontWeight: 'bold' }}>ROV (030-2849494)</a></p>
+        {/* WEERGAVE CHECKLISTS TAB */}
+        {mainTab === 'checklist' && (
+          <div>
+            <div className="card" style={{ padding: '15px', marginBottom: '20px', background: 'var(--bravo-purple)', color: 'white' }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px' }}>
+                  <span>VOORTGANG CHECKLISTS</span>
+                  <span>{progressChecklistOnly}%</span>
+               </div>
+               <div style={{ height: '8px', background: 'rgba(255,255,255,0.3)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', background: 'white', width: `${progressChecklistOnly}%`, transition: 'width 0.5s ease' }}></div>
+               </div>
             </div>
-          </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {phoneContacts.map((section, idx) => (
-              <div key={idx}>
-                <h4 style={{ fontSize: '0.75rem', color: '#6b7280', letterSpacing: '1px', marginBottom: '10px' }}>{section.category}</h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                  {section.numbers.map((contact, i) => (
-                    <a 
-                      key={i} 
-                      href={contact.isEmail ? `mailto:${contact.num}` : `tel:${contact.num.replace(/-/g, '')}`} 
-                      style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', background: '#f9fafb', borderRadius: '6px', textDecoration: 'none', color: 'inherit' }}
-                    >
-                      <span style={{ fontSize: '0.9rem' }}>{contact.label}</span>
-                      <span style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                         {contact.isEmail ? <Mail size={14} /> : <Phone size={14} />}
-                         {contact.num}
-                      </span>
-                    </a>
+            {baseCategories.map((category) => (
+              <div key={category.id} className="card">
+                <div className="category-header">
+                  {category.icon}
+                  <span className="category-title">{category.title}</span>
+                </div>
+                <div>
+                  {category.items.map((item) => (
+                    <div key={item.id} className="checkbox-item" onClick={() => toggleItem(item.id)}>
+                      <div className="checkbox-content">
+                        <div style={{ 
+                          width: '24px', height: '24px', borderRadius: '6px', 
+                          border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', 
+                          background: completed.includes(item.id) ? 'var(--success)' : 'transparent', 
+                          marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' 
+                        }}>
+                          {completed.includes(item.id) && <CheckCircle2 size={16} />}
+                        </div>
+                        <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '0.95rem' }}>{item.text}</span>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
             ))}
           </div>
-        </div>
-
-        <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '0.75rem', marginTop: '30px' }}>
-            <p>Gegevens worden lokaal opgeslagen</p>
-            <p>© BRAVO Mentor App - Eindhoven</p>
-        </div>
+        )}
       </div>
     </div>
   );
