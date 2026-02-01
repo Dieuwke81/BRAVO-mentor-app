@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, User } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, LayoutGrid } from 'lucide-react';
 
 const initialCategories = [
   {
@@ -83,34 +83,43 @@ const initialCategories = [
   },
   {
     id: 'routes',
-    title: 'Routekennis & Kaarten STAD',
+    title: '7. Routekennis & Kaarten',
     icon: <Map size={22} />,
+    isRouteCategory: true,
     items: [
-      { id: 'r2', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
-      { id: 'r3', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
-      { id: 'r4', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
-      { id: 'r5', text: "5 't Hofke", pdf: '/routes/5.pdf', map: 'https://goo.gl/maps/ZVRxNdkkF84TTFcr9?g_st=ac' },
-      { id: 'r6', text: '6 Nuenen', pdf: '/routes/6.pdf', map: 'https://goo.gl/maps/rinLtqdqrpNdFrHu6?g_st=ac' },
-      { id: 'r7', text: '7 Veldhoven MMC via Aalst/Waalre', pdf: '/routes/7.pdf', map: 'https://goo.gl/maps/2wn2ri42YPjDRTkc7?g_st=ac' },
-      { id: 'r8', text: '8 Acht', pdf: '/routes/8.pdf', map: 'https://goo.gl/maps/KDJdAMPYmtCU793o6?g_st=ac' },
-      { id: 'r10', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf', map: 'https://goo.gl/maps/u1VCM98XLR4gibQy6?g_st=ac' },
-      { id: 'r12', text: '12 Gijzenrooi', pdf: '/routes/12.pdf', map: 'https://goo.gl/maps/pvcsGEmrZuyuidX3A?g_st=ac' },
-      { id: 'r14', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: 'https://goo.gl/maps/b3rHcKpHwrB7sqR18?g_st=ac' },
-      { id: 'r15', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: 'https://goo.gl/maps/zT7RyaGGEfFwBFNA8?g_st=ac' },
-      { id: 'r16', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: 'https://goo.gl/maps/NB9B2serhaqnsz6b8?g_st=ac' },
-      { id: 'r17', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8?g_st=ac' },
-      { id: 'r114', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7?g_st=ac' },
-      { id: 'r119', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7?g_st=ac' },
-      { id: 'r324', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7?g_st=ac' },
-      { id: 'r400', text: '400 Airport Shuttle', pdf: '/routes/400.pdf', map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9?g_st=ac' },
-      { id: 'r401', text: '401 Airport', pdf: '/routes/401.pdf', map: 'https://goo.gl/maps/wZXxBwX7d1jpmdfQ6?g_st=ac' },
-      { id: 'r402', text: '402 Veldhoven Zonderwijk', pdf: '/routes/402.pdf', map: 'https://goo.gl/maps/AzkdnKNpGggagMym6?g_st=ac' },
-      { id: 'r403', text: '403 Veldhoven De Dom/Berg', pdf: '/routes/403.pdf', map: 'https://goo.gl/maps/t2tt2P7CTcL61hKa7?g_st=ac' },
-      { id: 'r404', text: '404 Nuenen Centrum', pdf: '/routes/404.pdf', map: 'https://goo.gl/maps/BnVdowtnS5JXrogm7?g_st=ac' },
-      { id: 'r405', text: '405 Achtse Barrier', pdf: '/routes/405.pdf', map: 'https://goo.gl/maps/MYakec5RN3dmyHKA9?g_st=ac' },
-      { id: 'r406', text: '406 Ekkersrijt', pdf: '/routes/406.pdf', map: 'https://goo.gl/maps/8ZBA4gaG6xzNEcck7?g_st=ac' },
-      { id: 'r407', text: '407 High Tech Campus', pdf: '/routes/407.pdf', map: 'https://goo.gl/maps/kF7NkrEyib22hX8E7?g_st=ac' },
-      { id: 'r408', text: '408 High Tech Campus', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9?g_st=ac' }
+      /* STADSLIJNEN */
+      { id: 'r2', type: 'stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
+      { id: 'r3', type: 'stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
+      { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
+      { id: 'r5', type: 'stad', text: "5 't Hofke", pdf: '/routes/5.pdf', map: 'https://goo.gl/maps/ZVRxNdkkF84TTFcr9?g_st=ac' },
+      { id: 'r6', type: 'stad', text: '6 Nuenen', pdf: '/routes/6.pdf', map: 'https://goo.gl/maps/rinLtqdqrpNdFrHu6?g_st=ac' },
+      { id: 'r7', type: 'stad', text: '7 Veldhoven MMC via Aalst', pdf: '/routes/7.pdf', map: 'https://goo.gl/maps/2wn2ri42YPjDRTkc7?g_st=ac' },
+      { id: 'r8', type: 'stad', text: '8 Acht', pdf: '/routes/8.pdf', map: 'https://goo.gl/maps/KDJdAMPYmtCU793o6?g_st=ac' },
+      { id: 'r10', type: 'stad', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf', map: 'https://goo.gl/maps/u1VCM98XLR4gibQy6?g_st=ac' },
+      { id: 'r12', type: 'stad', text: '12 Gijzenrooi', pdf: '/routes/12.pdf', map: 'https://goo.gl/maps/pvcsGEmrZuyuidX3A?g_st=ac' },
+      { id: 'r14', type: 'stad', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: 'https://goo.gl/maps/b3rHcKpHwrB7sqR18?g_st=ac' },
+      { id: 'r15', type: 'stad', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: 'https://goo.gl/maps/zT7RyaGGEfFwBFNA8?g_st=ac' },
+      { id: 'r16', type: 'stad', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: 'https://goo.gl/maps/NB9B2serhaqnsz6b8?g_st=ac' },
+      { id: 'r17', type: 'stad', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8?g_st=ac' },
+      { id: 'r114', type: 'stad', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7?g_st=ac' },
+      { id: 'r119', type: 'stad', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7?g_st=ac' },
+      { id: 'r324', type: 'stad', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7?g_st=ac' },
+      { id: 'r400', type: 'stad', text: '400 Airport Shuttle', pdf: '/routes/400.pdf', map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9?g_st=ac' },
+      { id: 'r401', type: 'stad', text: '401 Airport', pdf: '/routes/401.pdf', map: 'https://goo.gl/maps/wZXxBwX7d1jpmdfQ6?g_st=ac' },
+      { id: 'r402', type: 'stad', text: '402 Veldhoven Zonderwijk', pdf: '/routes/402.pdf', map: 'https://goo.gl/maps/AzkdnKNpGggagMym6?g_st=ac' },
+      { id: 'r403', type: 'stad', text: '403 Veldhoven De Dom/Berg', pdf: '/routes/403.pdf', map: 'https://goo.gl/maps/t2tt2P7CTcL61hKa7?g_st=ac' },
+      { id: 'r404', type: 'stad', text: '404 Nuenen Centrum', pdf: '/routes/404.pdf', map: 'https://goo.gl/maps/BnVdowtnS5JXrogm7?g_st=ac' },
+      { id: 'r405', type: 'stad', text: '405 Achtse Barrier', pdf: '/routes/405.pdf', map: 'https://goo.gl/maps/MYakec5RN3dmyHKA9?g_st=ac' },
+      { id: 'r406', type: 'stad', text: '406 Ekkersrijt', pdf: '/routes/406.pdf', map: 'https://goo.gl/maps/8ZBA4gaG6xzNEcck7?g_st=ac' },
+      { id: 'r407', type: 'stad', text: '407 HTC (terug als 408)', pdf: '/routes/407.pdf', map: 'https://goo.gl/maps/kF7NkrEyib22hX8E7?g_st=ac' },
+      { id: 'r408', type: 'stad', text: '408 HTC (terug als 407)', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9?g_st=ac' },
+
+      /* STREEKLIJNEN (HIER KAN JE ER MEER TOEVOEGEN) */
+      { id: 'r20', type: 'streek', text: '20 Best NS - HTC', map: '#' },
+      { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', map: '#' },
+      { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond', map: '#' },
+      { id: 'r319', type: 'streek', text: '319 Eindhoven - Reusel', map: '#' },
+      { id: 'r320', type: 'streek', text: '320 Eindhoven - Helmond via Asten', map: '#' }
     ]
   }
 ];
@@ -121,8 +130,8 @@ export default function Home() {
   const [completed, setCompleted] = useState([]);
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
+  const [routeTab, setRouteTab] = useState('stad'); // Nieuwe state voor de route toggle
 
-  // Initial load
   useEffect(() => {
     const savedStudents = localStorage.getItem('bravo_student_list');
     if (savedStudents) {
@@ -134,7 +143,6 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  // Load progress when student changes
   useEffect(() => {
     if (mounted) {
       const savedProgress = localStorage.getItem(`bravo_progress_${activeStudent}`);
@@ -164,9 +172,7 @@ export default function Home() {
   };
 
   const toggleItem = (id) => {
-    const newCompleted = completed.includes(id) 
-      ? completed.filter(i => i !== id) 
-      : [...completed, id];
+    const newCompleted = completed.includes(id) ? completed.filter(i => i !== id) : [...completed, id];
     setCompleted(newCompleted);
     localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(newCompleted));
   };
@@ -185,36 +191,20 @@ export default function Home() {
             </div>
             <div>
               <h1 style={{ fontSize: '1.5rem', lineHeight: '1.2' }}>BRAVO Mentor</h1>
-              <span style={{ fontSize: '0.8rem', opacity: 0.9 }}>STAD / STREEK EINDHOVEN</span>
+              <span style={{ fontSize: '0.8rem', opacity: 0.9 }}>RAYON EINDHOVEN</span>
             </div>
         </div>
 
-        {/* Student Selector */}
         <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '10px', marginBottom: '15px' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-            <select 
-              value={activeStudent} 
-              onChange={(e) => setActiveStudent(e.target.value)}
-              style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', background: 'white', color: 'black', fontWeight: 'bold' }}
-            >
+            <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', background: 'white', color: 'black', fontWeight: 'bold' }}>
               {students.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
-            <button onClick={() => deleteStudent(activeStudent)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}>
-              <Trash2 size={18} />
-            </button>
+            <button onClick={() => deleteStudent(activeStudent)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}><Trash2 size={18} /></button>
           </div>
-          
           <div style={{ display: 'flex', gap: '8px' }}>
-            <input 
-              type="text" 
-              value={newStudentName}
-              onChange={(e) => setNewStudentName(e.target.value)}
-              placeholder="Nieuwe leerling..."
-              style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none' }}
-            />
-            <button onClick={addStudent} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <Plus size={18} /> Voeg toe
-            </button>
+            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none' }} />
+            <button onClick={addStudent} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '5px' }}><Plus size={18} /> Voeg toe</button>
           </div>
         </div>
         
@@ -223,9 +213,7 @@ export default function Home() {
             <span>VOORTGANG: {activeStudent}</span>
             <span>{progress}%</span>
           </div>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: `${progress}%` }}></div>
-          </div>
+          <div className="progress-bar"><div className="progress-fill" style={{ width: `${progress}%` }}></div></div>
         </div>
       </div>
 
@@ -237,25 +225,31 @@ export default function Home() {
               <span className="category-title">{category.title}</span>
             </div>
             
+            {/* Specifieke Toggle voor de Route Categorie */}
+            {category.isRouteCategory && (
+              <div style={{ display: 'flex', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px' }}>
+                <button 
+                  onClick={() => setRouteTab('stad')}
+                  style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'stad' ? 'white' : 'transparent', boxShadow: routeTab === 'stad' ? '0 2px 4px rgba(0,0,0,0.1)' : 'none', color: routeTab === 'stad' ? 'var(--bravo-purple)' : '#6b7280' }}
+                >Stadslijnen</button>
+                <button 
+                  onClick={() => setRouteTab('streek')}
+                  style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'streek' ? 'white' : 'transparent', boxShadow: routeTab === 'streek' ? '0 2px 4px rgba(0,0,0,0.1)' : 'none', color: routeTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}
+                >Streeklijnen</button>
+              </div>
+            )}
+
             <div>
-              {category.items.map((item) => (
+              {category.items
+                .filter(item => !category.isRouteCategory || item.type === routeTab)
+                .map((item) => (
                 <div key={item.id} className="checkbox-item">
                   <div className="checkbox-content" onClick={() => toggleItem(item.id)}>
-                    <div style={{ 
-                      width: '24px', height: '24px', borderRadius: '6px', 
-                      border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db',
-                      background: completed.includes(item.id) ? 'var(--success)' : 'transparent',
-                      marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
-                    }}>
+                    <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
                       {completed.includes(item.id) && <CheckCircle2 size={16} />}
                     </div>
-                    <span style={{ 
-                      textDecoration: completed.includes(item.id) ? 'line-through' : 'none',
-                      color: completed.includes(item.id) ? '#9ca3af' : 'inherit',
-                      fontSize: '0.95rem'
-                    }}>{item.text}</span>
+                    <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '0.95rem' }}>{item.text}</span>
                   </div>
-
                   <div style={{ display: 'flex', gap: '8px' }}>
                     {item.map && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={14} /></a>}
                     {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={14} /></a>}
