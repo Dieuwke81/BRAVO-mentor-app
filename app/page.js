@@ -38,9 +38,9 @@ const initialCategories = [
 
       /* STREEKLIJNEN */
       { id: 'r9', type: 'streek', text: '9 Eindhoven - Best', pdf: '/routes/9.pdf', map: 'https://goo.gl/maps/a5P1qJycoE39Jhnc8?g_st=ac' },
-      { id: 'r11', type: 'streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf' },
-      { id: 'r18', type: 'streek', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf' },
-      { id: 'r19', type: 'streek', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf' },
+      { id: 'r11', type: 'streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: 'https://goo.gl/maps/44XVLgFnh5fH7Dvc8?g_st=ac' },
+      { id: 'r18', type: 'streek', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac' },
+      { id: 'r19', type: 'streek', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: 'https://goo.gl/maps/5JPt3zvstws5gBzf6?g_st=ac' },
       { id: 'r20', type: 'streek', text: '20 Best NS - HTC', pdf: '/routes/20.pdf' },
       { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', pdf: '/routes/23.pdf' },
       { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf' },
