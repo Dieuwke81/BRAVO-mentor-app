@@ -5,88 +5,12 @@ import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Cl
 
 const initialCategories = [
   {
-    id: 'aanvang',
-    title: '1. Aanvang Dienst & Voorbereiding',
-    icon: <Clock size={22} />,
-    items: [
-      { id: 'a1', text: 'Kledingvoorschrift & schoenen (kleur) in orde' },
-      { id: 'a2', text: 'Zich aanmelden via computer & dienstblaadje pakken' },
-      { id: 'a3', text: 'Mededelingen en aanschrijvingen lezen' },
-      { id: 'a4', text: 'Controleren van stallingsplan (Eindhoven/streek)' },
-      { id: 'a5', text: 'Juiste voertuigtype & omloopbordje plaatsen' }
-    ]
-  },
-  {
-    id: 'voertuig',
-    title: '2. Voertuig & Bediening',
-    icon: <Bus size={22} />,
-    items: [
-      { id: 'v1', text: 'Instellen stoel (A t/m L: hoogte, demping, lende, etc.)' },
-      { id: 'v2', text: 'Instellen stuurwiel & spiegels' },
-      { id: 'v3', text: 'Controle op schade (exterieur & interieur)' },
-      { id: 'v4', text: 'Bediening verlichting (chauffeurscabine & interieur)' },
-      { id: 'v5', text: 'Klimaatbediening & ontwaseming' },
-      { id: 'v6', text: 'Werking diverse bussen (Iveco, Citea SLFA/LF)' },
-      { id: 'v7', text: 'Controle banden, lekkage en vloeistoffen' }
-    ]
-  },
-  {
-    id: 'systemen',
-    title: '3. Boordcomputer & Systemen',
-    icon: <Radio size={22} />,
-    items: [
-      { id: 's1', text: 'Inloggen Viribus (pincode via ROV opvragen)' },
-      { id: 's2', text: 'Juiste omloop invoeren & rit selecteren' },
-      { id: 's3', text: 'Gebruik handaanmelding verkeerslicht (KAR/VETAG)' },
-      { id: 's4', text: 'Kaartverkoop & Ticketbox procedures' },
-      { id: 's5', text: 'Tekst- en spraakoproep / Noodoproep' },
-      { id: 's6', text: 'Sycada/Rijwijzer: opvolgen rijstijl lampjes' },
-      { id: 's7', text: 'Gebruik omroepberichten' }
-    ]
-  },
-  {
-    id: 'dienst',
-    title: '4. Tijdens de Dienst (Rijstijl)',
-    icon: <Users size={22} />,
-    items: [
-      { id: 'd1', text: 'Vertrek op tijd vanaf beginpunt' },
-      { id: 'd2', text: 'Rijstijl: Het Nieuwe Rijden (HNR) & uitrollen' },
-      { id: 'd3', text: 'Halteren: juiste deurbediening & afstand tot stoep' },
-      { id: 'd4', text: 'Bediening rolstoelplank (automatisch & handmatig)' },
-      { id: 'd5', text: 'Aanrijden van halten (overbouw achterkant)' },
-      { id: 'd6', text: 'Punctualiteit & omgaan met vertraging' }
-    ]
-  },
-  {
-    id: 'elektrisch',
-    title: '5. Elektrische Bus & Laden',
-    icon: <Zap size={22} />,
-    items: [
-      { id: 'e1', text: 'Juiste positionering op laadplek' },
-      { id: 'e2', text: 'In- en uitschakelen alle verbruikers voor laden' },
-      { id: 'e3', text: 'Aan- en afkoppelen pantograaf (indien aanwezig)' },
-      { id: 'e4', text: 'Controleren SOC (State of Charge / batterijniveau)' },
-      { id: 'e5', text: 'Wachten tot bus aangeeft dat deze laadt' }
-    ]
-  },
-  {
-    id: 'veiligheid',
-    title: '6. Reizigers & Veiligheid',
-    icon: <ShieldAlert size={22} />,
-    items: [
-      { id: 'v_s1', text: 'Klantvriendelijkheid & omgang met klachten' },
-      { id: 'v_s2', text: 'Begeleiding kinderwagens, rolstoelen & blinden' },
-      { id: 'v_s3', text: 'Procedure bij ongeval (formulier & foto\'s maken)' },
-      { id: 'v_s4', text: 'Contact met ROV bij grote incidenten/storingen' },
-      { id: 'v_s5', text: 'Controle vervoerbewijzen (OV-chip/OVpay)' }
-    ]
-  },
-  {
     id: 'routes',
-    title: '7. Routekennis & Turven',
+    title: '1. Routekennis & Turven',
     icon: <Map size={22} />,
     isRouteCategory: true,
     items: [
+      /* STADS- EN HOOGWAARDIGE LIJNEN */
       { id: 'r2', type: 'stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
       { id: 'r3', type: 'stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
       { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
@@ -139,6 +63,83 @@ const initialCategories = [
       { id: 'r321', type: 'streek', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf', map: '#' },
       { id: 'r322', type: 'streek', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: '#' },
       { id: 'r323', type: 'streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: '#' }
+    ]
+  },
+  {
+    id: 'aanvang',
+    title: '2. Aanvang Dienst & Voorbereiding',
+    icon: <Clock size={22} />,
+    items: [
+      { id: 'a1', text: 'Kledingvoorschrift & schoenen (kleur) in orde' },
+      { id: 'a2', text: 'Zich aanmelden via computer & dienstblaadje pakken' },
+      { id: 'a3', text: 'Mededelingen en aanschrijvingen lezen' },
+      { id: 'a4', text: 'Controleren van stallingsplan (Eindhoven/streek)' },
+      { id: 'a5', text: 'Juiste voertuigtype & omloopbordje plaatsen' }
+    ]
+  },
+  {
+    id: 'voertuig',
+    title: '3. Voertuig & Bediening',
+    icon: <Bus size={22} />,
+    items: [
+      { id: 'v1', text: 'Instellen stoel (A t/m L: hoogte, demping, lende, etc.)' },
+      { id: 'v2', text: 'Instellen stuurwiel & spiegels' },
+      { id: 'v3', text: 'Controle op schade (exterieur & interieur)' },
+      { id: 'v4', text: 'Bediening verlichting (chauffeurscabine & interieur)' },
+      { id: 'v5', text: 'Klimaatbediening & ontwaseming' },
+      { id: 'v6', text: 'Werking diverse bussen (Iveco, Citea SLFA/LF)' },
+      { id: 'v7', text: 'Controle banden, lekkage en vloeistoffen' }
+    ]
+  },
+  {
+    id: 'systemen',
+    title: '4. Boordcomputer & Systemen',
+    icon: <Radio size={22} />,
+    items: [
+      { id: 's1', text: 'Inloggen Viribus (pincode via ROV opvragen)' },
+      { id: 's2', text: 'Juiste omloop invoeren & rit selecteren' },
+      { id: 's3', text: 'Gebruik handaanmelding verkeerslicht (KAR/VETAG)' },
+      { id: 's4', text: 'Kaartverkoop & Ticketbox procedures' },
+      { id: 's5', text: 'Tekst- en spraakoproep / Noodoproep' },
+      { id: 's6', text: 'Sycada/Rijwijzer: opvolgen rijstijl lampjes' },
+      { id: 's7', text: 'Gebruik omroepberichten' }
+    ]
+  },
+  {
+    id: 'dienst',
+    title: '5. Tijdens de Dienst (Rijstijl)',
+    icon: <Users size={22} />,
+    items: [
+      { id: 'd1', text: 'Vertrek op tijd vanaf beginpunt' },
+      { id: 'd2', text: 'Rijstijl: Het Nieuwe Rijden (HNR) & uitrollen' },
+      { id: 'd3', text: 'Halteren: juiste deurbediening & afstand tot stoep' },
+      { id: 'd4', text: 'Bediening rolstoelplank (automatisch & handmatig)' },
+      { id: 'd5', text: 'Aanrijden van halten (overbouw achterkant)' },
+      { id: 'd6', text: 'Punctualiteit & omgaan met vertraging' }
+    ]
+  },
+  {
+    id: 'elektrisch',
+    title: '6. Elektrische Bus & Laden',
+    icon: <Zap size={22} />,
+    items: [
+      { id: 'e1', text: 'Juiste positionering op laadplek' },
+      { id: 'e2', text: 'In- en uitschakelen alle verbruikers voor laden' },
+      { id: 'e3', text: 'Aan- en afkoppelen pantograaf (indien aanwezig)' },
+      { id: 'e4', text: 'Controleren SOC (State of Charge / batterijniveau)' },
+      { id: 'e5', text: 'Wachten tot bus aangeeft dat deze laadt' }
+    ]
+  },
+  {
+    id: 'veiligheid',
+    title: '7. Reizigers & Veiligheid',
+    icon: <ShieldAlert size={22} />,
+    items: [
+      { id: 'v_s1', text: 'Klantvriendelijkheid & omgang met klachten' },
+      { id: 'v_s2', text: 'Begeleiding kinderwagens, rolstoelen & blinden' },
+      { id: 'v_s3', text: 'Procedure bij ongeval (formulier & foto\'s maken)' },
+      { id: 'v_s4', text: 'Contact met ROV bij grote incidenten/storingen' },
+      { id: 'v_s5', text: 'Controle vervoerbewijzen (OV-chip/OVpay)' }
     ]
   }
 ];
@@ -220,12 +221,10 @@ export default function Home() {
   };
 
   // ----- VOORTGANG LOGICA -----
-  // 1. Algemene taken (Categorie 1 t/m 6)
   const baseCategories = initialCategories.filter(c => !c.isRouteCategory);
   const baseItems = baseCategories.flatMap(c => c.items);
   const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
 
-  // 2. Routes (Stad vs Streek)
   const routeCategory = initialCategories.find(c => c.id === 'routes');
   const stadRoutes = routeCategory.items.filter(i => i.type === 'stad');
   const streekRoutes = routeCategory.items.filter(i => i.type === 'streek');
@@ -233,14 +232,10 @@ export default function Home() {
   const stadDone = stadRoutes.filter(i => completed.includes(i.id)).length;
   const streekDone = streekRoutes.filter(i => completed.includes(i.id)).length;
 
-  // 3. Bereken paden (OF stad OF streek is nodig voor 100%)
   const pathStad = ((baseDone + stadDone) / (baseItems.length + stadRoutes.length)) * 100;
   const pathStreek = ((baseDone + streekDone) / (baseItems.length + streekRoutes.length)) * 100;
 
-  // De hoofdbalk pakt de hoogste voortgang
   const totalProgress = Math.round(Math.max(pathStad, pathStreek)) || 0;
-
-  // Individuele balken voor de routekaart
   const progressStadOnly = Math.round((stadDone / stadRoutes.length) * 100) || 0;
   const progressStreekOnly = Math.round((streekDone / streekRoutes.length) * 100) || 0;
 
@@ -316,7 +311,6 @@ export default function Home() {
                   <button onClick={() => setRouteTab('streek')} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', background: routeTab === 'streek' ? 'white' : 'transparent', color: routeTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}>Streeklijnen</button>
                 </div>
                 
-                {/* Dynamische Voortgangsbalk voor Routes */}
                 <div style={{ marginBottom: '15px', padding: '0 5px' }}>
                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
                       <span style={{ textTransform: 'uppercase' }}>Voortgang {routeTab}</span>
