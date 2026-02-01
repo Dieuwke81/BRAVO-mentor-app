@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, SteeringWheel, Eye } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, Navigation, Eye } from 'lucide-react';
 
 const initialCategories = [
   {
@@ -112,8 +112,6 @@ const initialCategories = [
       { id: 'r406', type: 'stad', text: '406 Ekkersrijt', pdf: '/routes/406.pdf', map: 'https://goo.gl/maps/8ZBA4gaG6xzNEcck7?g_st=ac' },
       { id: 'r407', type: 'stad', text: '407 HTC (terug als 408)', pdf: '/routes/407.pdf', map: 'https://goo.gl/maps/kF7NkrEyib22hX8E7?g_st=ac' },
       { id: 'r408', type: 'stad', text: '408 HTC (terug als 407)', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9?g_st=ac' },
-
-      /* STREEKLIJNEN */
       { id: 'r20', type: 'streek', text: '20 Best NS - HTC', map: '#' },
       { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', map: '#' },
       { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond', map: '#' },
@@ -127,36 +125,44 @@ export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
   const [activeStudent, setActiveStudent] = useState('Standaard');
   const [completed, setCompleted] = useState([]);
-  const [tallies, setTallies] = useState({}); // Nieuwe state voor turfjes
+  const [tallies, setTallies] = useState({});
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
   const [routeTab, setRouteTab] = useState('stad');
   const [videoModal, setVideoModal] = useState(null);
 
+  // Zorg dat we eerst wachten op de browser (Hydration fix)
   useEffect(() => {
     const savedStudents = localStorage.getItem('bravo_student_list');
     if (savedStudents) {
       const parsed = JSON.parse(savedStudents);
-      setStudents(parsed);
-      const lastActive = localStorage.getItem('bravo_active_student') || parsed[0];
-      setActiveStudent(lastActive);
+      if (parsed.length > 0) {
+        setStudents(parsed);
+        const lastActive = localStorage.getItem('bravo_active_student');
+        if (lastActive && parsed.includes(lastActive)) {
+          setActiveStudent(lastActive);
+        } else {
+          setActiveStudent(parsed[0]);
+        }
+      }
     }
     setMounted(true);
   }, []);
 
+  // Laad data zodra de leerling verandert
   useEffect(() => {
     if (mounted) {
-      // Laad checklist voortgang
       const savedProgress = localStorage.getItem(`bravo_progress_${activeStudent}`);
       setCompleted(savedProgress ? JSON.parse(savedProgress) : []);
       
-      // Laad turfjes
       const savedTallies = localStorage.getItem(`bravo_tallies_${activeStudent}`);
       setTallies(savedTallies ? JSON.parse(savedTallies) : {});
       
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
+
+  if (!mounted) return null;
 
   const addStudent = () => {
     if (newStudentName.trim() && !students.includes(newStudentName.trim())) {
@@ -189,10 +195,7 @@ export default function Home() {
     const currentRouteTally = tallies[routeId] || { m: 0, z: 0 };
     const newTallies = {
       ...tallies,
-      [routeId]: {
-        ...currentRouteTally,
-        [type]: currentRouteTally[type] + 1
-      }
+      [routeId]: { ...currentRouteTally, [type]: currentRouteTally[type] + 1 }
     };
     setTallies(newTallies);
     localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(newTallies));
@@ -201,11 +204,8 @@ export default function Home() {
   const totalItems = initialCategories.reduce((acc, cat) => acc + cat.items.length, 0);
   const progress = Math.round((completed.length / totalItems) * 100) || 0;
 
-  if (!mounted) return null;
-
   return (
     <div>
-      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
@@ -277,7 +277,7 @@ export default function Home() {
                 .filter(item => !category.isRouteCategory || item.type === routeTab)
                 .map((item) => (
                 <div key={item.id} className="checkbox-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: category.isRouteCategory ? '8px' : '0' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div className="checkbox-content" onClick={() => toggleItem(item.id)} style={{ flex: 1 }}>
                       <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
                         {completed.includes(item.id) && <CheckCircle2 size={16} />}
@@ -292,20 +292,13 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Turfgedeelte voor Routes */}
                   {category.isRouteCategory && (
-                    <div style={{ display: 'flex', gap: '10px', marginLeft: '39px', padding: '4px 0' }}>
-                      <button 
-                        onClick={() => updateTally(item.id, 'm')}
-                        style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 'bold' }}
-                      >
+                    <div style={{ display: 'flex', gap: '10px', marginLeft: '39px', padding: '8px 0 4px 0' }}>
+                      <button onClick={() => updateTally(item.id, 'm')} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 'bold' }}>
                         <Eye size={12} /> M: {tallies[item.id]?.m || 0}
                       </button>
-                      <button 
-                        onClick={() => updateTally(item.id, 'z')}
-                        style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 'bold' }}
-                      >
-                        <SteeringWheel size={12} /> Z: {tallies[item.id]?.z || 0}
+                      <button onClick={() => updateTally(item.id, 'z')} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 'bold' }}>
+                        <Navigation size={12} /> Z: {tallies[item.id]?.z || 0}
                       </button>
                     </div>
                   )}
