@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, Navigation, Eye } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, Navigation, Eye, Phone, Mail, Info } from 'lucide-react';
 
 const initialCategories = [
   {
@@ -142,6 +142,54 @@ const initialCategories = [
       { id: 'v_s5', text: 'Controle vervoerbewijzen (OV-chip/OVpay)' }
     ]
   }
+];
+
+// Telefoongids data
+const phoneContacts = [
+  {
+    category: "ALGEMEEN",
+    numbers: [
+      { label: "ROV UTRECHT", num: "030-2849494" },
+      { label: "Chauffeursverblijf Neckerspoel", num: "088-6255737" },
+      { label: "Opkomstlokaal Dorgelolaan 50", num: "040-2466373" },
+      { label: "Kantoor MER en ARM", num: "088-6255736" },
+      { label: "Planning Dorgelolaan 50", num: "040-2358630" },
+      { label: "Hermes Verloftelefoon", num: "040-2358639" },
+    ]
+  },
+  {
+    category: "LOGISTIEK",
+    numbers: [
+      { label: "Michel van Bakel", num: "088-6255735" },
+      { label: "Schadetelefoon", num: "06-38076828" },
+      { label: "Klantenservice (tegenpartij schade)", num: "0800-0222277" },
+      { label: "E-mail schades", num: "Schade_eindhoven@connexxion.nl", isEmail: true },
+    ]
+  },
+  {
+    category: "GPD",
+    numbers: [
+      { label: "Thirza van Diepen", num: "040-2358628" },
+      { label: "Erik Feijen", num: "040-2358638" },
+      { label: "John Gijsbers", num: "040-2358657" },
+    ]
+  },
+  {
+    category: "STREEK",
+    numbers: [
+      { label: "Michiel Bles", num: "088-6255731" },
+      { label: "Johan Cuijpers", num: "088-6255740" },
+      { label: "Debbie Flower", num: "088-6255730" },
+    ]
+  },
+  {
+    category: "STAD",
+    numbers: [
+      { label: "Twan Smid", num: "088-6522732" },
+      { label: "Mathieu Verberkt", num: "088-6255733" },
+      { label: "Patrick Houthooft", num: "088-6255734" },
+    ]
+  },
 ];
 
 export default function Home() {
@@ -363,6 +411,51 @@ export default function Home() {
             </div>
           </div>
         ))}
+
+        {/* NIEUWE SECTIE: TELEFOONGIDS (HELEMAAL ONDERAAN) */}
+        <div className="card" style={{ marginBottom: '40px' }}>
+          <div className="category-header">
+            <Phone size={22} />
+            <span className="category-title">Belangrijke Contactgegevens</span>
+          </div>
+
+          <div style={{ background: '#fffbeb', border: '1px solid #fef3c7', padding: '12px', borderRadius: '8px', marginBottom: '20px', display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+            <Info size={18} color="#d97706" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div>
+               <p style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#92400e', marginBottom: '4px' }}>ZIEKMELDEN:</p>
+               <p style={{ fontSize: '0.85rem', color: '#92400e' }}>Binnen kantooruren: <b>Bij je leidinggevende</b></p>
+               <p style={{ fontSize: '0.85rem', color: '#92400e' }}>Buiten kantooruren: <a href="tel:0302849494" style={{ color: 'inherit', fontWeight: 'bold' }}>ROV (030-2849494)</a></p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {phoneContacts.map((section, idx) => (
+              <div key={idx}>
+                <h4 style={{ fontSize: '0.75rem', color: '#6b7280', letterSpacing: '1px', marginBottom: '10px' }}>{section.category}</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  {section.numbers.map((contact, i) => (
+                    <a 
+                      key={i} 
+                      href={contact.isEmail ? `mailto:${contact.num}` : `tel:${contact.num.replace(/-/g, '')}`} 
+                      style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', background: '#f9fafb', borderRadius: '6px', textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <span style={{ fontSize: '0.9rem' }}>{contact.label}</span>
+                      <span style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                         {contact.isEmail ? <Mail size={14} /> : <Phone size={14} />}
+                         {contact.num}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '0.75rem', marginTop: '30px' }}>
+            <p>Gegevens worden lokaal opgeslagen</p>
+            <p>© BRAVO Mentor App - Eindhoven</p>
+        </div>
       </div>
     </div>
   );
