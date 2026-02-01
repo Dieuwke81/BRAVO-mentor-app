@@ -87,6 +87,7 @@ const initialCategories = [
     icon: <Map size={22} />,
     isRouteCategory: true,
     items: [
+      /* STADS- EN HOOGWAARDIGE LIJNEN */
       { id: 'r2', type: 'stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
       { id: 'r3', type: 'stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
       { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
@@ -112,11 +113,33 @@ const initialCategories = [
       { id: 'r406', type: 'stad', text: '406 Ekkersrijt', pdf: '/routes/406.pdf', map: 'https://goo.gl/maps/8ZBA4gaG6xzNEcck7?g_st=ac' },
       { id: 'r407', type: 'stad', text: '407 HTC (terug als 408)', pdf: '/routes/407.pdf', map: 'https://goo.gl/maps/kF7NkrEyib22hX8E7?g_st=ac' },
       { id: 'r408', type: 'stad', text: '408 HTC (terug als 407)', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9?g_st=ac' },
-      { id: 'r20', type: 'streek', text: '20 Best NS - HTC', map: '#' },
-      { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', map: '#' },
-      { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond', map: '#' },
-      { id: 'r319', type: 'streek', text: '319 Eindhoven - Reusel', map: '#' },
-      { id: 'r320', type: 'streek', text: '320 Eindhoven - Helmond via Asten', map: '#' }
+
+      /* STREEKLIJNEN */
+      { id: 'r9', type: 'streek', text: '9 Eindhoven - Best', pdf: '/routes/9.pdf', map: '#' },
+      { id: 'r11', type: 'streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: '#' },
+      { id: 'r18', type: 'streek', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf', map: '#' },
+      { id: 'r19', type: 'streek', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: '#' },
+      { id: 'r20', type: 'streek', text: '20 Best NS - HTC', pdf: '/routes/20.pdf', map: '#' },
+      { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', pdf: '/routes/23.pdf', map: '#' },
+      { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: '#' },
+      { id: 'r25', type: 'streek', text: '25 Helmond - Gemert Pelgrimsrust', pdf: '/routes/25.pdf', map: '#' },
+      { id: 'r26', type: 'streek', text: '26 Helmond - Gemert', pdf: '/routes/26.pdf', map: '#' },
+      { id: 'r28', type: 'streek', text: '28 Deurne - Meijel', pdf: '/routes/28.pdf', map: '#' },
+      { id: 'r51', type: 'streek', text: '51 Helmond Eeuwsels', pdf: '/routes/51.pdf', map: '#' },
+      { id: 'r52', type: 'streek', text: '52 Helmond Rijpelberg', pdf: '/routes/52.pdf', map: '#' },
+      { id: 'r53', type: 'streek', text: '53 Helmond Straakven', pdf: '/routes/53.pdf', map: '#' },
+      { id: 'r54', type: 'streek', text: '54 Helmond Brouwhuis', pdf: '/routes/54.pdf', map: '#' },
+      { id: 'r55', type: 'streek', text: '55 Helmond Stiphout', pdf: '/routes/55.pdf', map: '#' },
+      { id: 'r120', type: 'streek', text: '120 Best NS - ASML gebouw 4', pdf: '/routes/120.pdf', map: '#' },
+      { id: 'r123', type: 'streek', text: '123 Gemert Pelgrimsrust - Boxmeer', pdf: '/routes/123.pdf', map: '#' },
+      { id: 'r150', type: 'streek', text: '150 Helmond - Helmond \'t Hout', pdf: '/routes/150.pdf', map: '#' },
+      { id: 'r317', type: 'streek', text: '317 Eindhoven - Dommelen', pdf: '/routes/317.pdf', map: '#' },
+      { id: 'r318', type: 'streek', text: '318 Eindhoven - Luyksgestel', pdf: '/routes/318.pdf', map: '#' },
+      { id: 'r319', type: 'streek', text: '319 Eindhoven - Reusel', pdf: '/routes/319.pdf', map: '#' },
+      { id: 'r320', type: 'streek', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf', map: '#' },
+      { id: 'r321', type: 'streek', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf', map: '#' },
+      { id: 'r322', type: 'streek', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: '#' },
+      { id: 'r323', type: 'streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: '#' }
     ]
   }
 ];
@@ -131,7 +154,6 @@ export default function Home() {
   const [routeTab, setRouteTab] = useState('stad');
   const [videoModal, setVideoModal] = useState(null);
 
-  // Zorg dat we eerst wachten op de browser (Hydration fix)
   useEffect(() => {
     const savedStudents = localStorage.getItem('bravo_student_list');
     if (savedStudents) {
@@ -149,7 +171,6 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  // Laad data zodra de leerling verandert
   useEffect(() => {
     if (mounted) {
       const savedProgress = localStorage.getItem(`bravo_progress_${activeStudent}`);
@@ -286,7 +307,7 @@ export default function Home() {
                     </div>
                     
                     <div style={{ display: 'flex', gap: '6px' }}>
-                      {item.map && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={14} /></a>}
+                      {item.map && item.map !== '#' && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={14} /></a>}
                       {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={14} /></a>}
                       {item.videos && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca' }}><Youtube size={14} /></button>}
                     </div>
