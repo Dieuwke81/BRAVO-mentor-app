@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, SteeringWheel, Eye } from 'lucide-react';
 
 const initialCategories = [
   {
@@ -83,23 +83,10 @@ const initialCategories = [
   },
   {
     id: 'routes',
-    title: '7. Routekennis & Kaarten',
+    title: '7. Routekennis & Turven',
     icon: <Map size={22} />,
     isRouteCategory: true,
     items: [
-      /* LIJN 400 MET FILMPJES ALS VOORBEELD */
-      { 
-        id: 'r400', 
-        type: 'stad', 
-        text: '400 Airport Shuttle', 
-        pdf: '/routes/400.pdf', 
-        map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9?g_st=ac',
-        videos: [
-          { label: 'Heenrit (Video)', url: 'https://youtu.be/UodaTz-F8g8?si=_L5Is9Fhn4qJ4IQr' },
-          { label: 'Terugrit (Video)', url: 'https://youtu.be/example' },
-          { label: 'Knooppunt Airport', url: 'https://youtu.be/example2' }
-        ]
-      },
       { id: 'r2', type: 'stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
       { id: 'r3', type: 'stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
       { id: 'r4', type: 'stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9?g_st=ac' },
@@ -116,6 +103,7 @@ const initialCategories = [
       { id: 'r114', type: 'stad', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7?g_st=ac' },
       { id: 'r119', type: 'stad', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7?g_st=ac' },
       { id: 'r324', type: 'stad', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7?g_st=ac' },
+      { id: 'r400', type: 'stad', text: '400 Airport Shuttle', pdf: '/routes/400.pdf', map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/UodaTz-F8g8' }] },
       { id: 'r401', type: 'stad', text: '401 Airport', pdf: '/routes/401.pdf', map: 'https://goo.gl/maps/wZXxBwX7d1jpmdfQ6?g_st=ac' },
       { id: 'r402', type: 'stad', text: '402 Veldhoven Zonderwijk', pdf: '/routes/402.pdf', map: 'https://goo.gl/maps/AzkdnKNpGggagMym6?g_st=ac' },
       { id: 'r403', type: 'stad', text: '403 Veldhoven De Dom/Berg', pdf: '/routes/403.pdf', map: 'https://goo.gl/maps/t2tt2P7CTcL61hKa7?g_st=ac' },
@@ -139,10 +127,11 @@ export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
   const [activeStudent, setActiveStudent] = useState('Standaard');
   const [completed, setCompleted] = useState([]);
+  const [tallies, setTallies] = useState({}); // Nieuwe state voor turfjes
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
   const [routeTab, setRouteTab] = useState('stad');
-  const [videoModal, setVideoModal] = useState(null); // Voor het video-lijstje
+  const [videoModal, setVideoModal] = useState(null);
 
   useEffect(() => {
     const savedStudents = localStorage.getItem('bravo_student_list');
@@ -157,8 +146,14 @@ export default function Home() {
 
   useEffect(() => {
     if (mounted) {
+      // Laad checklist voortgang
       const savedProgress = localStorage.getItem(`bravo_progress_${activeStudent}`);
       setCompleted(savedProgress ? JSON.parse(savedProgress) : []);
+      
+      // Laad turfjes
+      const savedTallies = localStorage.getItem(`bravo_tallies_${activeStudent}`);
+      setTallies(savedTallies ? JSON.parse(savedTallies) : {});
+      
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
@@ -179,6 +174,7 @@ export default function Home() {
       setStudents(newList);
       localStorage.setItem('bravo_student_list', JSON.stringify(newList));
       localStorage.removeItem(`bravo_progress_${name}`);
+      localStorage.removeItem(`bravo_tallies_${name}`);
       setActiveStudent(newList[0]);
     }
   };
@@ -189,6 +185,19 @@ export default function Home() {
     localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(newCompleted));
   };
 
+  const updateTally = (routeId, type) => {
+    const currentRouteTally = tallies[routeId] || { m: 0, z: 0 };
+    const newTallies = {
+      ...tallies,
+      [routeId]: {
+        ...currentRouteTally,
+        [type]: currentRouteTally[type] + 1
+      }
+    };
+    setTallies(newTallies);
+    localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(newTallies));
+  };
+
   const totalItems = initialCategories.reduce((acc, cat) => acc + cat.items.length, 0);
   const progress = Math.round((completed.length / totalItems) * 100) || 0;
 
@@ -196,10 +205,10 @@ export default function Home() {
 
   return (
     <div>
-      {/* VIDEO MODAL OVERLAY */}
+      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-           <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px', animation: 'slideUp 0.3s ease-out' }}>
+           <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
                 <h3 style={{ margin: 0, color: 'black' }}>Video's: {videoModal.text}</h3>
                 <button onClick={() => setVideoModal(null)} style={{ background: '#f3f4f6', border: 'none', padding: '5px', borderRadius: '50%' }}><X size={20} color="black" /></button>
@@ -207,8 +216,7 @@ export default function Home() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {videoModal.videos.map((vid, i) => (
                   <a key={i} href={vid.url} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '15px', background: '#fee2e2', color: '#dc2626', textDecoration: 'none', borderRadius: '10px', fontWeight: 'bold' }}>
-                    <Youtube size={20} />
-                    {vid.label}
+                    <Youtube size={20} /> {vid.label}
                   </a>
                 ))}
               </div>
@@ -268,43 +276,45 @@ export default function Home() {
               {category.items
                 .filter(item => !category.isRouteCategory || item.type === routeTab)
                 .map((item) => (
-                <div key={item.id} className="checkbox-item">
-                  <div className="checkbox-content" onClick={() => toggleItem(item.id)}>
-                    <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-                      {completed.includes(item.id) && <CheckCircle2 size={16} />}
+                <div key={item.id} className="checkbox-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: category.isRouteCategory ? '8px' : '0' }}>
+                    <div className="checkbox-content" onClick={() => toggleItem(item.id)} style={{ flex: 1 }}>
+                      <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                        {completed.includes(item.id) && <CheckCircle2 size={16} />}
+                      </div>
+                      <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '0.95rem', fontWeight: '500' }}>{item.text}</span>
                     </div>
-                    <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '0.95rem' }}>{item.text}</span>
-                  </div>
-                  
-                  <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
-                    {item.map && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={14} /></a>}
-                    {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={14} /></a>}
                     
-                    {/* Eén Video knop per lijn die het lijstje opent */}
-                    {item.videos && (
-                      <button 
-                        onClick={() => setVideoModal(item)} 
-                        className="pdf-btn" 
-                        style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca', cursor: 'pointer' }}
-                      >
-                        <Youtube size={14} />
-                      </button>
-                    )}
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      {item.map && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={14} /></a>}
+                      {item.pdf && <a href={item.pdf} target="_blank" className="pdf-btn"><FileText size={14} /></a>}
+                      {item.videos && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca' }}><Youtube size={14} /></button>}
+                    </div>
                   </div>
+
+                  {/* Turfgedeelte voor Routes */}
+                  {category.isRouteCategory && (
+                    <div style={{ display: 'flex', gap: '10px', marginLeft: '39px', padding: '4px 0' }}>
+                      <button 
+                        onClick={() => updateTally(item.id, 'm')}
+                        style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 'bold' }}
+                      >
+                        <Eye size={12} /> M: {tallies[item.id]?.m || 0}
+                      </button>
+                      <button 
+                        onClick={() => updateTally(item.id, 'z')}
+                        style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0', padding: '4px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 'bold' }}
+                      >
+                        <SteeringWheel size={12} /> Z: {tallies[item.id]?.z || 0}
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </div>
         ))}
       </div>
-      
-      {/* Kleine CSS animatie voor het venstertje */}
-      <style jsx global>{`
-        @keyframes slideUp {
-          from { transform: translateY(100%); }
-          to { transform: translateY(0); }
-        }
-      `}</style>
     </div>
   );
 }
