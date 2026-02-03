@@ -38,38 +38,47 @@ const initialCategories = [
       { id: 'r408', type: 'stad', text: '408 HTC', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9', videos: [{ label: 'Heenrit', url: 'https://youtu.be/dIR14bagsC4?si=2khCMgNruzfqggtE' }, { label: 'Terugrit', url: 'https://youtu.be/GS-lHE_R0WY?si=tfCm0KqJxGPsYOX0' }] },
 
       /* STREEKLIJNEN */
-      { id: 'r2-streek', type: 'streek', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/-lxwwVMe5Bc?si=E4AHjMBHDAGT9-ck' }, { label: 'Terugrit', url: 'https://youtu.be/JgIIPRHSRpw?si=_g8pPDQFN_lHuth7' }] },
-      { id: 'r3-streek', type: 'streek', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9', videos: [{ label: 'Heenrit', url: 'https://youtu.be/FOveDAGeTOQ?si=mg8G8yNPqY4qVCec' }, { label: 'Terugrit', url: 'https://youtu.be/C13yjlCQHSI?si=WFe0n_wwwBjp2iz2' }] },
-      { id: 'r4-streek', type: 'streek', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9', videos: [{ label: 'Heenrit', url: 'https://youtu.be/XrY2w3J-110?si=sQZQzLdYmIoC7HS_' }, { label: 'Terugrit', url: 'https://youtu.be/W2d4MJ8NUNs?si=YkCNiDFrjHJ1L_Se' }] },
-      { id: 'r5-streek', type: 'streek', text: "5 't Hofke", pdf: '/routes/5.pdf', map: 'https://goo.gl/maps/ZVRxNdkkF84TTFcr9', videos: [{ label: 'Heenrit', url: 'https://youtu.be/RMFC7Lkl93g?si=efmmynvV2NCM4fAe' }, { label: 'Terugrit', url: 'https://youtu.be/CzLnjtHiXvM?si=0M4hDRFMjLFAYMMi' }] },
-      { id: 'r6-streek', type: 'streek', text: '6 Nuenen', pdf: '/routes/6.pdf', map: 'https://goo.gl/maps/rinLtqdqrpNdFrHu6', videos: [{ label: 'Heenrit', url: 'https://youtu.be/cUZ1WVWMaPk?si=tsR3E1OOwB-IfD_I' }, { label: 'Terugrit', url: 'https://youtu.be/F6GKdJr-yZk?si=20PbyTjgQwSlD8Eo' }] },
-      { id: 'r7-streek', type: 'streek', text: '7 Veldhoven MMC via Aalst', pdf: '/routes/7.pdf', map: 'https://goo.gl/maps/2wn2ri42YPjDRTkc7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/5ag9cERVlEo?si=nEKdnK67H3MBZ7d4' }, { label: 'Terugrit', url: 'https://youtu.be/iyiD4q_xTTU?si=Y3wNs8k9_ksHCZJH' }] },
-      { id: 'r8-streek', type: 'streek', text: '8 Acht/Kapelbeemd', pdf: '/routes/8.pdf', map: 'https://goo.gl/maps/KDJdAMPYmtCU793o6', videos: [{ label: 'Heenrit Acht', url: 'https://youtu.be/rhj1kWFMGs8?si=l1a4uhc0fTQG8tWS' }, { label: 'Terugrit Acht', url: 'https://youtu.be/r35PmIQS6mM?si=ghNfA7z8J5xn-kvs' }, { label: 'Heenrit Kapelbeemd', url: 'https://youtu.be/RACYUSmZn9A?si=OUJ665MNA3fz3GUX' }, { label: 'Terugrit Kapelbeemd', url: 'https://youtu.be/rG9rXCCf3q0?si=QyJU6CjscioB6ve2' }] },
-      { id: 'r9', type: 'streek', text: '9 Eindhoven - Best', pdf: '/routes/9.pdf', map: 'https://goo.gl/maps/a5P1qJycoE39Jhnc8?g_st=ac', videos: [] },
-      { id: 'r11', type: 'streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: 'https://goo.gl/maps/44XVLgFnh5fH7Dvc8?g_st=ac', videos: [] },
-      { id: 'r18', type: 'streek', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac', videos: [] },
-      { id: 'r19', type: 'streek', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: 'https://goo.gl/maps/5JPt3zvstws5gBzf6?g_st=ac', videos: [] },
-      { id: 'r20', type: 'streek', text: '20 Best NS - HTC', pdf: '/routes/20 (1).pdf', map: 'https://goo.gl/maps/DzPyz1xXHau3Y2XQ9?g_st=ac', videos: [] },
-      { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', pdf: '/routes/23.pdf', map: 'https://goo.gl/maps/pBPPvrjBJjB3d4N89?g_st=ac', videos: [] },
-      { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac', videos: [] },
-      { id: 'r25', type: 'streek', text: '25 Helmond - Gemert Pelgrimsrust', pdf: '/routes/25.pdf', map: 'https://goo.gl/maps/D5RWqdKkpQLaceaA8?g_st=ac', videos: [] },
-      { id: 'r26', type: 'streek', text: '26 Helmond - Gemert', pdf: '/routes/26.pdf', map: 'https://goo.gl/maps/33oHJptjDKoyeTV27?g_st=ac', videos: [] },
-      { id: 'r28', type: 'streek', text: '28 Deurne - Meijel', pdf: '/routes/28.pdf', map: 'https://goo.gl/maps/TqL7tE7qQh8vbjcT7?g_st=ac', videos: [] },
-      { id: 'r51', type: 'streek', text: '51 Helmond Eeuwsels', pdf: '/routes/51.pdf', map: 'https://goo.gl/maps/3NKXvMCmV92f4Bev8?g_st=ac', videos: [] },
-      { id: 'r52', type: 'streek', text: '52 Helmond Rijpelberg', pdf: '/routes/52.pdf', map: 'https://goo.gl/maps/7hPPB8ZNq6PHcM6b9?g_st=ac', videos: [] },
-      { id: 'r53', type: 'streek', text: '53 Helmond Straakven', pdf: '/routes/53.pdf', map: 'https://goo.gl/maps/sLirkmvixTATiw7V7?g_st=ac', videos: [] },
-      { id: 'r54', type: 'streek', text: '54 Helmond Brouwhuis', pdf: '/routes/54.pdf', map: 'https://goo.gl/maps/fRwZ4hcpxHcMbpHv6?g_st=ac', videos: [] },
-      { id: 'r55', type: 'streek', text: '55 Helmond Stiphout', pdf: '/routes/55.pdf', map: 'https://goo.gl/maps/NVuA2oQhG16v88669?g_st=ac', videos: [] },
-      { id: 'r120', type: 'streek', text: '120 Best NS - ASML gebouw 4', pdf: '/routes/120.pdf', map: 'https://goo.gl/maps/TxpRYt8Jxkhh2Fk17?g_st=ac', videos: [] },
-      { id: 'r123', type: 'streek', text: '123 Gemert Pelgrimsrust - Boxmeer', pdf: '/routes/123.pdf', map: 'https://goo.gl/maps/qWGwUtdUUNRXB5MD8?g_st=ac', videos: [] },
-      { id: 'r150', type: 'streek', text: '150 Helmond - Helmond \'t Hout', pdf: '/routes/150.pdf', map: 'https://goo.gl/maps/PpE8g8jfWTkNSWwS6?g_st=ac', videos: [] },
-      { id: 'r317', type: 'streek', text: '317 Eindhoven - Dommelen', pdf: '/routes/317.pdf', map: 'https://goo.gl/maps/6VGZqioQwPVqZta57?g_st=ac', videos: [] },
-      { id: 'r318', type: 'streek', text: '318 Eindhoven - Luyksgestel', pdf: '/routes/318.pdf', map: 'https://goo.gl/maps/vC9yVfv6rtfeETKy5?g_st=ac', videos: [] },
-      { id: 'r319', type: 'streek', text: '319 Eindhoven - Reusel', pdf: '/routes/319.pdf', map: 'https://goo.gl/maps/4JJ1icwuqNwCeUrh7?g_st=ac', videos: [] },
-      { id: 'r320', type: 'streek', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf', map: 'https://goo.gl/maps/WSyXUrgdBGnSfnHk9?g_st=ac', videos: [] },
-      { id: 'r321', type: 'streek', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf', map: 'https://goo.gl/maps/di715Und6vygLtiQ7?g_st=ac', videos: [] },
-      { id: 'r322', type: 'streek', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: 'https://goo.gl/maps/NNFGPAnn8Ai451H5A?g_st=ac', videos: [] },
-      { id: 'r323', type: 'streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac', videos: [] }
+      { id: 'r2-streek', type: 'streek', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
+      { id: 'r3-streek', type: 'streek', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
+      { id: 'r4-streek', type: 'streek', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9' },
+      { id: 'r5-streek', type: 'streek', text: "5 't Hofke", pdf: '/routes/5.pdf', map: 'https://goo.gl/maps/ZVRxNdkkF84TTFcr9' },
+      { id: 'r6-streek', type: 'streek', text: '6 Nuenen', pdf: '/routes/6.pdf', map: 'https://goo.gl/maps/rinLtqdqrpNdFrHu6' },
+      { id: 'r7-streek', type: 'streek', text: '7 Veldhoven MMC via Aalst', pdf: '/routes/7.pdf', map: 'https://goo.gl/maps/2wn2ri42YPjDRTkc7' },
+      { id: 'r8-streek', type: 'streek', text: '8 Acht/Kapelbeemd', pdf: '/routes/8.pdf', map: 'https://goo.gl/maps/KDJdAMPYmtCU793o6' },
+      { id: 'r9', type: 'streek', text: '9 Eindhoven - Best', pdf: '/routes/9.pdf', map: 'https://goo.gl/maps/a5P1qJycoE39Jhnc8?g_st=ac' },
+      { id: 'r10-streek', type: 'streek', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf', map: 'https://goo.gl/maps/u1VCM98XLR4gibQy6' },
+      { id: 'r11', type: 'streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: 'https://goo.gl/maps/44XVLgFnh5fH7Dvc8?g_st=ac' },
+      { id: 'r12-streek', type: 'streek', text: '12 Gijzenrooi', pdf: '/routes/12.pdf', map: 'https://goo.gl/maps/pvcsGEmrZuyuidX3A' },
+      { id: 'r14-streek', type: 'streek', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: 'https://goo.gl/maps/b3rHcKpHwrB7sqR18' },
+      { id: 'r15-streek', type: 'streek', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: 'https://goo.gl/maps/zT7RyaGGEfFwBFNA8' },
+      { id: 'r16-streek', type: 'streek', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: 'https://goo.gl/maps/NB9B2serhaqnsz6b8' },
+      { id: 'r17-streek', type: 'streek', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8' },
+      { id: 'r18', type: 'streek', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac' },
+      { id: 'r19', type: 'streek', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: 'https://goo.gl/maps/5JPt3zvstws5gBzf6?g_st=ac' },
+      { id: 'r20', type: 'streek', text: '20 Best NS - HTC', pdf: '/routes/20 (1).pdf', map: 'https://goo.gl/maps/DzPyz1xXHau3Y2XQ9?g_st=ac' },
+      { id: 'r23', type: 'streek', text: '23 Helmond - Boxmeer', pdf: '/routes/23.pdf', map: 'https://goo.gl/maps/pBPPvrjBJjB3d4N89?g_st=ac' },
+      { id: 'r24', type: 'streek', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac' },
+      { id: 'r25', type: 'streek', text: '25 Helmond - Gemert Pelgrimsrust', pdf: '/routes/25.pdf', map: 'https://goo.gl/maps/D5RWqdKkpQLaceaA8?g_st=ac' },
+      { id: 'r26', type: 'streek', text: '26 Helmond - Gemert', pdf: '/routes/26.pdf', map: 'https://goo.gl/maps/33oHJptjDKoyeTV27?g_st=ac' },
+      { id: 'r28', type: 'streek', text: '28 Deurne - Meijel', pdf: '/routes/28.pdf', map: 'https://goo.gl/maps/TqL7tE7qQh8vbjcT7?g_st=ac' },
+      { id: 'r51', type: 'streek', text: '51 Helmond Eeuwsels', pdf: '/routes/51.pdf', map: 'https://goo.gl/maps/3NKXvMCmV92f4Bev8?g_st=ac' },
+      { id: 'r52', type: 'streek', text: '52 Helmond Rijpelberg', pdf: '/routes/52.pdf', map: 'https://goo.gl/maps/7hPPB8ZNq6PHcM6b9?g_st=ac' },
+      { id: 'r53', type: 'streek', text: '53 Helmond Straakven', pdf: '/routes/53.pdf', map: 'https://goo.gl/maps/sLirkmvixTATiw7V7?g_st=ac' },
+      { id: 'r54', type: 'streek', text: '54 Helmond Brouwhuis', pdf: '/routes/54.pdf', map: 'https://goo.gl/maps/fRwZ4hcpxHcMbpHv6?g_st=ac' },
+      { id: 'r55', type: 'streek', text: '55 Helmond Stiphout', pdf: '/routes/55.pdf', map: 'https://goo.gl/maps/NVuA2oQhG16v88669?g_st=ac' },
+      { id: 'r114-streek', type: 'streek', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7' },
+      { id: 'r119-streek', type: 'streek', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7' },
+      { id: 'r120', type: 'streek', text: '120 Best NS - ASML gebouw 4', pdf: '/routes/120.pdf', map: 'https://goo.gl/maps/TxpRYt8Jxkhh2Fk17?g_st=ac' },
+      { id: 'r123', type: 'streek', text: '123 Gemert Pelgrimsrust - Boxmeer', pdf: '/routes/123.pdf', map: 'https://goo.gl/maps/qWGwUtdUUNRXB5MD8?g_st=ac' },
+      { id: 'r150', type: 'streek', text: '150 Helmond - Helmond \'t Hout', pdf: '/routes/150.pdf', map: 'https://goo.gl/maps/PpE8g8jfWTkNSWwS6?g_st=ac' },
+      { id: 'r317', type: 'streek', text: '317 Eindhoven - Dommelen', pdf: '/routes/317.pdf', map: 'https://goo.gl/maps/6VGZqioQwPVqZta57?g_st=ac' },
+      { id: 'r318', type: 'streek', text: '318 Eindhoven - Luyksgestel', pdf: '/routes/318.pdf', map: 'https://goo.gl/maps/vC9yVfv6rtfeETKy5?g_st=ac' },
+      { id: 'r319', type: 'streek', text: '319 Eindhoven - Reusel', pdf: '/routes/319.pdf', map: 'https://goo.gl/maps/4JJ1icwuqNwCeUrh7?g_st=ac' },
+      { id: 'r320', type: 'streek', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf', map: 'https://goo.gl/maps/WSyXUrgdBGnSfnHk9?g_st=ac' },
+      { id: 'r321', type: 'streek', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf', map: 'https://goo.gl/maps/di715Und6vygLtiQ7?g_st=ac' },
+      { id: 'r322', type: 'streek', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: 'https://goo.gl/maps/NNFGPAnn8Ai451H5A?g_st=ac' },
+      { id: 'r323', type: 'streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac' },
+      { id: 'r324-streek', type: 'streek', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7' }
     ]
   },
   {
@@ -242,6 +251,7 @@ export default function Home() {
   const streekRoutes = routeCategory.items.filter(i => i.type === 'streek');
   const stadDone = stadRoutes.filter(i => completed.includes(i.id)).length;
   const streekDone = streekRoutes.filter(i => completed.includes(i.id)).length;
+  
   const pathStad = ((baseDone + stadDone) / (baseItems.length + stadRoutes.length)) * 100;
   const pathStreek = ((baseDone + streekDone) / (baseItems.length + streekRoutes.length)) * 100;
   const totalProgress = Math.round(Math.max(pathStad, pathStreek)) || 0;
@@ -251,7 +261,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
@@ -327,7 +336,7 @@ export default function Home() {
               <button onClick={() => setRouteSubTab('streek')} style={{ flex: 1, padding: '10px', borderRadius: '6px', border: 'none', fontSize: '0.9rem', fontWeight: 'bold', background: routeSubTab === 'streek' ? 'white' : 'transparent', color: routeSubTab === 'streek' ? 'var(--bravo-purple)' : '#6b7280' }}>Streeklijnen</button>
             </div>
 
-            {/* VOORTGANGSBALK LIJNEN */}
+            {/* VOORTGANGSBALK VOOR LIJNEN */}
             <div style={{ marginBottom: '20px', padding: '0 5px' }}>
                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
                   <span>VOORTGANG {routeSubTab.toUpperCase()}</span>
@@ -353,7 +362,7 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  {/* NIEUWE TURF INDELING: [-] [Icoon Getal] [+] */}
+                  {/* TURF SECTIE: [-] Icoon [+] */}
                   <div style={{ display: 'flex', gap: '15px', marginLeft: '39px', padding: '10px 0 5px 0' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <button onClick={() => updateTally(item.id, 'm', -1)} style={{ border: '1px solid #bae6fd', background: 'white', color: '#0369a1', borderRadius: '6px', padding: '4px' }}><Minus size={14} /></button>
