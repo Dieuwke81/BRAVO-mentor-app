@@ -136,8 +136,9 @@ const contactData = [
     ]
   },
   {
-    category: 'LOGISTIEK & SCHADE',
+    category: 'OMLEIDINGEN, LOGISTIEK & SCHADE',
     contacts: [
+      { name: 'E-mail omleidingen', email: 'omleidingen@hermesgroep.nl' },
       { name: 'Michel van Bakel', phone: '088-6255735' },
       { name: 'Schadetelefoon', phone: '06-38076828' },
       { name: 'E-mail schades', email: 'Schade_eindhoven@connexxion.nl' },
@@ -147,6 +148,7 @@ const contactData = [
   {
     category: 'GPD (Management)',
     contacts: [
+      { name: 'Twan Smid', phone: '06-21600876' },
       { name: 'Thirza van Diepen', phone: '040-2358628' },
       { name: 'Erik Feijen', phone: '040-2358638' },
       { name: 'John Gijsbers', phone: '040-2358657' }
@@ -163,7 +165,8 @@ const contactData = [
   {
     category: 'STAD',
     contacts: [
-      { name: 'Twan Smid', phone: '088-6522732' },
+      { name: 'Michiel Bles', phone: '088-6255731' },
+      
       { name: 'Mathieu Verberkt', phone: '088-6255733' },
       { name: 'Patrick Houthooft', phone: '088-6255734' }
     ]
