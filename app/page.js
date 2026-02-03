@@ -23,8 +23,8 @@ const initialCategories = [
       { id: 'r14-stad', type: 'ehv-stad', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: 'https://goo.gl/maps/b3rHcKpHwrB7sqR18', videos: [{ label: 'Heenrit', url: 'https://youtu.be/jFs0mg9fgNA' }] },
       { id: 'r15-stad', type: 'ehv-stad', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: 'https://goo.gl/maps/zT7RyaGGEfFwBFNA8', videos: [{ label: 'Heenrit', url: 'https://youtu.be/YYJxYVIlESE' }] },
       { id: 'r16-stad', type: 'ehv-stad', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: 'https://goo.gl/maps/NB9B2serhaqnsz6b8', videos: [{ label: 'Heenrit', url: 'https://youtu.be/Vlj9ucKrZZQ' }] },
-      { id: 'r17-stad', type: 'ehv-stad', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8', videos: [{ label: 'Heenrit', url: 'https://youtu.be/2MmyuC6nFow' }] },
-      { id: 'r114-stad', type: 'ehv-stad', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/hBhwXIudYsA' }] },
+      { id: 'r17-stad', type: 'ehv-stad', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8' },
+      { id: 'r114-stad', type: 'ehv-stad', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7' },
       { id: 'r119-stad', type: 'ehv-stad', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7' },
       { id: 'r324-stad', type: 'ehv-stad', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/bqwSqdBEpqU' }] },
       { id: 'r400-stad', type: 'ehv-stad', text: '400 Airport Shuttle', pdf: '/routes/400.pdf', map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9', videos: [{ label: 'Heenrit', url: 'https://youtu.be/UodaTz-F8g8' }] },
@@ -48,11 +48,11 @@ const initialCategories = [
       { id: 'r9-streek', type: 'ehv-streek', text: '9 Eindhoven - Best', pdf: '/routes/9.pdf', map: 'https://goo.gl/maps/a5P1qJycoE39Jhnc8?g_st=ac' },
       { id: 'r11-streek', type: 'ehv-streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: 'https://goo.gl/maps/44XVLgFnh5fH7Dvc8?g_st=ac' },
       { id: 'r20-streek', type: 'ehv-streek', text: '20 Best NS - HTC', pdf: '/routes/20 (1).pdf', map: 'https://goo.gl/maps/DzPyz1xXHau3Y2XQ9?g_st=ac' },
-      { id: 'r120-streek', type: 'ehv-streek', text: '120 Best NS - ASML gebouw 4', pdf: '/routes/120.pdf', map: 'https://goo.gl/maps/TxpRYt8Jxkhh2Fk17?g_st=ac' },
       { id: 'r320-streek', type: 'ehv-streek', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf', map: 'https://goo.gl/maps/WSyXUrgdBGnSfnHk9?g_st=ac' },
       { id: 'r321-streek', type: 'ehv-streek', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf', map: 'https://goo.gl/maps/di715Und6vygLtiQ7?g_st=ac' },
       { id: 'r322-streek', type: 'ehv-streek', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: 'https://goo.gl/maps/NNFGPAnn8Ai451H5A?g_st=ac' },
       { id: 'r323-streek', type: 'ehv-streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac' },
+      { id: 'r324-streek', type: 'ehv-streek', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7' },
 
       /* REUSEL / VALKENSWAARD */
       { id: 'r18-rv', type: 'reusel-valkenswaard', text: '18 Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac' },
@@ -249,7 +249,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
@@ -268,7 +267,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* HEADER */}
       <div className="header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
             <div style={{ background: 'white', padding: '8px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '50px', minHeight: '50px' }}>
@@ -327,6 +325,7 @@ export default function Home() {
               <button onClick={() => setRouteSubTab('scholieren')} style={{ padding: '8px 15px', borderRadius: '6px', border: 'none', fontSize: '0.8rem', fontWeight: 'bold', background: routeSubTab === 'scholieren' ? 'white' : 'transparent', color: routeSubTab === 'scholieren' ? 'var(--bravo-purple)' : '#6b7280' }}>Scholieren</button>
             </div>
 
+            {/* VOORTGANGSBALK VOOR LIJNEN */}
             <div style={{ marginBottom: '20px', padding: '0 5px' }}>
                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
                   <span>VOORTGANG {routeSubTab.replace('-', ' ').toUpperCase()}</span>
@@ -352,6 +351,7 @@ export default function Home() {
                     </div>
                   </div>
                   
+                  {/* TURF SECTIE: [-] [Icoon Score] [+] */}
                   <div style={{ display: 'flex', gap: '20px', marginLeft: '39px', padding: '10px 0 5px 0' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <button onClick={() => updateTally(item.id, 'm', -1)} style={{ border: '1px solid #bae6fd', background: 'white', color: '#0369a1', borderRadius: '6px', padding: '4px' }}><Minus size={14} /></button>
