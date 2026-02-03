@@ -37,7 +37,7 @@ const initialCategories = [
       { id: 'r406', type: 'ehv-stad', text: '406 Ekkersrijt', pdf: '/routes/406.pdf', map: 'https://goo.gl/maps/8ZBA4gaG6xzNEcck7' },
       { id: 'r407', type: 'ehv-stad', text: '407 HTC', pdf: '/routes/407.pdf', map: 'https://goo.gl/maps/kF7NkrEyib22hX8E7' },
       { id: 'r408', type: 'ehv-stad', text: '408 HTC', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9' },
-{ id: 'r614', type: 'ehv-stad', text: '614 Jozef Eliasweg', map: '#' }
+{ id: 'r614', type: 'ehv-stad', text: '614 Jozef Eliasweg', map: '#' },
    
       /* EINDHOVEN STREEK */
       { id: 'r2', type: 'ehv-streek', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/-lxwwVMe5Bc' }, { label: 'Terugrit', url: 'https://youtu.be/JgIIPRHSRpw' }] },
@@ -88,7 +88,7 @@ const initialCategories = [
       { id: 'r322', type: 'ehv-streek', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: 'https://goo.gl/maps/NNFGPAnn8Ai451H5A?g_st=ac' },
       { id: 'r323', type: 'ehv-streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac' },
       { id: 'r324', type: 'ehv-streek', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7' },
-{ id: 'r614', type: 'ehv-streek', text: '614 Jozef Eliasweg', map: '#' }
+{ id: 'r614', type: 'ehv-streek', text: '614 Jozef Eliasweg', map: '#' },
    
       /* REUSEL / VALKENSWAARD */
       { id: 'r18', type: 'reusel-valkenswaard', text: '18 Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac' },
