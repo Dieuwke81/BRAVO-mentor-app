@@ -18,14 +18,14 @@ const initialCategories = [
       { id: 'r6', type: 'ehv-stad', text: '6 Nuenen', pdf: '/routes/6.pdf', map: 'https://goo.gl/maps/rinLtqdqrpNdFrHu6', videos: [{ label: 'Heenrit', url: 'https://youtu.be/cUZ1WVWMaPk' }, { label: 'Terugrit', url: 'https://youtu.be/F6GKdJr-yZk' }] },
       { id: 'r7', type: 'ehv-stad', text: '7 Veldhoven MMC via Aalst', pdf: '/routes/7.pdf', map: 'https://goo.gl/maps/2wn2ri42YPjDRTkc7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/5ag9cERVlEo' }, { label: 'Terugrit', url: 'https://youtu.be/iyiD4q_xTTU' }] },
       { id: 'r8', type: 'ehv-stad', text: '8 Acht/Kapelbeemd', pdf: '/routes/8.pdf', map: 'https://goo.gl/maps/KDJdAMPYmtCU793o6', videos: [{ label: 'Heenrit Acht', url: 'https://youtu.be/rhj1kWFMGs8' }, { label: 'Terugrit Acht', url: 'https://youtu.be/r35PmIQS6mM' }, { label: 'Heenrit Kapelbeemd', url: 'https://youtu.be/RACYUSmZn9A' }, { label: 'Terugrit Kapelbeemd', url: 'https://youtu.be/rG9rXCCf3q0' }] },
-      { id: 'r10', type: 'ehv-stad', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf', map: 'https://goo.gl/maps/u1VCM98XLR4gibQy6' },
+      { id: 'r10', type: 'ehv-stad', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf', map: 'https://goo.gl/maps/u1VCM98XLR4gibQy6', videos: [] },
       { id: 'r12', type: 'ehv-stad', text: '12 Gijzenrooi', pdf: '/routes/12.pdf', map: 'https://goo.gl/maps/pvcsGEmrZuyuidX3A', videos: [{ label: 'Heenrit', url: 'https://youtu.be/_sam4opdeS8' }, { label: 'Terugrit', url: 'https://youtu.be/rL4oMyl0eSU' }] },
       { id: 'r14', type: 'ehv-stad', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: 'https://goo.gl/maps/b3rHcKpHwrB7sqR18', videos: [{ label: 'Heenrit', url: 'https://youtu.be/jFs0mg9fgNA' }, { label: 'Terugrit', url: 'https://youtu.be/67ecioM8dgM' }] },
       { id: 'r15', type: 'ehv-stad', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: 'https://goo.gl/maps/zT7RyaGGEfFwBFNA8', videos: [{ label: 'Heenrit', url: 'https://youtu.be/YYJxYVIlESE' }, { label: 'Terugrit', url: 'https://youtu.be/TXFJItf8eyA' }] },
       { id: 'r16', type: 'ehv-stad', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: 'https://goo.gl/maps/NB9B2serhaqnsz6b8', videos: [{ label: 'Heenrit', url: 'https://youtu.be/Vlj9ucKrZZQ' }, { label: 'Terugrit', url: 'https://youtu.be/OsRDvAVLXj8' }] },
       { id: 'r17', type: 'ehv-stad', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8', videos: [{ label: 'Heenrit', url: 'https://youtu.be/2MmyuC6nFow' }, { label: 'Terugrit', url: 'https://youtu.be/GIeFM5LY1T8' }] },
       { id: 'r114', type: 'ehv-stad', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/hBhwXIudYsA' }, { label: 'Terugrit', url: 'https://youtu.be/pe3djrT9mFk' }] },
-      { id: 'r119', type: 'ehv-stad', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7' },
+      { id: 'r119', type: 'ehv-stad', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7', videos: [] },
       { id: 'r324', type: 'ehv-stad', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/bqwSqdBEpqU' }, { label: 'Terugrit', url: 'https://youtu.be/UUhg-zk6wkc' }] },
       { id: 'r400', type: 'ehv-stad', text: '400 Airport Shuttle', pdf: '/routes/400.pdf', map: 'https://goo.gl/maps/ukBjWkZWs8BAfP2c9', videos: [{ label: 'Heenrit', url: 'https://youtu.be/UodaTz-F8g8' }, { label: 'Terugrit', url: 'https://youtu.be/35rQzFIwjdA' }] },
       { id: 'r401', type: 'ehv-stad', text: '401 Airport', pdf: '/routes/401.pdf', map: 'https://goo.gl/maps/wZXxBwX7d1jpmdfQ6', videos: [{ label: 'Heenrit', url: 'https://youtu.be/S4wa7yT9BcY' }, { label: 'Terugrit', url: 'https://youtu.be/UYfUHZnInT0' }] },
@@ -50,14 +50,14 @@ const initialCategories = [
       { id: 'r10', type: 'ehv-streek', text: '10 Oirschot Kazerne', pdf: '/routes/10.pdf', map: 'https://goo.gl/maps/u1VCM98XLR4gibQy6' },
       { id: 'r11', type: 'ehv-streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: 'https://goo.gl/maps/44XVLgFnh5fH7Dvc8?g_st=ac' },
       { id: 'r12', type: 'ehv-streek', text: '12 Gijzenrooi', pdf: '/routes/12.pdf', map: 'https://goo.gl/maps/pvcsGEmrZuyuidX3A', videos: [{ label: 'Heenrit', url: 'https://youtu.be/_sam4opdeS8' }, { label: 'Terugrit', url: 'https://youtu.be/rL4oMyl0eSU' }] },
-      { id: 'r14', type: 'ehv-streek', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: 'https://goo.gl/maps/b3rHcKpHwrB7sqR18' },
-      { id: 'r15', type: 'ehv-streek', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: 'https://goo.gl/maps/zT7RyaGGEfFwBFNA8' },
-      { id: 'r16', type: 'ehv-streek', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: 'https://goo.gl/maps/NB9B2serhaqnsz6b8' },
-      { id: 'r17', type: 'ehv-streek', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8' },
+      { id: 'r14', type: 'ehv-streek', text: '14 Veldhoven Zilverackers', pdf: '/routes/14.pdf', map: 'https://goo.gl/maps/b3rHcKpHwrB7sqR18', videos: [{ label: 'Heenrit', url: 'https://youtu.be/jFs0mg9fgNA' }, { label: 'Terugrit', url: 'https://youtu.be/67ecioM8dgM' }] },
+      { id: 'r15', type: 'ehv-streek', text: '15 Veldhoven Abdijlaan', pdf: '/routes/15.pdf', map: 'https://goo.gl/maps/zT7RyaGGEfFwBFNA8', videos: [{ label: 'Heenrit', url: 'https://youtu.be/YYJxYVIlESE' }, { label: 'Terugrit', url: 'https://youtu.be/TXFJItf8eyA' }] },
+      { id: 'r16', type: 'ehv-streek', text: '16 Veldhoven MMC', pdf: '/routes/16.pdf', map: 'https://goo.gl/maps/NB9B2serhaqnsz6b8', videos: [{ label: 'Heenrit', url: 'https://youtu.be/Vlj9ucKrZZQ' }, { label: 'Terugrit', url: 'https://youtu.be/OsRDvAVLXj8' }] },
+      { id: 'r17', type: 'ehv-streek', text: '17 Roosten', pdf: '/routes/17.pdf', map: 'https://goo.gl/maps/ypypjG6zZmFaBKmA8', videos: [{ label: 'Heenrit', url: 'https://youtu.be/2MmyuC6nFow' }, { label: 'Terugrit', url: 'https://youtu.be/GIeFM5LY1T8' }] },
       { id: 'r18', type: 'ehv-streek', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac' },
       { id: 'r19', type: 'ehv-streek', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: 'https://goo.gl/maps/5JPt3zvstws5gBzf6?g_st=ac' },
       { id: 'r20', type: 'ehv-streek', text: '20 Best NS - HTC', pdf: '/routes/20 (1).pdf', map: 'https://goo.gl/maps/DzPyz1xXHau3Y2XQ9?g_st=ac' },
-      { id: 'r23', type: 'ehv-streek', text: '23 Helmond - Boxmeer', pdf: '/routes/23.pdf', map: 'https://goo.gl/maps/pBPPvrjBJjB3d4N89?g_st=ac' },
+      { id: 'r23', type: 'ehv-streek', text: '23 Boxmeer', pdf: '/routes/23.pdf', map: 'https://goo.gl/maps/pBPPvrjBJjB3d4N89?g_st=ac' },
       { id: 'r24', type: 'ehv-streek', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac' },
       { id: 'r25', type: 'ehv-streek', text: '25 Helmond - Gemert Pelgrimsrust', pdf: '/routes/25.pdf', map: 'https://goo.gl/maps/D5RWqdKkpQLaceaA8?g_st=ac' },
       { id: 'r26', type: 'ehv-streek', text: '26 Helmond - Gemert', pdf: '/routes/26.pdf', map: 'https://goo.gl/maps/33oHJptjDKoyeTV27?g_st=ac' },
@@ -104,8 +104,6 @@ const initialCategories = [
       { id: 'r150', type: 'helmond', text: '150 Helmond - Helmond \'t Hout', pdf: '/routes/150.pdf', map: 'https://goo.gl/maps/PpE8g8jfWTkNSWwS6?g_st=ac' },
 
       /* SCHOLIEREN */
-      { id: 'r601', type: 'scholieren', text: '601 Scholierenlijn', map: '#' },
-      { id: 'r604', type: 'scholieren', text: '604 Scholierenlijn', map: '#' },
       { id: 'r610', type: 'scholieren', text: '610 Internationale school', map: '#' },
       { id: 'r614', type: 'scholieren', text: '614 Jozef Eliasweg', map: '#' }
     ]
@@ -281,7 +279,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
@@ -333,6 +330,7 @@ export default function Home() {
           <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
 
+        {/* TAB NAVIGATIE */}
         <div style={{ display: 'flex', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }}>
           <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '0.75rem' }}>
             <Map size={18} /> Lijnen
@@ -384,7 +382,7 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  <div style={{ display: 'flex', gap: '20px', marginLeft: '39px', padding: '10px 0 5px 0' }}>
+                  <div style={{ display: 'flex', gap: '15px', marginLeft: '39px', padding: '10px 0 5px 0' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <button onClick={() => updateTally(item.id, 'm', -1)} style={{ border: '1px solid #bae6fd', background: 'white', color: '#0369a1', borderRadius: '6px', padding: '4px' }}><Minus size={14} /></button>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0f9ff', color: '#0369a1', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 'bold', border: '1px solid #bae6fd' }}>
@@ -392,7 +390,7 @@ export default function Home() {
                       </div>
                       <button onClick={() => updateTally(item.id, 'm', 1)} style={{ border: '1px solid #bae6fd', background: 'white', color: '#0369a1', borderRadius: '6px', padding: '4px' }}><Plus size={14} /></button>
                     </div>
-                    <div style={{ display: 'flex', gap: '4px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <button onClick={() => updateTally(item.id, 'z', -1)} style={{ border: '1px solid #bbf7d0', background: 'white', color: '#15803d', borderRadius: '6px', padding: '4px' }}><Minus size={14} /></button>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', color: '#15803d', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 'bold', border: '1px solid #bbf7d0' }}>
                         <Navigation size={14} /> Z: {tallies[item.id]?.z || 0}
@@ -406,6 +404,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* CHECKLISTS EN INFO (GEBLEVEN ZOALS ZE WAREN) */}
         {mainTab === 'checklist' && (
           <div>
             {baseCategories.map((category) => (
