@@ -130,9 +130,9 @@ const contactData = [
       { name: 'ROV UTRECHT', phone: '030-2849494' },
       { name: 'Chauffeursverblijf Neckerspoel', phone: '088-6255737' },
       { name: 'Opkomstlokaal Dorgelolaan 50', phone: '040-2466373' },
-      { name: 'Kantoor MER en ARM', phone: '088-6255736' },
+      { name: 'Kantoor MER Neckerspoel', phone: '088-6255736' },
       { name: 'Planning Dorgelolaan 50', phone: '040-2358630' },
-      { name: 'Hermes Verlofelofon', phone: '040-2358639' }
+      { name: 'Hermes Verloftelefoon', phone: '040-2358639' }
     ]
   },
   {
