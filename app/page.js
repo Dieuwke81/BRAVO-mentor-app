@@ -10,7 +10,7 @@ const initialCategories = [
     icon: <Map size={22} />,
     isRouteCategory: true,
     items: [
-      /* EINDHOVEN STAD - JOUW VERDELING */
+      /* EINDHOVEN STAD */
       { id: 'r2', type: 'ehv-stad', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/-lxwwVMe5Bc' }, { label: 'Terugrit', url: 'https://youtu.be/JgIIPRHSRpw' }] },
       { id: 'r3', type: 'ehv-stad', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9', videos: [{ label: 'Heenrit', url: 'https://youtu.be/FOveDAGeTOQ' }, { label: 'Terugrit', url: 'https://youtu.be/C13yjlCQHSI' }] },
       { id: 'r4', type: 'ehv-stad', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9', videos: [{ label: 'Heenrit', url: 'https://youtu.be/XrY2w3J-110' }, { label: 'Terugrit', url: 'https://youtu.be/W2d4MJ8NUNs' }] },
@@ -37,14 +37,7 @@ const initialCategories = [
       { id: 'r407', type: 'ehv-stad', text: '407 HTC', pdf: '/routes/407.pdf', map: 'https://goo.gl/maps/kF7NkrEyib22hX8E7' },
       { id: 'r408', type: 'ehv-stad', text: '408 HTC', pdf: '/routes/408.pdf', map: 'https://goo.gl/maps/WDsWBvYGW1KhW8Rh9' },
 
-      /* EINDHOVEN STREEK - JOUW VERDELING */
-      { id: 'r2', type: 'ehv-streek', text: '2 Blixembosch Oost', pdf: '/routes/2.pdf', map: 'https://goo.gl/maps/XLAb4E1GnEB1hbRf7' },
-      { id: 'r3', type: 'ehv-streek', text: '3 Blixembosch West', pdf: '/routes/3.pdf', map: 'https://goo.gl/maps/6KgygAyk6dKcLe9c9' },
-      { id: 'r4', type: 'ehv-streek', text: '4 Heesterakker', pdf: '/routes/4.pdf', map: 'https://goo.gl/maps/VC6H4upjx4VWJkLa9' },
-      { id: 'r5', type: 'ehv-streek', text: "5 't Hofke", pdf: '/routes/5.pdf', map: 'https://goo.gl/maps/ZVRxNdkkF84TTFcr9' },
-      { id: 'r6', type: 'ehv-streek', text: '6 Nuenen', pdf: '/routes/6.pdf', map: 'https://goo.gl/maps/rinLtqdqrpNdFrHu6' },
-      { id: 'r7', type: 'ehv-streek', text: '7 Veldhoven MMC via Aalst', pdf: '/routes/7.pdf', map: 'https://goo.gl/maps/2wn2ri42YPjDRTkc7' },
-      { id: 'r8', type: 'ehv-streek', text: '8 Acht/Kapelbeemd', pdf: '/routes/8.pdf', map: 'https://goo.gl/maps/KDJdAMPYmtCU793o6' },
+      /* EINDHOVEN STREEK */
       { id: 'r9', type: 'ehv-streek', text: '9 Eindhoven - Best', pdf: '/routes/9.pdf', map: 'https://goo.gl/maps/a5P1qJycoE39Jhnc8?g_st=ac' },
       { id: 'r11', type: 'ehv-streek', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: 'https://goo.gl/maps/44XVLgFnh5fH7Dvc8?g_st=ac' },
       { id: 'r20', type: 'ehv-streek', text: '20 Best NS - HTC', pdf: '/routes/20 (1).pdf', map: 'https://goo.gl/maps/DzPyz1xXHau3Y2XQ9?g_st=ac' },
@@ -55,10 +48,30 @@ const initialCategories = [
       { id: 'r323', type: 'ehv-streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac' },
       { id: 'r324', type: 'ehv-streek', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7' },
 
-      /* OVERIGE RAYONS - ZELF IN TE VULLEN */
-      { id: 'placeholder-rv', type: 'reusel-valkenswaard', text: 'Lijnen Reusel hier invullen...', map: '#' },
-      { id: 'placeholder-hel', type: 'helmond', text: 'Lijnen Helmond hier invullen...', map: '#' },
-      { id: 'placeholder-sch', type: 'scholieren', text: 'Lijnen Scholieren hier invullen...', map: '#' }
+      /* REUSEL / VALKENSWAARD */
+      { id: 'r18', type: 'reusel-valkenswaard', text: '18 Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac' },
+      { id: 'r19', type: 'reusel-valkenswaard', text: '19 Bladel', pdf: '/routes/19.pdf', map: 'https://goo.gl/maps/5JPt3zvstws5gBzf6?g_st=ac' },
+      { id: 'r317', type: 'reusel-valkenswaard', text: '317 Dommelen', pdf: '/routes/317.pdf', map: 'https://goo.gl/maps/6VGZqioQwPVqZta57?g_st=ac' },
+      { id: 'r318', type: 'reusel-valkenswaard', text: '318 Luyksgestel', pdf: '/routes/318.pdf', map: 'https://goo.gl/maps/vC9yVfv6rtfeETKy5?g_st=ac' },
+      { id: 'r319', type: 'reusel-valkenswaard', text: '319 Reusel', pdf: '/routes/319.pdf', map: 'https://goo.gl/maps/4JJ1icwuqNwCeUrh7?g_st=ac' },
+
+      /* HELMOND */
+      { id: 'r23', type: 'helmond', text: '23 Boxmeer', pdf: '/routes/23.pdf', map: 'https://goo.gl/maps/pBPPvrjBJjB3d4N89?g_st=ac' },
+      { id: 'r24', type: 'helmond', text: '24 Helmond via Geldrop/Mierlo', pdf: '/routes/24.pdf', map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac' },
+      { id: 'r25', type: 'helmond', text: '25 Helmond - Gemert Pelgrimsrust', pdf: '/routes/25.pdf', map: 'https://goo.gl/maps/D5RWqdKkpQLaceaA8?g_st=ac' },
+      { id: 'r26', type: 'helmond', text: '26 Helmond - Gemert', pdf: '/routes/26.pdf', map: 'https://goo.gl/maps/33oHJptjDKoyeTV27?g_st=ac' },
+      { id: 'r28', type: 'helmond', text: '28 Deurne - Meijel', pdf: '/routes/28.pdf', map: 'https://goo.gl/maps/TqL7tE7qQh8vbjcT7?g_st=ac' },
+      { id: 'r51', type: 'helmond', text: '51 Helmond Eeuwsels', pdf: '/routes/51.pdf', map: 'https://goo.gl/maps/3NKXvMCmV92f4Bev8?g_st=ac' },
+      { id: 'r52', type: 'helmond', text: '52 Helmond Rijpelberg', pdf: '/routes/52.pdf', map: 'https://goo.gl/maps/7hPPB8ZNq6PHcM6b9?g_st=ac' },
+      { id: 'r53', type: 'helmond', text: '53 Helmond Straakven', pdf: '/routes/53.pdf', map: 'https://goo.gl/maps/sLirkmvixTATiw7V7?g_st=ac' },
+      { id: 'r54', type: 'helmond', text: '54 Helmond Brouwhuis', pdf: '/routes/54.pdf', map: 'https://goo.gl/maps/fRwZ4hcpxHcMbpHv6?g_st=ac' },
+      { id: 'r55', type: 'helmond', text: '55 Helmond Stiphout', pdf: '/routes/55.pdf', map: 'https://goo.gl/maps/NVuA2oQhG16v88669?g_st=ac' },
+      { id: 'r123', type: 'helmond', text: '123 Gemert Pelgrimsrust - Boxmeer', pdf: '/routes/123.pdf', map: 'https://goo.gl/maps/qWGwUtdUUNRXB5MD8?g_st=ac' },
+      { id: 'r150', type: 'helmond', text: '150 Helmond - Helmond \'t Hout', pdf: '/routes/150.pdf', map: 'https://goo.gl/maps/PpE8g8jfWTkNSWwS6?g_st=ac' },
+
+      /* SCHOLIEREN */
+      { id: 'r601', type: 'scholieren', text: '601 Scholierenlijn', map: '#' },
+      { id: 'r604', type: 'scholieren', text: '604 Scholierenlijn', map: '#' }
     ]
   },
   {
@@ -212,7 +225,6 @@ export default function Home() {
     localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(newTallies));
   };
 
-  // ----- VOORTGANG LOGICA -----
   const baseCategories = initialCategories.filter(c => !c.isRouteCategory);
   const baseItems = baseCategories.flatMap(c => c.items);
   const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
@@ -233,7 +245,6 @@ export default function Home() {
 
   return (
     <div>
-      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
@@ -312,7 +323,7 @@ export default function Home() {
             </div>
 
             <div style={{ marginBottom: '20px', padding: '0 5px' }}>
-               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
                   <span>VOORTGANG {routeSubTab.replace('-', ' ').toUpperCase()}</span>
                   <span>{progressCurrentTab}%</span>
                </div>
