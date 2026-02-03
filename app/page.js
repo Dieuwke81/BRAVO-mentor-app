@@ -167,7 +167,7 @@ const contactData = [
     contacts: [
       { name: 'Michiel Bles', phone: '088-6255731' },
       
-      { name: 'Mathieu Verberkt', phone: '088-6255733' },
+      { name: 'Mark Zwijnenburg', phone: '088-6255733' },
       { name: 'Patrick Houthooft', phone: '088-6255734' }
     ]
   }
