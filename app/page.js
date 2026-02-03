@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info } from 'lucide-react';
 
 const initialCategories = [
   {
@@ -124,7 +124,7 @@ const contactData = [
     contacts: [
       { name: 'Michel van Bakel', phone: '088-6255735' },
       { name: 'Schadetelefoon', phone: '06-38076828' },
-      { name: 'E-mail schades', email: 'Schade_eindhoven@connexxion.nl' }, // Nu met 'email' veld
+      { name: 'E-mail schades', email: 'Schade_eindhoven@connexxion.nl' }, 
       { name: 'Klantenservice (tegenpartij)', phone: '0800-0222277' }
     ]
   },
@@ -218,9 +218,11 @@ export default function Home() {
     localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(newCompleted));
   };
 
-  const updateTally = (routeId, type) => {
+  // delta is 1 of -1
+  const updateTally = (routeId, type, delta) => {
     const currentRouteTally = tallies[routeId] || { m: 0, z: 0 };
-    const newTallies = { ...tallies, [routeId]: { ...currentRouteTally, [type]: currentRouteTally[type] + 1 } };
+    const newValue = Math.max(0, currentRouteTally[type] + delta);
+    const newTallies = { ...tallies, [routeId]: { ...currentRouteTally, [type]: newValue } };
     setTallies(newTallies);
     localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(newTallies));
   };
@@ -292,7 +294,6 @@ export default function Home() {
           <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
 
-        {/* MAIN TAB NAVIGATIE */}
         <div style={{ display: 'flex', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }}>
           <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '0.75rem' }}>
             <Map size={18} /> Lijnen
@@ -330,9 +331,48 @@ export default function Home() {
                       {item.videos && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626', borderColor: '#fecaca' }}><Youtube size={16} /></button>}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', gap: '15px', marginLeft: '39px', padding: '10px 0 5px 0' }}>
-                    <button onClick={() => updateTally(item.id, 'm')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0f9ff', color: '#0369a1', border: '1px solid #bae6fd', padding: '6px 12px', borderRadius: '8px', fontSize: '0.85rem' }}><Eye size={14} /> M: {tallies[item.id]?.m || 0}</button>
-                    <button onClick={() => updateTally(item.id, 'z')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0', padding: '6px 12px', borderRadius: '8px', fontSize: '0.85rem' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</button>
+                  
+                  {/* TURF SECTIE: [-] Icoon [+] */}
+                  <div style={{ display: 'flex', gap: '20px', marginLeft: '39px', padding: '10px 0 5px 0' }}>
+                    
+                    {/* Meegereden (M) */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <button 
+                        onClick={() => updateTally(item.id, 'm', -1)} 
+                        style={{ border: '1px solid #bae6fd', background: 'white', color: '#0369a1', borderRadius: '6px', padding: '4px', cursor: 'pointer' }}
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0f9ff', color: '#0369a1', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 'bold', border: '1px solid #bae6fd' }}>
+                        <Eye size={14} /> M: {tallies[item.id]?.m || 0}
+                      </div>
+                      <button 
+                        onClick={() => updateTally(item.id, 'm', 1)} 
+                        style={{ border: '1px solid #bae6fd', background: 'white', color: '#0369a1', borderRadius: '6px', padding: '4px', cursor: 'pointer' }}
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+
+                    {/* Zelf gereden (Z) */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <button 
+                        onClick={() => updateTally(item.id, 'z', -1)} 
+                        style={{ border: '1px solid #bbf7d0', background: 'white', color: '#15803d', borderRadius: '6px', padding: '4px', cursor: 'pointer' }}
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', color: '#15803d', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 'bold', border: '1px solid #bbf7d0' }}>
+                        <Navigation size={14} /> Z: {tallies[item.id]?.z || 0}
+                      </div>
+                      <button 
+                        onClick={() => updateTally(item.id, 'z', 1)} 
+                        style={{ border: '1px solid #bbf7d0', background: 'white', color: '#15803d', borderRadius: '6px', padding: '4px', cursor: 'pointer' }}
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+                    
                   </div>
                 </div>
               ))}
@@ -359,7 +399,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* INFO / CONTACT TAB */}
+        {/* INFO TAB */}
         {mainTab === 'info' && (
           <div>
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px' }}>
