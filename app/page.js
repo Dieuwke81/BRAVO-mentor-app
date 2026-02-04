@@ -49,13 +49,7 @@ export default function Home() {
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { 
-      studentName: activeStudent, 
-      progress: localStorage.getItem(`bravo_progress_${activeStudent}`), 
-      tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), 
-      notes: localStorage.getItem(`bravo_notes_${activeStudent}`), 
-      dates: localStorage.getItem(`bravo_dates_${activeStudent}`) 
-    };
+    const data = { studentName: activeStudent, progress: localStorage.getItem(`bravo_progress_${activeStudent}`), tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), notes: localStorage.getItem(`bravo_notes_${activeStudent}`), dates: localStorage.getItem(`bravo_dates_${activeStudent}`) };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -103,20 +97,41 @@ export default function Home() {
   };
 
   const baseItems = initialCategories.flatMap(c => c.items);
-  const routeCategory = initialCategories.find(c => c.id === 'routes');
   const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
-  
   const pathPercentages = routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
     const done = items.filter(i => completed.includes(i.id)).length;
     const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
-    const totalCount = baseItems.length + items.length;
-    return totalCount === 0 ? 0 : ((baseDone + done) / totalCount) * 100;
+    const total = baseItems.length + items.length;
+    return total === 0 ? 0 : ((baseDone + done) / total) * 100;
   });
 
   const totalProgress = Math.round(Math.max(...pathPercentages)) || 0;
   const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
   const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
+
+  const addStudent = () => {
+    if (newStudentName.trim() && !students.includes(newStudentName.trim())) {
+      const newList = [...students, newStudentName.trim()];
+      setStudents(newList);
+      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
+      setActiveStudent(newStudentName.trim());
+      setNewStudentName('');
+    }
+  };
+
+  const deleteStudent = (name) => {
+    if (students.length > 1 && confirm(`Verwijder ${name}?`)) {
+      const newList = students.filter(s => s !== name);
+      setStudents(newList);
+      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
+      localStorage.removeItem(`bravo_progress_${name}`);
+      localStorage.removeItem(`bravo_tallies_${name}`);
+      localStorage.removeItem(`bravo_notes_${name}`);
+      localStorage.removeItem(`bravo_dates_${name}`);
+      setActiveStudent(newList[0]);
+    }
+  };
 
   const uniqueReportRoutes = [];
   const seenIds = new Set();
@@ -171,11 +186,11 @@ export default function Home() {
         </div>
         <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '10px', marginBottom: '15px' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-            <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', color: 'black' }}>{students.map(s => <option key={s} value={s}>{s}</option>)}</select>
+            <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', color: 'black', fontWeight: 'bold' }}>{students.map(s => <option key={s} value={s}>{s}</option>)}</select>
             <button onClick={() => deleteStudent(activeStudent)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}><Trash2 size={18} /></button>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Nieuwe leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px' }} /><button onClick={() => { if(newStudentName) { addStudent(); setNewStudentName(''); } }} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
+            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px' }} /><button onClick={() => { if(newStudentName) { addStudent(); setNewStudentName(''); } }} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
           </div>
         </div>
         <div className="progress-container"><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold' }}><span>VOORTGANG: {activeStudent}</span><span>{totalProgress}%</span></div><div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div></div>
@@ -225,24 +240,55 @@ export default function Home() {
           <div className="card">
             <div className="category-header"><Files size={22} /><span className="category-title">Documenten</span></div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-              {importantDocuments && importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', textAlign: 'left' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
+              {importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', textAlign: 'left' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
             </div>
           </div>
         )}
 
         {mainTab === 'info' && (
           <div>
+            {/* ZIEKMELDEN BLOK TERUGGEZET */}
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', color: '#dc2626', fontWeight: 'bold', marginBottom: '8px' }}>
                 <ShieldAlert size={20} /> ZIEKMELDEN
               </div>
-              <p style={{ margin: '4px 0', fontSize: '0.9rem' }}><b>Binnen kantooruren:</b> Bij je leidinggevende</p>
-              <p style={{ margin: '4px 0', fontSize: '0.9rem' }}><b>Buiten kantooruren:</b> Bel ROV (030-2849494)</p>
+              <p style={{ margin: '4px 0', fontSize: '0.9rem', color: 'black' }}><b>Binnen kantooruren:</b> Bij je leidinggevende</p>
+              <p style={{ margin: '4px 0', fontSize: '0.9rem', color: 'black' }}><b>Buiten kantooruren:</b> Bel ROV (030-2849494)</p>
             </div>
 
-            <div className="card" style={{ padding: '20px' }}><h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Rapportage Gegevens</h3><div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}><div><label style={{ fontSize: '0.8rem', color: '#666' }}>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} /></div><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}><div><label style={{ fontSize: '0.8rem' }}>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid #ddd' }} /></div><div><label style={{ fontSize: '0.8rem' }}>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid #ddd' }} /></div></div></div></div>
-            <div className="card" style={{ textAlign: 'center' }}><button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%' }}>Rapport maken</button><button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%' }}>Download data</button><label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label></div>
-            {contactData.map((group, idx) => (<div key={idx} className="card"><h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)' }}>{group.category}</h3>{group.contacts.map((c, i) => (<div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}><span>{c.name}</span><div>{c.phone && <a href={`tel:${c.phone}`} className="pdf-btn"><Phone size={14} /></a>}{c.email && <a href={`mailto:${c.email}`} className="pdf-btn"><Mail size={14} /></a>}</div></div>))}</div>))}
+            <div className="card" style={{ padding: '20px' }}><h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Rapportage Gegevens</h3><div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}><div><label style={{ fontSize: '0.8rem', color: '#666' }}>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd', color: 'black' }} /></div><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}><div><label style={{ fontSize: '0.8rem' }}>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', color: 'black' }} /></div><div><label style={{ fontSize: '0.8rem' }}>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid #ddd', color: 'black' }} /></div></div></div></div>
+            
+            <div className="card" style={{ textAlign: 'center' }}>
+              <button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%', cursor: 'pointer' }}>Rapport maken</button>
+              <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%', cursor: 'pointer' }}>Download data</button>
+              <label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', cursor: 'pointer' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
+            </div>
+
+            {/* CONTACT NUMMERS ZICHTBAAR GEMAAKT */}
+            {contactData.map((group, idx) => (
+              <div key={idx} className="card">
+                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', marginBottom: '10px' }}>{group.category}</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {group.contacts.map((c, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.85rem', color: 'black', fontWeight: '500' }}>{c.name}</span>
+                      <div style={{ display: 'flex', gap: '5px' }}>
+                        {c.phone && (
+                          <a href={`tel:${c.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f3f4f6', color: 'var(--bravo-purple)', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #ddd' }}>
+                            <Phone size={14} /> {c.phone}
+                          </a>
+                        )}
+                        {c.email && (
+                          <a href={`mailto:${c.email}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #bae6fd' }}>
+                            <Mail size={14} /> Mail
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -251,7 +297,7 @@ export default function Home() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .tally-btn { border: 1px solid #bae6fd; background: white; color: #0369a1; border-radius: 6px; padding: 4px; cursor: pointer; }
         .tally-score { display: flex; align-items: center; gap: 6px; background: #f0f9ff; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bae6fd; }
-        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 4px 10px; outline: none; }
+        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 4px 10px; outline: none; color: black; }
         @media print { .no-print { display: none !important; } .print-only { display: block !important; } body { background: white !important; } }
       `}</style>
     </div>
