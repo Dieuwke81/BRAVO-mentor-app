@@ -21,14 +21,16 @@ export default function Home() {
   const [pdfModal, setPdfModal] = useState(null);
 
   useEffect(() => {
-    setBaseUrl(window.location.origin);
+    if (typeof window !== 'undefined') {
+      setBaseUrl(window.location.origin);
+    }
     const savedStudents = localStorage.getItem('bravo_student_list');
     const savedMentor = localStorage.getItem('bravo_mentor_name');
     if (savedMentor) setMentorName(savedMentor);
     if (savedStudents) {
       const parsed = JSON.parse(savedStudents);
       if (parsed.length > 0) setStudents(parsed);
-      const lastActive = localStorage.getItem('bravo_active_student') || parsed[0];
+      const lastActive = localStorage.getItem('bravo_active_student') || (parsed && parsed[0]) || 'Standaard';
       setActiveStudent(lastActive);
     }
     setMounted(true);
@@ -47,7 +49,13 @@ export default function Home() {
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { studentName: activeStudent, progress: localStorage.getItem(`bravo_progress_${activeStudent}`), tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), notes: localStorage.getItem(`bravo_notes_${activeStudent}`), dates: localStorage.getItem(`bravo_dates_${activeStudent}`) };
+    const data = { 
+      studentName: activeStudent, 
+      progress: localStorage.getItem(`bravo_progress_${activeStudent}`), 
+      tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), 
+      notes: localStorage.getItem(`bravo_notes_${activeStudent}`), 
+      dates: localStorage.getItem(`bravo_dates_${activeStudent}`) 
+    };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -95,12 +103,15 @@ export default function Home() {
   };
 
   const baseItems = initialCategories.flatMap(c => c.items);
+  const routeCategory = initialCategories.find(c => c.id === 'routes');
   const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
+  
   const pathPercentages = routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
     const done = items.filter(i => completed.includes(i.id)).length;
     const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
-    return items.length === 0 ? 0 : ((baseDone + done) / (baseItems.length + items.length)) * 100;
+    const totalCount = baseItems.length + items.length;
+    return totalCount === 0 ? 0 : ((baseDone + done) / totalCount) * 100;
   });
 
   const totalProgress = Math.round(Math.max(...pathPercentages)) || 0;
@@ -164,15 +175,15 @@ export default function Home() {
             <button onClick={() => deleteStudent(activeStudent)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}><Trash2 size={18} /></button>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px' }} /><button onClick={() => { if(newStudentName) { addStudent(); setNewStudentName(''); } }} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
+            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Nieuwe leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px' }} /><button onClick={() => { if(newStudentName) { addStudent(); setNewStudentName(''); } }} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
           </div>
         </div>
         <div className="progress-container"><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold' }}><span>VOORTGANG: {activeStudent}</span><span>{totalProgress}%</span></div><div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div></div>
         <div style={{ display: 'flex', overflowX: 'auto', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }} className="no-scrollbar">
-          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Lijnen</button>
-          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Checklists</button>
-          <button onClick={() => setMainTab('docs')} style={{ flex: 1, padding: '10px', borderRadius: '8px', background: mainTab === 'docs' ? 'white' : 'transparent', color: mainTab === 'docs' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Docs</button>
-          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Info</button>
+          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Lijnen</button>
+          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Checklists</button>
+          <button onClick={() => setMainTab('docs')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'docs' ? 'white' : 'transparent', color: mainTab === 'docs' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Docs</button>
+          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Info</button>
         </div>
       </div>
 
@@ -214,13 +225,21 @@ export default function Home() {
           <div className="card">
             <div className="category-header"><Files size={22} /><span className="category-title">Documenten</span></div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-              {importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', textAlign: 'left' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
+              {importantDocuments && importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', textAlign: 'left' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
             </div>
           </div>
         )}
 
         {mainTab === 'info' && (
           <div>
+            <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', color: '#dc2626', fontWeight: 'bold', marginBottom: '8px' }}>
+                <ShieldAlert size={20} /> ZIEKMELDEN
+              </div>
+              <p style={{ margin: '4px 0', fontSize: '0.9rem' }}><b>Binnen kantooruren:</b> Bij je leidinggevende</p>
+              <p style={{ margin: '4px 0', fontSize: '0.9rem' }}><b>Buiten kantooruren:</b> Bel ROV (030-2849494)</p>
+            </div>
+
             <div className="card" style={{ padding: '20px' }}><h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Rapportage Gegevens</h3><div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}><div><label style={{ fontSize: '0.8rem', color: '#666' }}>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }} /></div><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}><div><label style={{ fontSize: '0.8rem' }}>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid #ddd' }} /></div><div><label style={{ fontSize: '0.8rem' }}>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid #ddd' }} /></div></div></div></div>
             <div className="card" style={{ textAlign: 'center' }}><button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%' }}>Rapport maken</button><button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%' }}>Download data</button><label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label></div>
             {contactData.map((group, idx) => (<div key={idx} className="card"><h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)' }}>{group.category}</h3>{group.contacts.map((c, i) => (<div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}><span>{c.name}</span><div>{c.phone && <a href={`tel:${c.phone}`} className="pdf-btn"><Phone size={14} /></a>}{c.email && <a href={`mailto:${c.email}`} className="pdf-btn"><Mail size={14} /></a>}</div></div>))}</div>))}
