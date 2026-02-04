@@ -158,3 +158,8 @@ export const contactData = [
     ]
   }
 ];
+export const importantDocuments = [
+  { id: 'doc-stoel', title: 'Stoelafstelling', pdf: '/docs/stoelafstelling.pdf' },
+  { id: 'doc-atw', title: 'Arbeidstijdenwet (ATW)', pdf: '/docs/atw.pdf' },
+  { id: 'doc-werkafspraken', title: 'Rayon Eindhoven - Werkafspraken', pdf: '/docs/afspraken.pdf' }
+];
