@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { busRoutes, initialCategories, contactData } from './data';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload, Printer } from 'lucide-react';
 
 export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
@@ -45,25 +45,21 @@ export default function Home() {
 
   if (!mounted) return null;
 
-  // EXPORT: Alleen de actieve leerling
   const exportData = () => {
     const data = {
-      version: "v2_single_student",
       studentName: activeStudent,
       progress: localStorage.getItem(`bravo_progress_${activeStudent}`),
       tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`),
       notes: localStorage.getItem(`bravo_notes_${activeStudent}`)
     };
-    
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `MentorApp_${activeStudent}_${new Date().toLocaleDateString()}.json`;
+    a.download = `MentorApp_${activeStudent}.json`;
     a.click();
   };
 
-  // IMPORT: Voeg leerling toe aan bestaande lijst
   const importData = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -71,27 +67,17 @@ export default function Home() {
     reader.onload = (event) => {
       try {
         const incoming = JSON.parse(event.target.result);
-        if (!incoming.studentName) throw new Error("Geen leerlingnaam gevonden");
-
         const name = incoming.studentName;
-        
-        // Voeg naam toe aan studentenlijst als deze nog niet bestaat
         let currentList = JSON.parse(localStorage.getItem('bravo_student_list') || '["Standaard"]');
         if (!currentList.includes(name)) {
           currentList.push(name);
           localStorage.setItem('bravo_student_list', JSON.stringify(currentList));
         }
-
-        // Sla de data op voor deze specifieke leerling
         if (incoming.progress) localStorage.setItem(`bravo_progress_${name}`, incoming.progress);
         if (incoming.tallies) localStorage.setItem(`bravo_tallies_${name}`, incoming.tallies);
         if (incoming.notes) localStorage.setItem(`bravo_notes_${name}`, incoming.notes);
-
-        alert(`Leerling ${name} succesvol geïmporteerd!`);
         window.location.reload();
-      } catch (err) { 
-        alert("Fout bij importeren: Bestand wordt niet herkend."); 
-      }
+      } catch (err) { alert("Fout bij importeren."); }
     };
     reader.readAsText(file);
   };
@@ -107,7 +93,7 @@ export default function Home() {
   };
 
   const deleteStudent = (name) => {
-    if (students.length > 1 && confirm(`Verwijder alle gegevens van ${name}?`)) {
+    if (students.length > 1 && confirm(`Verwijder ${name}?`)) {
       const newList = students.filter(s => s !== name);
       setStudents(newList);
       localStorage.setItem('bravo_student_list', JSON.stringify(newList));
@@ -156,18 +142,68 @@ export default function Home() {
 
   return (
     <div>
-      {/* PDF VIEWER MODAL IPHONE FIX */}
+      {/* PRINT VIEW (Alleen zichtbaar tijdens afdrukken) */}
+      <div className="print-only" style={{ display: 'none' }}>
+        <div style={{ padding: '40px', color: 'black', background: 'white' }}>
+          <div style={{ borderBottom: '2px solid #6d28d9', paddingBottom: '10px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <h1 style={{ fontSize: '24px', margin: 0 }}>Opleidingsrapport BRAVO</h1>
+              <p style={{ fontSize: '14px', margin: '5px 0' }}>Rayon Eindhoven - Hermes</p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <p><b>Leerling:</b> {activeStudent}</p>
+              <p><b>Datum:</b> {new Date().toLocaleDateString()}</p>
+            </div>
+          </div>
+
+          <h2 style={{ fontSize: '18px', borderBottom: '1px solid #eee' }}>1. Checklists & Vaardigheden</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '30px' }}>
+            {baseItems.map(item => (
+              <div key={item.id} style={{ fontSize: '12px', padding: '4px', borderBottom: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ width: '12px', height: '12px', border: '1px solid black', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {completed.includes(item.id) ? 'X' : ''}
+                </div>
+                {item.text}
+              </div>
+            ))}
+          </div>
+
+          <h2 style={{ fontSize: '18px', borderBottom: '1px solid #eee' }}>2. Lijnverkenning (Lijnvoering)</h2>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
+            <thead>
+              <tr style={{ background: '#f3f4f6' }}>
+                <th style={{ textAlign: 'left', padding: '8px', border: '1px solid #ddd' }}>Lijn</th>
+                <th style={{ padding: '8px', border: '1px solid #ddd' }}>Status</th>
+                <th style={{ padding: '8px', border: '1px solid #ddd' }}>M</th>
+                <th style={{ padding: '8px', border: '1px solid #ddd' }}>Z</th>
+                <th style={{ textAlign: 'left', padding: '8px', border: '1px solid #ddd' }}>Opmerkingen</th>
+              </tr>
+            </thead>
+            <tbody>
+              {busRoutes.filter(r => completed.includes(r.id) || (tallies[r.id]?.m > 0 || tallies[r.id]?.z > 0) || notes[r.id]).map(r => (
+                <tr key={r.id}>
+                  <td style={{ padding: '8px', border: '1px solid #ddd' }}>{r.text}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', border: '1px solid #ddd' }}>{completed.includes(r.id) ? 'VOLTOOID' : '-'}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', border: '1px solid #ddd' }}>{tallies[r.id]?.m || 0}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', border: '1px solid #ddd' }}>{tallies[r.id]?.z || 0}</td>
+                  <td style={{ padding: '8px', border: '1px solid #ddd' }}>{notes[r.id] || ''}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p style={{ marginTop: '40px', fontSize: '12px', fontStyle: 'italic', borderTop: '1px solid #eee', paddingTop: '10px' }}>Opgesteld door de mentor via de BRAVO Mentor App.</p>
+        </div>
+      </div>
+
+      {/* PDF MODAL IPHONE FIX */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'white', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 'bold' }}>{pdfModal.text}</span>
+              <span style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>{pdfModal.text}</span>
               <button onClick={() => setPdfModal(null)} style={{ background: 'white', color: 'var(--bravo-purple)', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold' }}>SLUITEN</button>
            </div>
            <div style={{ flex: 1 }}>
-              <iframe 
-                src={`https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + pdfModal.pdf)}&embedded=true`}
-                style={{ width: '100%', height: '100%', border: 'none' }}
-              ></iframe>
+              <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + pdfModal.pdf)}&embedded=true`} style={{ width: '100%', height: '100%', border: 'none' }}></iframe>
            </div>
         </div>
       )}
@@ -192,7 +228,7 @@ export default function Home() {
       )}
 
       {/* HEADER */}
-      <div className="header">
+      <div className="header no-print">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
             <div style={{ background: 'white', padding: '8px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '50px', minHeight: '50px' }}>
                 <img src="/logo.png" alt="Logo" style={{ height: '35px' }} />
@@ -224,26 +260,28 @@ export default function Home() {
           <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
 
+        {/* TAB NAVIGATIE */}
         <div style={{ display: 'flex', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }}>
-          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontSize: '0.75rem', fontWeight: 'bold' }}>
+          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>
             <Map size={18} /> Lijnen
           </button>
-          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontSize: '0.75rem', fontWeight: 'bold' }}>
+          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>
             <ClipboardCheck size={18} /> Checklists
           </button>
-          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontSize: '0.75rem', fontWeight: 'bold' }}>
+          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>
             <Phone size={18} /> Info
           </button>
         </div>
       </div>
 
-      <div className="container">
+      <div className="container no-print">
         {mainTab === 'routes' && (
           <div className="card">
             <div className="category-header"><Map size={22} /><span className="category-title">Lijnverkenning</span></div>
+            
             <div style={{ display: 'flex', overflowX: 'auto', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '10px', gap: '4px', whiteSpace: 'nowrap' }} className="no-scrollbar">
               {routeTypes.map(t => (
-                <button key={t} onClick={() => setRouteSubTab(t)} style={{ padding: '8px 15px', borderRadius: '6px', border: 'none', fontWeight: 'bold', background: routeSubTab === t ? 'white' : 'transparent', color: routeSubTab === t ? 'var(--bravo-purple)' : '#6b7280' }}>
+                <button key={t} onClick={() => setRouteSubTab(t)} style={{ padding: '8px 15px', borderRadius: '6px', border: 'none', fontSize: '0.8rem', fontWeight: 'bold', background: routeSubTab === t ? 'white' : 'transparent', color: routeSubTab === t ? 'var(--bravo-purple)' : '#6b7280' }}>
                   {t.replace('-', ' ').toUpperCase()}
                 </button>
               ))}
@@ -323,14 +361,16 @@ export default function Home() {
         {mainTab === 'info' && (
           <div>
             <div className="card" style={{ background: '#f8fafc', padding: '20px', border: '2px solid #e2e8f0', textAlign: 'center' }}>
-               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Deel Leerling Gegevens</h3>
-               <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '15px' }}>Exporteer alleen de huidige leerling ({activeStudent}) om te delen met een collega.</p>
+               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Dossier Beheer</h3>
                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <button onClick={() => window.print()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold' }}>
+                    <Printer size={18} /> Genereer Rapport (PDF)
+                  </button>
                   <button onClick={exportData} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold' }}>
-                    <Download size={18} /> Exporteer {activeStudent}
+                    <Download size={18} /> Exporteer data
                   </button>
                   <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold', cursor: 'pointer' }}>
-                    <Upload size={18} /> Importeer Leerling
+                    <Upload size={18} /> Importeer data
                     <input type="file" onChange={importData} style={{ display: 'none' }} accept=".json" />
                   </label>
                </div>
@@ -363,6 +403,13 @@ export default function Home() {
       <style jsx global>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @media print {
+          .no-print { display: none !important; }
+          .print-only { display: block !important; }
+          body { background: white !important; }
+          .container { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; }
+        }
       `}</style>
     </div>
   );
