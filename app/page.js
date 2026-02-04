@@ -14,7 +14,7 @@ export default function Home() {
   const [dates, setDates] = useState({ start: '', end: '' });
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
-  const [mainTab, setMainTab] = useState('routes'); // routes | checklist | docs | info
+  const [mainTab, setMainTab] = useState('routes');
   const [routeSubTab, setRouteSubTab] = useState('ehv-stad');
   const [videoModal, setVideoModal] = useState(null);
   const [pdfModal, setPdfModal] = useState(null);
@@ -96,22 +96,28 @@ export default function Home() {
     localStorage.setItem(`bravo_notes_${activeStudent}`, JSON.stringify(newNotes));
   };
 
-  const baseItems = initialCategories.flatMap(c => c.items);
-  const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
-  const routeCategory = initialCategories.find(c => c.id === 'routes');
-  const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
-  
-  const pathPercentages = routeTypes.map(t => {
-    const typeItems = busRoutes.filter(i => i.type === t);
-    const typeDone = typeItems.filter(i => completed.includes(i.id)).length;
-    const total = baseItems.length + typeItems.length;
-    return total === 0 ? 0 : ((baseDone + typeDone) / total) * 100;
-  });
+  const addStudent = () => {
+    if (newStudentName.trim() && !students.includes(newStudentName.trim())) {
+      const newList = [...students, newStudentName.trim()];
+      setStudents(newList);
+      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
+      setActiveStudent(newStudentName.trim());
+      setNewStudentName('');
+    }
+  };
 
-  const totalProgress = Math.round(Math.max(...pathPercentages)) || 0;
-  const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
-  const currentTabDone = currentTabItems.filter(i => completed.includes(i.id)).length;
-  const progressCurrentTab = Math.round((currentTabDone / (currentTabItems.length || 1)) * 100) || 0;
+  const deleteStudent = (name) => {
+    if (students.length > 1 && confirm(`Verwijder ${name}?`)) {
+      const newList = students.filter(s => s !== name);
+      setStudents(newList);
+      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
+      localStorage.removeItem(`bravo_progress_${name}`);
+      localStorage.removeItem(`bravo_tallies_${name}`);
+      localStorage.removeItem(`bravo_notes_${name}`);
+      localStorage.removeItem(`bravo_dates_${name}`);
+      setActiveStudent(newList[0]);
+    }
+  };
 
   const toggleItem = (id) => {
     const newCompleted = completed.includes(id) ? completed.filter(i => i !== id) : [...completed, id];
@@ -119,40 +125,26 @@ export default function Home() {
     localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(newCompleted));
   };
 
-  const uniqueReportRoutes = [];
-  const seenIds = new Set();
-  busRoutes.forEach(r => {
-    const hasData = completed.includes(r.id) || tallies[r.id]?.m > 0 || tallies[r.id]?.z > 0 || notes[r.id];
-    if (hasData && !seenIds.has(r.id)) { uniqueReportRoutes.push(r); seenIds.add(r.id); }
+  const baseItems = initialCategories.flatMap(c => c.items);
+  const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
+  
+  // Voortgangsberekening
+  const pathPercentages = routeTypes.map(t => {
+    const typeItems = busRoutes.filter(i => i.type === t);
+    const typeDone = typeItems.filter(i => completed.includes(i.id)).length;
+    const baseDoneCount = baseItems.filter(i => completed.includes(i.id)).length;
+    const total = baseItems.length + typeItems.length;
+    return total === 0 ? 0 : ((baseDoneCount + typeDone) / total) * 100;
   });
+
+  const totalProgress = Math.round(Math.max(...pathPercentages)) || 0;
+  const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
+  const currentTabDone = currentTabItems.filter(i => completed.includes(i.id)).length;
+  const progressCurrentTab = Math.round((currentTabDone / (currentTabItems.length || 1)) * 100) || 0;
 
   return (
     <div>
-      {/* PRINT VIEW */}
-      <div className="print-only" style={{ display: 'none' }}>
-        <div style={{ padding: '40px', color: 'black', background: 'white' }}>
-          <h1 style={{ fontSize: '26px', color: '#6d28d9', borderBottom: '3px solid #6d28d9' }}>Opleidingsrapport BRAVO</h1>
-          <p><b>Leerling:</b> {activeStudent} | <b>Periode:</b> {dates.start} t/m {dates.end}</p>
-          <h2 style={{ fontSize: '18px', marginTop: '20px' }}>1. Checklists</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-            {baseItems.map(item => (
-              <div key={item.id} style={{ fontSize: '12px' }}>[{completed.includes(item.id) ? 'X' : ' '}] {item.text}</div>
-            ))}
-          </div>
-          <h2 style={{ fontSize: '18px', marginTop: '20px' }}>2. Lijnverkenning</h2>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
-            <thead><tr style={{ background: '#eee' }}><th>Lijn</th><th>Status</th><th>M</th><th>Z</th><th>Opmerkingen</th></tr></thead>
-            <tbody>
-              {uniqueReportRoutes.map(r => (
-                <tr key={r.id}><td style={{ border: '1px solid #ccc' }}>{r.text}</td><td style={{ border: '1px solid #ccc' }}>{completed.includes(r.id) ? 'OK' : '-'}</td><td style={{ border: '1px solid #ccc' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc' }}>{notes[r.id] || ''}</td></tr>
-              ))}
-            </tbody>
-          </table>
-          <p style={{ marginTop: '30px' }}><b>Mentor:</b> {mentorName}</p>
-        </div>
-      </div>
-
-      {/* PDF MODAL */}
+      {/* PDF VIEWER MODAL */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'white', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -160,7 +152,10 @@ export default function Home() {
               <button onClick={() => setPdfModal(null)} style={{ background: 'white', color: 'var(--bravo-purple)', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold' }}>SLUITEN</button>
            </div>
            <div style={{ flex: 1 }}>
-              <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + pdfModal.pdf)}&embedded=true`} style={{ width: '100%', height: '100%', border: 'none' }}></iframe>
+              <iframe 
+                src={`https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + pdfModal.pdf)}&embedded=true`} 
+                style={{ width: '100%', height: '100%', border: 'none' }}
+              ></iframe>
            </div>
         </div>
       )}
@@ -208,8 +203,15 @@ export default function Home() {
             <button onClick={addStudent} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
           </div>
         </div>
+        
+        <div className="progress-container">
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold' }}>
+            <span>VOORTGANG: {activeStudent}</span>
+            <span>{totalProgress}%</span>
+          </div>
+          <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
+        </div>
 
-        {/* MAIN TABS NAVIGATIE (NU HORIZONTAAL SCROLLBAAR) */}
         <div style={{ display: 'flex', overflowX: 'auto', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px', whiteSpace: 'nowrap' }} className="no-scrollbar">
           <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px 15px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Map size={16} /> Lijnen
@@ -227,8 +229,6 @@ export default function Home() {
       </div>
 
       <div className="container">
-        
-        {/* ROUTES TAB */}
         {mainTab === 'routes' && (
           <div className="card">
             <div style={{ display: 'flex', overflowX: 'auto', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px', whiteSpace: 'nowrap' }} className="no-scrollbar">
@@ -236,38 +236,41 @@ export default function Home() {
                 <button key={t} onClick={() => setRouteSubTab(t)} style={{ padding: '8px 15px', borderRadius: '6px', border: 'none', fontSize: '0.8rem', fontWeight: 'bold', background: routeSubTab === t ? 'white' : 'transparent', color: routeSubTab === t ? 'var(--bravo-purple)' : '#6b7280' }}>{t.replace('-', ' ').toUpperCase()}</button>
               ))}
             </div>
-            {currentTabItems.map((item) => (
-              <div key={item.id + item.type} className="checkbox-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div className="checkbox-content" onClick={() => toggleItem(item.id)} style={{ flex: 1 }}>
-                    <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(item.id) && <CheckCircle2 size={16} />}</div>
-                    <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '1rem', fontWeight: '500' }}>{item.text}</span>
+
+            <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '10px' }}>
+              {currentTabItems.map((item) => (
+                <div key={item.id + item.type} className="checkbox-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div className="checkbox-content" onClick={() => toggleItem(item.id)} style={{ flex: 1 }}>
+                      <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(item.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(item.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(item.id) && <CheckCircle2 size={16} />}</div>
+                      <span style={{ textDecoration: completed.includes(item.id) ? 'line-through' : 'none', color: completed.includes(item.id) ? '#9ca3af' : 'inherit', fontSize: '1rem', fontWeight: '500' }}>{item.text}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      {item.map && item.map !== '#' && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={16} /></a>}
+                      {item.pdf && <button onClick={() => setPdfModal(item)} className="pdf-btn"><FileText size={16} /></button>}
+                      {item.videos && item.videos.length > 0 && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626' }}><Youtube size={16} /></button>}
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    {item.map && item.map !== '#' && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={16} /></a>}
-                    {item.pdf && <button onClick={() => setPdfModal(item)} className="pdf-btn"><FileText size={16} /></button>}
-                    {item.videos && item.videos.length > 0 && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626' }}><Youtube size={16} /></button>}
+                  
+                  <div style={{ display: 'flex', gap: '20px', marginLeft: '39px', padding: '10px 0 5px 0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <button onClick={() => updateTally(item.id, 'm', -1)} className="tally-btn"><Minus size={14} /></button>
+                      <div className="tally-score"><Eye size={14} /> M: {tallies[item.id]?.m || 0}</div>
+                      <button onClick={() => updateTally(item.id, 'm', 1)} className="tally-btn"><Plus size={14} /></button>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <button onClick={() => updateTally(item.id, 'z', -1)} className="tally-btn"><Minus size={14} /></button>
+                      <div className="tally-score" style={{ background: '#f0fdf4', color: '#15803d', borderColor: '#bbf7d0' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</div>
+                      <button onClick={() => updateTally(item.id, 'z', 1)} className="tally-btn"><Plus size={14} /></button>
+                    </div>
                   </div>
+                  <div style={{ marginLeft: '39px' }}><input type="text" value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} placeholder="Opmerking..." className="note-input" /></div>
                 </div>
-                <div style={{ display: 'flex', gap: '20px', marginLeft: '39px', padding: '10px 0' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <button onClick={() => updateTally(item.id, 'm', -1)} className="tally-btn"><Minus size={14} /></button>
-                    <div className="tally-score"><Eye size={14} /> M: {tallies[item.id]?.m || 0}</div>
-                    <button onClick={() => updateTally(item.id, 'm', 1)} className="tally-btn"><Plus size={14} /></button>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <button onClick={() => updateTally(item.id, 'z', -1)} className="tally-btn"><Minus size={14} /></button>
-                    <div className="tally-score" style={{ background: '#f0fdf4', color: '#15803d', borderColor: '#bbf7d0' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</div>
-                    <button onClick={() => updateTally(item.id, 'z', 1)} className="tally-btn"><Plus size={14} /></button>
-                  </div>
-                </div>
-                <div style={{ marginLeft: '39px' }}><input type="text" value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} placeholder="Opmerking..." className="note-input" /></div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
 
-        {/* CHECKLIST TAB */}
         {mainTab === 'checklist' && (
           <div>
             {initialCategories.map((category) => (
@@ -286,12 +289,11 @@ export default function Home() {
           </div>
         )}
 
-        {/* BELANGRIJKE DOCUMENTEN TAB */}
         {mainTab === 'docs' && (
           <div className="card">
             <div className="category-header"><Files size={22} /><span className="category-title">Belangrijke Documenten</span></div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-              {importantDocuments.map((doc) => (
+              {importantDocuments && importantDocuments.map((doc) => (
                 <button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', textAlign: 'left', cursor: 'pointer' }}>
                   <FileText size={24} color="var(--bravo-purple)" />
                   <span style={{ fontWeight: '600', fontSize: '0.95rem', color: '#374151' }}>{doc.title}</span>
@@ -301,7 +303,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* INFO TAB */}
         {mainTab === 'info' && (
           <div>
             <div className="card" style={{ background: '#f8fafc', padding: '20px', border: '2px solid #e2e8f0', textAlign: 'center' }}>
