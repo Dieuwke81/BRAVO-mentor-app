@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { busRoutes, initialCategories, contactData } from './data';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload } from 'lucide-react';
 
 export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
@@ -45,6 +45,40 @@ export default function Home() {
 
   if (!mounted) return null;
 
+  // EXPORT FUNCTIE
+  const exportData = () => {
+    const data = {};
+    const keys = ['bravo_student_list', 'bravo_active_student'];
+    students.forEach(s => {
+      keys.push(`bravo_progress_${s}`, `bravo_tallies_${s}`, `bravo_notes_${s}`);
+    });
+    keys.forEach(k => {
+      const val = localStorage.getItem(k);
+      if (val) data[k] = val;
+    });
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `bravo_backup_${activeStudent}.json`;
+    a.click();
+  };
+
+  // IMPORT FUNCTIE
+  const importData = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target.result);
+        Object.keys(data).forEach(k => localStorage.setItem(k, data[k]));
+        window.location.reload();
+      } catch (err) { alert("Fout bij importeren."); }
+    };
+    reader.readAsText(file);
+  };
+
   const addStudent = () => {
     if (newStudentName.trim() && !students.includes(newStudentName.trim())) {
       const newList = [...students, newStudentName.trim()];
@@ -74,9 +108,9 @@ export default function Home() {
   };
 
   const updateTally = (routeId, type, delta) => {
-    const currentRouteTally = tallies[routeId] || { m: 0, z: 0 };
-    const newValue = Math.max(0, currentRouteTally[type] + delta);
-    const newTallies = { ...tallies, [routeId]: { ...currentRouteTally, [type]: newValue } };
+    const currentTally = tallies[routeId] || { m: 0, z: 0 };
+    const newValue = Math.max(0, currentTally[type] + delta);
+    const newTallies = { ...tallies, [routeId]: { ...currentTally, [type]: newValue } };
     setTallies(newTallies);
     localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(newTallies));
   };
@@ -105,11 +139,11 @@ export default function Home() {
 
   return (
     <div>
-      {/* PDF MODAL IPHONE FIX */}
+      {/* PDF VIEWER MODAL IPHONE FIX */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'white', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 'bold' }}>{pdfModal.text}</span>
+              <span style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>{pdfModal.text}</span>
               <button onClick={() => setPdfModal(null)} style={{ background: 'white', color: 'var(--bravo-purple)', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold' }}>SLUITEN</button>
            </div>
            <div style={{ flex: 1 }}>
@@ -117,9 +151,6 @@ export default function Home() {
                 src={`https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + pdfModal.pdf)}&embedded=true`}
                 style={{ width: '100%', height: '100%', border: 'none' }}
               ></iframe>
-           </div>
-           <div style={{ padding: '10px', textAlign: 'center', background: '#f3f4f6' }}>
-              <a href={pdfModal.pdf} target="_blank" style={{ fontSize: '0.8rem', color: 'var(--bravo-purple)', fontWeight: 'bold' }}>Laden mislukt? Open extern</a>
            </div>
         </div>
       )}
@@ -274,15 +305,35 @@ export default function Home() {
 
         {mainTab === 'info' && (
           <div>
+            <div className="card" style={{ background: '#f8fafc', padding: '20px', border: '2px solid #e2e8f0', textAlign: 'center' }}>
+               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px' }}>Back-up Beheer</h3>
+               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <button onClick={exportData} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold' }}>
+                    <Download size={18} /> Download Back-up
+                  </button>
+                  <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold', cursor: 'pointer' }}>
+                    <Upload size={18} /> Importeer Back-up
+                    <input type="file" onChange={importData} style={{ display: 'none' }} accept=".json" />
+                  </label>
+               </div>
+            </div>
+
+            <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginTop: '20px' }}>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', color: '#dc2626', fontWeight: 'bold', marginBottom: '8px' }}><ShieldAlert size={20} /> ZIEKMELDEN</div>
+              <p style={{ margin: '4px 0', fontSize: '0.9rem' }}><b>Binnen kantooruren:</b> Bij je leidinggevende</p>
+              <p style={{ margin: '4px 0', fontSize: '0.9rem' }}><b>Buiten kantooruren:</b> Bel ROV (030-2849494)</p>
+            </div>
             {contactData.map((group, idx) => (
               <div key={idx} className="card">
                 <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '2px solid #f3f4f6', paddingBottom: '8px', marginBottom: '10px' }}>{group.category}</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {group.contacts.map((c, i) => (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.9rem' }}>{c.name}</span>
-                      {c.phone && <a href={`tel:${c.phone}`} className="pdf-btn" style={{ padding: '6px 12px' }}><Phone size={14} /> {c.phone}</a>}
-                      {c.email && <a href={`mailto:${c.email}`} className="pdf-btn" style={{ padding: '6px 12px' }}><Mail size={14} /> Mail</a>}
+                      <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{c.name}</span>
+                      <div style={{ display: 'flex', gap: '5px' }}>
+                        {c.phone && <a href={`tel:${c.phone}`} className="pdf-btn" style={{ padding: '6px 12px' }}><Phone size={14} /> {c.phone}</a>}
+                        {c.email && <a href={`mailto:${c.email}`} className="pdf-btn" style={{ padding: '6px 12px' }}><Mail size={14} /> Mail</a>}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -291,6 +342,10 @@ export default function Home() {
           </div>
         )}
       </div>
+      <style jsx global>{`
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </div>
   );
 }
