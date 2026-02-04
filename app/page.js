@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { busRoutes, initialCategories, contactData } from './data';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload, Printer } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload, Printer, Calendar, UserCheck } from 'lucide-react';
 
 export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
@@ -10,6 +10,8 @@ export default function Home() {
   const [completed, setCompleted] = useState([]);
   const [tallies, setTallies] = useState({});
   const [notes, setNotes] = useState({});
+  const [mentorName, setMentorName] = useState(''); // Nieuw: Mentor naam
+  const [dates, setDates] = useState({ start: '', end: '' }); // Nieuw: Datums
   const [mounted, setMounted] = useState(false);
   const [newStudentName, setNewStudentName] = useState('');
   const [mainTab, setMainTab] = useState('routes');
@@ -19,6 +21,9 @@ export default function Home() {
 
   useEffect(() => {
     const savedStudents = localStorage.getItem('bravo_student_list');
+    const savedMentor = localStorage.getItem('bravo_mentor_name');
+    if (savedMentor) setMentorName(savedMentor);
+    
     if (savedStudents) {
       const parsed = JSON.parse(savedStudents);
       if (parsed.length > 0) {
@@ -39,18 +44,33 @@ export default function Home() {
       setTallies(savedTallies ? JSON.parse(savedTallies) : {});
       const savedNotes = localStorage.getItem(`bravo_notes_${activeStudent}`);
       setNotes(savedNotes ? JSON.parse(savedNotes) : {});
+      const savedDates = localStorage.getItem(`bravo_dates_${activeStudent}`);
+      setDates(savedDates ? JSON.parse(savedDates) : { start: '', end: '' });
+      
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
 
   if (!mounted) return null;
 
+  const saveMentorName = (val) => {
+    setMentorName(val);
+    localStorage.setItem('bravo_mentor_name', val);
+  };
+
+  const saveDates = (type, val) => {
+    const newDates = { ...dates, [type]: val };
+    setDates(newDates);
+    localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(newDates));
+  };
+
   const exportData = () => {
     const data = {
       studentName: activeStudent,
       progress: localStorage.getItem(`bravo_progress_${activeStudent}`),
       tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`),
-      notes: localStorage.getItem(`bravo_notes_${activeStudent}`)
+      notes: localStorage.getItem(`bravo_notes_${activeStudent}`),
+      dates: localStorage.getItem(`bravo_dates_${activeStudent}`)
     };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -76,6 +96,7 @@ export default function Home() {
         if (incoming.progress) localStorage.setItem(`bravo_progress_${name}`, incoming.progress);
         if (incoming.tallies) localStorage.setItem(`bravo_tallies_${name}`, incoming.tallies);
         if (incoming.notes) localStorage.setItem(`bravo_notes_${name}`, incoming.notes);
+        if (incoming.dates) localStorage.setItem(`bravo_dates_${name}`, incoming.dates);
         window.location.reload();
       } catch (err) { alert("Fout bij importeren."); }
     };
@@ -100,6 +121,7 @@ export default function Home() {
       localStorage.removeItem(`bravo_progress_${name}`);
       localStorage.removeItem(`bravo_tallies_${name}`);
       localStorage.removeItem(`bravo_notes_${name}`);
+      localStorage.removeItem(`bravo_dates_${name}`);
       setActiveStudent(newList[0]);
     }
   };
@@ -126,6 +148,7 @@ export default function Home() {
 
   const baseItems = initialCategories.flatMap(c => c.items);
   const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
+  const routeCategory = initialCategories.find(c => c.id === 'routes');
   const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
   
   const pathPercentages = routeTypes.map(t => {
@@ -140,27 +163,38 @@ export default function Home() {
   const currentTabDone = currentTabItems.filter(i => completed.includes(i.id)).length;
   const progressCurrentTab = Math.round((currentTabDone / (currentTabItems.length || 1)) * 100) || 0;
 
+  // Filter unieke lijnen voor rapport (voorkomt dubbeling Stad/Streek)
+  const uniqueReportRoutes = [];
+  const seenIds = new Set();
+  busRoutes.forEach(r => {
+    const hasData = completed.includes(r.id) || tallies[r.id]?.m > 0 || tallies[r.id]?.z > 0 || notes[r.id];
+    if (hasData && !seenIds.has(r.id)) {
+      uniqueReportRoutes.push(r);
+      seenIds.add(r.id);
+    }
+  });
+
   return (
     <div>
-      {/* PRINT VIEW (Alleen zichtbaar tijdens afdrukken) */}
+      {/* PRINT VIEW */}
       <div className="print-only" style={{ display: 'none' }}>
-        <div style={{ padding: '40px', color: 'black', background: 'white' }}>
-          <div style={{ borderBottom: '2px solid #6d28d9', paddingBottom: '10px', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ padding: '40px', color: 'black', background: 'white', fontFamily: 'sans-serif' }}>
+          <div style={{ borderBottom: '3px solid #6d28d9', paddingBottom: '15px', marginBottom: '25px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <h1 style={{ fontSize: '24px', margin: 0 }}>Opleidingsrapport BRAVO</h1>
-              <p style={{ fontSize: '14px', margin: '5px 0' }}>Rayon Eindhoven - Hermes</p>
+              <h1 style={{ fontSize: '26px', margin: 0, color: '#6d28d9' }}>Opleidingsrapport BRAVO</h1>
+              <p style={{ fontSize: '14px', margin: '5px 0', color: '#666' }}>Rayon Eindhoven - Hermes</p>
             </div>
-            <div style={{ textAlign: 'right' }}>
-              <p><b>Leerling:</b> {activeStudent}</p>
-              <p><b>Datum:</b> {new Date().toLocaleDateString()}</p>
+            <div style={{ textAlign: 'right', fontSize: '14px' }}>
+              <p style={{ margin: '2px 0' }}><b>Leerling:</b> {activeStudent}</p>
+              <p style={{ margin: '2px 0' }}><b>Periode:</b> {dates.start || '...'} t/m {dates.end || '...'}</p>
             </div>
           </div>
 
-          <h2 style={{ fontSize: '18px', borderBottom: '1px solid #eee' }}>1. Checklists & Vaardigheden</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '30px' }}>
+          <h2 style={{ fontSize: '18px', background: '#f3f4f6', padding: '8px', borderRadius: '4px' }}>1. Checklists & Vaardigheden</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '30px', padding: '10px' }}>
             {baseItems.map(item => (
-              <div key={item.id} style={{ fontSize: '12px', padding: '4px', borderBottom: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '12px', height: '12px', border: '1px solid black', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div key={item.id} style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '14px', height: '14px', border: '1px solid #000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
                   {completed.includes(item.id) ? 'X' : ''}
                 </div>
                 {item.text}
@@ -168,34 +202,39 @@ export default function Home() {
             ))}
           </div>
 
-          <h2 style={{ fontSize: '18px', borderBottom: '1px solid #eee' }}>2. Lijnverkenning (Lijnvoering)</h2>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
+          <h2 style={{ fontSize: '18px', background: '#f3f4f6', padding: '8px', borderRadius: '4px' }}>2. Lijnverkenning</h2>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px', marginTop: '10px' }}>
             <thead>
-              <tr style={{ background: '#f3f4f6' }}>
-                <th style={{ textAlign: 'left', padding: '8px', border: '1px solid #ddd' }}>Lijn</th>
-                <th style={{ padding: '8px', border: '1px solid #ddd' }}>Status</th>
-                <th style={{ padding: '8px', border: '1px solid #ddd' }}>M</th>
-                <th style={{ padding: '8px', border: '1px solid #ddd' }}>Z</th>
-                <th style={{ textAlign: 'left', padding: '8px', border: '1px solid #ddd' }}>Opmerkingen</th>
+              <tr style={{ background: '#eee' }}>
+                <th style={{ textAlign: 'left', padding: '10px', border: '1px solid #ccc' }}>Lijn</th>
+                <th style={{ padding: '10px', border: '1px solid #ccc' }}>Status</th>
+                <th style={{ padding: '10px', border: '1px solid #ccc' }}>M</th>
+                <th style={{ padding: '10px', border: '1px solid #ccc' }}>Z</th>
+                <th style={{ textAlign: 'left', padding: '10px', border: '1px solid #ccc' }}>Opmerkingen</th>
               </tr>
             </thead>
             <tbody>
-              {busRoutes.filter(r => completed.includes(r.id) || (tallies[r.id]?.m > 0 || tallies[r.id]?.z > 0) || notes[r.id]).map(r => (
+              {uniqueReportRoutes.map(r => (
                 <tr key={r.id}>
-                  <td style={{ padding: '8px', border: '1px solid #ddd' }}>{r.text}</td>
-                  <td style={{ textAlign: 'center', padding: '8px', border: '1px solid #ddd' }}>{completed.includes(r.id) ? 'VOLTOOID' : '-'}</td>
-                  <td style={{ textAlign: 'center', padding: '8px', border: '1px solid #ddd' }}>{tallies[r.id]?.m || 0}</td>
-                  <td style={{ textAlign: 'center', padding: '8px', border: '1px solid #ddd' }}>{tallies[r.id]?.z || 0}</td>
-                  <td style={{ padding: '8px', border: '1px solid #ddd' }}>{notes[r.id] || ''}</td>
+                  <td style={{ padding: '10px', border: '1px solid #ccc', fontWeight: 'bold' }}>{r.text}</td>
+                  <td style={{ textAlign: 'center', padding: '10px', border: '1px solid #ccc' }}>{completed.includes(r.id) ? 'VOLTOOID' : '-'}</td>
+                  <td style={{ textAlign: 'center', padding: '10px', border: '1px solid #ccc' }}>{tallies[r.id]?.m || 0}</td>
+                  <td style={{ textAlign: 'center', padding: '10px', border: '1px solid #ccc' }}>{tallies[r.id]?.z || 0}</td>
+                  <td style={{ padding: '10px', border: '1px solid #ccc' }}>{notes[r.id] || ''}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <p style={{ marginTop: '40px', fontSize: '12px', fontStyle: 'italic', borderTop: '1px solid #eee', paddingTop: '10px' }}>Opgesteld door de mentor via de BRAVO Mentor App.</p>
+          
+          <div style={{ marginTop: '50px', borderTop: '1px solid #eee', paddingTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: '13px' }}><b>Mentor:</b> {mentorName || '................................'}</p>
+            <p style={{ fontSize: '13px' }}><b>Handtekening:</b> ................................</p>
+          </div>
+          <p style={{ marginTop: '20px', fontSize: '11px', color: '#999', textAlign: 'center' }}>Gegenereerd via de BRAVO Mentor App op {new Date().toLocaleDateString()}</p>
         </div>
       </div>
 
-      {/* PDF MODAL IPHONE FIX */}
+      {/* PDF VIEWER MODAL */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'white', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -203,7 +242,10 @@ export default function Home() {
               <button onClick={() => setPdfModal(null)} style={{ background: 'white', color: 'var(--bravo-purple)', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold' }}>SLUITEN</button>
            </div>
            <div style={{ flex: 1 }}>
-              <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + pdfModal.pdf)}&embedded=true`} style={{ width: '100%', height: '100%', border: 'none' }}></iframe>
+              <iframe 
+                src={`https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + pdfModal.pdf)}&embedded=true`}
+                style={{ width: '100%', height: '100%', border: 'none' }}
+              ></iframe>
            </div>
         </div>
       )}
@@ -287,16 +329,6 @@ export default function Home() {
               ))}
             </div>
 
-            <div style={{ marginBottom: '20px', padding: '0 5px' }}>
-               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '4px', color: '#6b7280' }}>
-                  <span>VOORTGANG {routeSubTab.replace('-', ' ').toUpperCase()}</span>
-                  <span>{progressCurrentTab}%</span>
-               </div>
-               <div style={{ height: '8px', background: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
-                  <div style={{ height: '100%', background: 'var(--bravo-purple)', width: `${progressCurrentTab}%`, transition: 'width 0.5s ease' }}></div>
-               </div>
-            </div>
-
             <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '10px' }}>
               {currentTabItems.map((item) => (
                 <div key={item.id + item.type} className="checkbox-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
@@ -360,6 +392,47 @@ export default function Home() {
 
         {mainTab === 'info' && (
           <div>
+            {/* NIEUW: RAPPORTAGE GEGEVENS */}
+            <div className="card" style={{ padding: '20px' }}>
+               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <UserCheck size={20} /> Rapportage Gegevens
+               </h3>
+               <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                  <div>
+                    <label style={{ fontSize: '0.8rem', color: '#666', display: 'block', marginBottom: '5px' }}>Naam Mentor</label>
+                    <input 
+                      type="text" 
+                      value={mentorName} 
+                      onChange={(e) => saveMentorName(e.target.value)}
+                      placeholder="Je eigen naam..."
+                      style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
+                    />
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div>
+                      <label style={{ fontSize: '0.8rem', color: '#666', display: 'block', marginBottom: '5px' }}>Start Opleiding</label>
+                      <input 
+                        type="text" 
+                        value={dates.start} 
+                        onChange={(e) => saveDates('start', e.target.value)}
+                        placeholder="bijv: 1 feb"
+                        style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '0.8rem', color: '#666', display: 'block', marginBottom: '5px' }}>Eind Opleiding</label>
+                      <input 
+                        type="text" 
+                        value={dates.end} 
+                        onChange={(e) => saveDates('end', e.target.value)}
+                        placeholder="bijv: 28 feb"
+                        style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #ddd' }}
+                      />
+                    </div>
+                  </div>
+               </div>
+            </div>
+
             <div className="card" style={{ background: '#f8fafc', padding: '20px', border: '2px solid #e2e8f0', textAlign: 'center' }}>
                <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Dossier Beheer</h3>
                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -376,6 +449,7 @@ export default function Home() {
                </div>
             </div>
 
+            {/* CONTACT GEGEVENS */}
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginTop: '20px' }}>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', color: '#dc2626', fontWeight: 'bold', marginBottom: '8px' }}><ShieldAlert size={20} /> ZIEKMELDEN</div>
               <p style={{ margin: '4px 0', fontSize: '0.9rem' }}><b>Binnen kantooruren:</b> Bij je leidinggevende</p>
