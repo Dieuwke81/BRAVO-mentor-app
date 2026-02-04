@@ -97,7 +97,7 @@ export default function Home() {
   };
 
   const baseItems = initialCategories.flatMap(c => c.items);
-  const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
+  const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel/valkenswaard', 'helmond', 'scholieren'];
   const pathPercentages = routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
     const done = items.filter(i => completed.includes(i.id)).length;
