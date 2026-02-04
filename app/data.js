@@ -70,12 +70,30 @@ export const busRoutes = [
 
   /* OVERIGE RAYONS */
   { id: 'placeholder-rv', type: 'reusel-valkenswaard', text: 'Lijnen Reusel hier invullen...', map: '#' },
-  
+
+  { id: 'r11', type: 'helmond', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: 'https://goo.gl/maps/44XVLgFnh5fH7Dvc8?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/5qiDFBfGH0o' }, { label: 'Terugrit', url: 'https://youtu.be/qb78B89VKbg' }] },
+  { id: 'r18', type: 'helmond', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/aoglS4lPltI?si=Dkt8aN353u0i6yaj' }, { label: 'Terugrit', url: 'https://youtu.be/kHnBKXtgUGw?si=ErPzS9dXF1-skWQV' }] },
+  { id: 'r19', type: 'helmond', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: 'https://goo.gl/maps/5JPt3zvstws5gBzf6?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
+  { id: 'r20', type: 'helmond', text: '20 Best NS - HTC', pdf: '/routes/20 (1).pdf', map: 'https://goo.gl/maps/DzPyz1xXHau3Y2XQ9?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
+   
  { id: 'r23', type: 'helmond', text: '23 Boxmeer', pdf: '/routes/23.pdf', map: 'https://goo.gl/maps/pBPPvrjBJjB3d4N89?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
+{ id: 'r24', type: 'helmond', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
+  
   { id: 'r25', type: 'helmond', text: '25 Helmond - Gemert Pelgrimsrust', pdf: '/routes/25.pdf', map: 'https://goo.gl/maps/D5RWqdKkpQLaceaA8?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
   { id: 'r26', type: 'helmond', text: '26 Helmond - Gemert', pdf: '/routes/26.pdf', map: 'https://goo.gl/maps/33oHJptjDKoyeTV27?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
 { id: 'r51', type: 'helmond', text: '51 Helmond Eeuwsels', pdf: '/routes/51.pdf', map: 'https://goo.gl/maps/3NKXvMCmV92f4Bev8?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
+    { id: 'r120', type: 'helmond', text: '120 Best NS - ASML gebouw 4', pdf: '/routes/120.pdf', map: 'https://goo.gl/maps/TxpRYt8Jxkhh2Fk17?g_st=ac' },
+/*  { id: 'r123', type: 'ehv-streek', text: '123 Gemert Pelgrimsrust - Boxmeer', pdf: '/routes/123.pdf', map: 'https://goo.gl/maps/qWGwUtdUUNRXB5MD8?g_st=ac' }, */
   { id: 'r150', type: 'helmond', text: '150 Helmond - Helmond \'t Hout', pdf: '/routes/150.pdf', map: 'https://goo.gl/maps/PpE8g8jfWTkNSWwS6?g_st=ac' },
+  
+  { id: 'r317', type: 'helmond', text: '317 Dommelen', pdf: '/routes/317.pdf', map: 'https://goo.gl/maps/6VGZqioQwPVqZta57?g_st=ac' },
+  { id: 'r318', type: 'helmond', text: '318 Luyksgestel', pdf: '/routes/318.pdf', map: 'https://goo.gl/maps/vC9yVfv6rtfeETKy5?g_st=ac' },
+  { id: 'r319', type: 'helmond', text: '319 Reusel', pdf: '/routes/319.pdf', map: 'https://goo.gl/maps/4JJ1icwuqNwCeUrh7?g_st=ac' },
+  { id: 'r320', type: 'helmond', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf', map: 'https://goo.gl/maps/WSyXUrgdBGnSfnHk9?g_st=ac' },
+  { id: 'r321', type: 'helmond', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf', map: 'https://goo.gl/maps/di715Und6vygLtiQ7?g_st=ac' },
+  { id: 'r322', type: 'helmond', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: 'https://goo.gl/maps/NNFGPAnn8Ai451H5A?g_st=ac' },
+  { id: 'r323', type: 'helmond', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac' },
+  { id: 'r324', type: 'helmond', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/bqwSqdBEpqU' }, { label: 'Terugrit', url: 'https://youtu.be/UUhg-zk6wkc' }] },
   
   
   { id: 'placeholder-sch', type: 'scholieren', text: 'Lijnen Scholieren hier invullen...', map: '#' }
