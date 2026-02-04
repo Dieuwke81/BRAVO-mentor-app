@@ -45,36 +45,53 @@ export default function Home() {
 
   if (!mounted) return null;
 
-  // EXPORT FUNCTIE
+  // EXPORT: Alleen de actieve leerling
   const exportData = () => {
-    const data = {};
-    const keys = ['bravo_student_list', 'bravo_active_student'];
-    students.forEach(s => {
-      keys.push(`bravo_progress_${s}`, `bravo_tallies_${s}`, `bravo_notes_${s}`);
-    });
-    keys.forEach(k => {
-      const val = localStorage.getItem(k);
-      if (val) data[k] = val;
-    });
+    const data = {
+      version: "v2_single_student",
+      studentName: activeStudent,
+      progress: localStorage.getItem(`bravo_progress_${activeStudent}`),
+      tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`),
+      notes: localStorage.getItem(`bravo_notes_${activeStudent}`)
+    };
+    
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `bravo_backup_${activeStudent}.json`;
+    a.download = `MentorApp_${activeStudent}_${new Date().toLocaleDateString()}.json`;
     a.click();
   };
 
-  // IMPORT FUNCTIE
+  // IMPORT: Voeg leerling toe aan bestaande lijst
   const importData = (e) => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
-        const data = JSON.parse(event.target.result);
-        Object.keys(data).forEach(k => localStorage.setItem(k, data[k]));
+        const incoming = JSON.parse(event.target.result);
+        if (!incoming.studentName) throw new Error("Geen leerlingnaam gevonden");
+
+        const name = incoming.studentName;
+        
+        // Voeg naam toe aan studentenlijst als deze nog niet bestaat
+        let currentList = JSON.parse(localStorage.getItem('bravo_student_list') || '["Standaard"]');
+        if (!currentList.includes(name)) {
+          currentList.push(name);
+          localStorage.setItem('bravo_student_list', JSON.stringify(currentList));
+        }
+
+        // Sla de data op voor deze specifieke leerling
+        if (incoming.progress) localStorage.setItem(`bravo_progress_${name}`, incoming.progress);
+        if (incoming.tallies) localStorage.setItem(`bravo_tallies_${name}`, incoming.tallies);
+        if (incoming.notes) localStorage.setItem(`bravo_notes_${name}`, incoming.notes);
+
+        alert(`Leerling ${name} succesvol geïmporteerd!`);
         window.location.reload();
-      } catch (err) { alert("Fout bij importeren."); }
+      } catch (err) { 
+        alert("Fout bij importeren: Bestand wordt niet herkend."); 
+      }
     };
     reader.readAsText(file);
   };
@@ -90,7 +107,7 @@ export default function Home() {
   };
 
   const deleteStudent = (name) => {
-    if (students.length > 1 && confirm(`Verwijder ${name}?`)) {
+    if (students.length > 1 && confirm(`Verwijder alle gegevens van ${name}?`)) {
       const newList = students.filter(s => s !== name);
       setStudents(newList);
       localStorage.setItem('bravo_student_list', JSON.stringify(newList));
@@ -143,7 +160,7 @@ export default function Home() {
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'white', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>{pdfModal.text}</span>
+              <span style={{ fontWeight: 'bold' }}>{pdfModal.text}</span>
               <button onClick={() => setPdfModal(null)} style={{ background: 'white', color: 'var(--bravo-purple)', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold' }}>SLUITEN</button>
            </div>
            <div style={{ flex: 1 }}>
@@ -188,33 +205,33 @@ export default function Home() {
 
         <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '10px', marginBottom: '15px' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-            <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', color: 'black' }}>
+            <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', color: 'black', fontWeight: 'bold' }}>
               {students.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
             <button onClick={() => deleteStudent(activeStudent)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}><Trash2 size={18} /></button>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px' }} />
+            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Nieuwe leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px' }} />
             <button onClick={addStudent} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
           </div>
         </div>
         
         <div className="progress-container">
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold' }}>
-            <span>TOTALE VOORTGANG</span>
+            <span>VOORTGANG: {activeStudent}</span>
             <span>{totalProgress}%</span>
           </div>
           <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
 
         <div style={{ display: 'flex', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }}>
-          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontSize: '0.75rem' }}>
+          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontSize: '0.75rem', fontWeight: 'bold' }}>
             <Map size={18} /> Lijnen
           </button>
-          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontSize: '0.75rem' }}>
+          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontSize: '0.75rem', fontWeight: 'bold' }}>
             <ClipboardCheck size={18} /> Checklists
           </button>
-          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontSize: '0.75rem' }}>
+          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px', border: 'none', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontSize: '0.75rem', fontWeight: 'bold' }}>
             <Phone size={18} /> Info
           </button>
         </div>
@@ -306,13 +323,14 @@ export default function Home() {
         {mainTab === 'info' && (
           <div>
             <div className="card" style={{ background: '#f8fafc', padding: '20px', border: '2px solid #e2e8f0', textAlign: 'center' }}>
-               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px' }}>Back-up Beheer</h3>
+               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Deel Leerling Gegevens</h3>
+               <p style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '15px' }}>Exporteer alleen de huidige leerling ({activeStudent}) om te delen met een collega.</p>
                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <button onClick={exportData} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold' }}>
-                    <Download size={18} /> Download Back-up
+                    <Download size={18} /> Exporteer {activeStudent}
                   </button>
                   <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold', cursor: 'pointer' }}>
-                    <Upload size={18} /> Importeer Back-up
+                    <Upload size={18} /> Importeer Leerling
                     <input type="file" onChange={importData} style={{ display: 'none' }} accept=".json" />
                   </label>
                </div>
