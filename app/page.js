@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { busRoutes, initialCategories, contactData, importantDocuments } from './data';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck, Files } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload, Printer, Calendar, UserCheck, Files } from 'lucide-react';
 
 export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
@@ -14,6 +14,7 @@ export default function Home() {
   const [dates, setDates] = useState({ start: '', end: '' });
   const [mounted, setMounted] = useState(false);
   const [baseUrl, setBaseUrl] = useState('');
+  const [newStudentName, setNewStudentName] = useState('');
   const [mainTab, setMainTab] = useState('routes');
   const [routeSubTab, setRouteSubTab] = useState('ehv-stad');
   const [videoModal, setVideoModal] = useState(null);
@@ -37,10 +38,14 @@ export default function Home() {
 
   useEffect(() => {
     if (mounted) {
-      setCompleted(JSON.parse(localStorage.getItem(`bravo_progress_${activeStudent}`) || '[]'));
-      setTallies(JSON.parse(localStorage.getItem(`bravo_tallies_${activeStudent}`) || '{}'));
-      setNotes(JSON.parse(localStorage.getItem(`bravo_notes_${activeStudent}`) || '{}'));
-      setDates(JSON.parse(localStorage.getItem(`bravo_dates_${activeStudent}`) || '{"start":"","end":""}'));
+      const savedProgress = localStorage.getItem(`bravo_progress_${activeStudent}`);
+      setCompleted(savedProgress ? JSON.parse(savedProgress) : []);
+      const savedTallies = localStorage.getItem(`bravo_tallies_${activeStudent}`);
+      setTallies(savedTallies ? JSON.parse(savedTallies) : {});
+      const savedNotes = localStorage.getItem(`bravo_notes_${activeStudent}`);
+      setNotes(savedNotes ? JSON.parse(savedNotes) : {});
+      const savedDates = localStorage.getItem(`bravo_dates_${activeStudent}`);
+      setDates(savedDates ? JSON.parse(savedDates) : { start: '', end: '' });
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
@@ -48,13 +53,7 @@ export default function Home() {
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { 
-      studentName: activeStudent, 
-      progress: localStorage.getItem(`bravo_progress_${activeStudent}`), 
-      tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), 
-      notes: localStorage.getItem(`bravo_notes_${activeStudent}`), 
-      dates: localStorage.getItem(`bravo_dates_${activeStudent}`) 
-    };
+    const data = { studentName: activeStudent, progress: localStorage.getItem(`bravo_progress_${activeStudent}`), tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), notes: localStorage.getItem(`bravo_notes_${activeStudent}`), dates: localStorage.getItem(`bravo_dates_${activeStudent}`) };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -144,23 +143,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* PRINT VIEW */}
-      <div className="print-only" style={{ display: 'none' }}>
-        <div style={{ padding: '40px', color: 'black', background: 'white', fontFamily: 'sans-serif' }}>
-          <h1 style={{ fontSize: '24px', borderBottom: '2px solid #6d28d9', color: '#6d28d9' }}>Rapport BRAVO - {activeStudent}</h1>
-          <p>Periode: {dates.start} t/m {dates.end} | Mentor: {mentorName}</p>
-          <h2 style={{ fontSize: '18px', marginTop: '20px' }}>Lijnverkenning</h2>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
-            <thead><tr style={{ background: '#eee' }}><th style={{border:'1px solid #ccc', padding:'8px'}}>Lijn</th><th style={{border:'1px solid #ccc', padding:'8px'}}>OK</th><th style={{border:'1px solid #ccc', padding:'8px'}}>M</th><th style={{border:'1px solid #ccc', padding:'8px'}}>Z</th><th style={{border:'1px solid #ccc', padding:'8px'}}>Opmerking</th></tr></thead>
-            <tbody>
-              {uniqueReportRoutes.map(r => (
-                <tr key={r.id}><td style={{ border: '1px solid #ccc', padding: '8px' }}>{r.text}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{completed.includes(r.id) ? 'X' : ''}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc', padding: '8px' }}>{notes[r.id] || ''}</td></tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
+      {/* PDF VIEWER MODAL IPHONE FIX */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'white', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -168,11 +151,18 @@ export default function Home() {
               <button onClick={() => setPdfModal(null)} style={{ background: 'white', color: 'var(--bravo-purple)', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold' }}>SLUITEN</button>
            </div>
            <div style={{ flex: 1 }}>
-              <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} style={{ width: '100%', height: '100%', border: 'none' }}></iframe>
+              <iframe 
+                src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} 
+                style={{ width: '100%', height: '100%', border: 'none' }}
+              ></iframe>
+           </div>
+           <div style={{ padding: '10px', textAlign: 'center', background: '#f3f4f6' }}>
+              <a href={pdfModal.pdf} target="_blank" style={{ fontSize: '0.8rem', color: 'var(--bravo-purple)', fontWeight: 'bold', textDecoration: 'none' }}>Laden mislukt? Open PDF direct</a>
            </div>
         </div>
       )}
 
+      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
@@ -240,7 +230,7 @@ export default function Home() {
                     placeholder="Opmerking..." 
                     rows={1}
                     className="note-input"
-                    style={{ resize: 'none', overflow: 'hidden', minHeight: '34px' }}
+                    style={{ resize: 'none', overflow: 'hidden', minHeight: '34px', display: 'block' }}
                   />
                 </div>
               </div>
