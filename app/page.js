@@ -14,6 +14,7 @@ export default function Home() {
   const [dates, setDates] = useState({ start: '', end: '' });
   const [mounted, setMounted] = useState(false);
   const [baseUrl, setBaseUrl] = useState('');
+  const [newStudentName, setNewStudentName] = useState('');
   const [mainTab, setMainTab] = useState('routes');
   const [routeSubTab, setRouteSubTab] = useState('ehv-stad');
   const [videoModal, setVideoModal] = useState(null);
@@ -48,13 +49,7 @@ export default function Home() {
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { 
-      studentName: activeStudent, 
-      progress: localStorage.getItem(`bravo_progress_${activeStudent}`), 
-      tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), 
-      notes: localStorage.getItem(`bravo_notes_${activeStudent}`), 
-      dates: localStorage.getItem(`bravo_dates_${activeStudent}`) 
-    };
+    const data = { studentName: activeStudent, progress: localStorage.getItem(`bravo_progress_${activeStudent}`), tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), notes: localStorage.getItem(`bravo_notes_${activeStudent}`), dates: localStorage.getItem(`bravo_dates_${activeStudent}`) };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -101,6 +96,20 @@ export default function Home() {
     localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(next));
   };
 
+  const baseItems = initialCategories.flatMap(c => c.items);
+  const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel/valkenswaard', 'helmond', 'scholieren'];
+  const pathPercentages = routeTypes.map(t => {
+    const items = busRoutes.filter(i => i.type === t);
+    const done = items.filter(i => completed.includes(i.id)).length;
+    const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
+    const total = baseItems.length + items.length;
+    return total === 0 ? 0 : ((baseDone + done) / total) * 100;
+  });
+
+  const totalProgress = Math.round(Math.max(...pathPercentages)) || 0;
+  const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
+  const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
+
   const addStudent = () => {
     if (newStudentName.trim() && !students.includes(newStudentName.trim())) {
       const newList = [...students, newStudentName.trim()];
@@ -112,7 +121,7 @@ export default function Home() {
   };
 
   const deleteStudent = (name) => {
-    if (students.length > 1 && confirm(`Verwijder alle gegevens van ${name}?`)) {
+    if (students.length > 1 && confirm(`Verwijder ${name}?`)) {
       const newList = students.filter(s => s !== name);
       setStudents(newList);
       localStorage.setItem('bravo_student_list', JSON.stringify(newList));
@@ -124,28 +133,29 @@ export default function Home() {
     }
   };
 
-  const baseItems = initialCategories.flatMap(c => c.items);
-  const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
-  
-  const pathPercentages = routeTypes.map(t => {
-    const items = busRoutes.filter(i => i.type === t);
-    const doneCount = items.filter(i => completed.includes(i.id)).length;
-    const baseDoneCount = baseItems.filter(i => completed.includes(i.id)).length;
-    const totalCount = baseItems.length + items.length;
-    return totalCount === 0 ? 0 : ((baseDoneCount + doneCount) / totalCount) * 100;
-  });
-
-  const totalProgress = Math.round(Math.max(...pathPercentages)) || 0;
-  const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
-  const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
-
   const uniqueReportRoutes = [];
   const seenIds = new Set();
   busRoutes.forEach(r => { if ((completed.includes(r.id) || tallies[r.id]?.m > 0 || tallies[r.id]?.z > 0 || notes[r.id]) && !seenIds.has(r.id)) { uniqueReportRoutes.push(r); seenIds.add(r.id); } });
 
   return (
     <div>
-      {/* PDF VIEWER MODAL */}
+      {/* PRINT VIEW */}
+      <div className="print-only" style={{ display: 'none' }}>
+        <div style={{ padding: '40px', color: 'black' }}>
+          <h1 style={{ fontSize: '24px', borderBottom: '2px solid #6d28d9' }}>Rapport BRAVO - {activeStudent}</h1>
+          <p>Periode: {dates.start} t/m {dates.end} | Mentor: {mentorName}</p>
+          <h2 style={{ fontSize: '18px' }}>Lijnverkenning</h2>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
+            <thead><tr style={{ background: '#eee' }}><th>Lijn</th><th>OK</th><th>M</th><th>Z</th><th>Opmerking</th></tr></thead>
+            <tbody>
+              {uniqueReportRoutes.map(r => (
+                <tr key={r.id}><td style={{ border: '1px solid #ccc' }}>{r.text}</td><td style={{ border: '1px solid #ccc' }}>{completed.includes(r.id) ? 'X' : ''}</td><td style={{ border: '1px solid #ccc' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc' }}>{notes[r.id] || ''}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'white', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -153,18 +163,11 @@ export default function Home() {
               <button onClick={() => setPdfModal(null)} style={{ background: 'white', color: 'var(--bravo-purple)', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold' }}>SLUITEN</button>
            </div>
            <div style={{ flex: 1 }}>
-              <iframe 
-                src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} 
-                style={{ width: '100%', height: '100%', border: 'none' }}
-              ></iframe>
-           </div>
-           <div style={{ padding: '10px', textAlign: 'center', background: '#f3f4f6' }}>
-              <a href={pdfModal.pdf} target="_blank" style={{ fontSize: '0.8rem', color: 'var(--bravo-purple)', fontWeight: 'bold', textDecoration: 'none' }}>Laden mislukt? Open PDF direct</a>
+              <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} style={{ width: '100%', height: '100%', border: 'none' }}></iframe>
            </div>
         </div>
       )}
 
-      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
@@ -223,37 +226,28 @@ export default function Home() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'm', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score"><Eye size={14} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)} className="tally-btn"><Plus size={14} /></button></div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'z', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score" style={{ background: '#f0fdf4', color: '#15803d', borderColor: '#bbf7d0' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)} className="tally-btn"><Plus size={14} /></button></div>
                 </div>
-                <div style={{ marginLeft: '39px' }}>
-                  <textarea 
-                    value={notes[item.id] || ''} 
-                    onChange={(e) => updateNote(item.id, e.target.value)}
-                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }}
-                    placeholder="Opmerking..." 
-                    rows={1}
-                    className="note-input"
-                    style={{ resize: 'none', overflow: 'hidden' }}
-                  />
-                </div>
+                <div style={{ marginLeft: '39px' }}><input type="text" value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} placeholder="Opmerking..." className="note-input" /></div>
               </div>
             ))}
           </div>
         )}
 
         {mainTab === 'checklist' && (
-          <div>{initialCategories.map((cat) => cat.id !== 'routes' && (<div key={cat.id} className="card"><div className="category-header">{cat.icon}<span className="category-title">{cat.title}</span></div>{cat.items.map((it) => (<div key={it.id} className="checkbox-item" onClick={() => toggleItem(it.id)}><div className="checkbox-content"><div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(it.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(it.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(it.id) && <CheckCircle2 size={16} />}</div><span style={{ textDecoration: completed.includes(it.id) ? 'line-through' : 'none', color: completed.includes(it.id) ? '#9ca3af' : 'inherit' }}>{it.text}</span></div></div>))}</div>))}</div>
+          <div>{initialCategories.map((cat) => (<div key={cat.id} className="card"><div className="category-header">{cat.icon}<span className="category-title">{cat.title}</span></div>{cat.items.map((it) => (<div key={it.id} className="checkbox-item" onClick={() => toggleItem(it.id)}><div className="checkbox-content"><div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(it.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(it.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(it.id) && <CheckCircle2 size={16} />}</div><span style={{ textDecoration: completed.includes(it.id) ? 'line-through' : 'none', color: completed.includes(it.id) ? '#9ca3af' : 'inherit' }}>{it.text}</span></div></div>))}</div>))}</div>
         )}
 
         {mainTab === 'docs' && (
           <div className="card">
             <div className="category-header"><Files size={22} /><span className="category-title">Documenten</span></div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-              {importantDocuments && importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', textAlign: 'left' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
+              {importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', textAlign: 'left' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
             </div>
           </div>
         )}
 
         {mainTab === 'info' && (
           <div>
+            {/* ZIEKMELDEN BLOK TERUGGEZET */}
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', color: '#dc2626', fontWeight: 'bold', marginBottom: '8px' }}>
                 <ShieldAlert size={20} /> ZIEKMELDEN
@@ -266,10 +260,11 @@ export default function Home() {
             
             <div className="card" style={{ textAlign: 'center' }}>
               <button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%', cursor: 'pointer' }}>Rapport maken</button>
-              <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%', cursor: 'pointer' }}>Exporteer {activeStudent}</button>
-              <label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', cursor: 'pointer' }}>Importeer Leerling<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
+              <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%', cursor: 'pointer' }}>Download data</button>
+              <label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', cursor: 'pointer' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
 
+            {/* CONTACT NUMMERS ZICHTBAAR GEMAAKT */}
             {contactData.map((group, idx) => (
               <div key={idx} className="card">
                 <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', marginBottom: '10px' }}>{group.category}</h3>
@@ -278,8 +273,16 @@ export default function Home() {
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.85rem', color: 'black', fontWeight: '500' }}>{c.name}</span>
                       <div style={{ display: 'flex', gap: '5px' }}>
-                        {c.phone && <a href={`tel:${c.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'white', color: 'var(--bravo-purple)', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid var(--bravo-purple)' }}><Phone size={14} /> {c.phone}</a>}
-                        {c.email && <a href={`mailto:${c.email}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #bae6fd' }}><Mail size={14} /> Mail</a>}
+                        {c.phone && (
+                          <a href={`tel:${c.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f3f4f6', color: 'var(--bravo-purple)', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #ddd' }}>
+                            <Phone size={14} /> {c.phone}
+                          </a>
+                        )}
+                        {c.email && (
+                          <a href={`mailto:${c.email}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #bae6fd' }}>
+                            <Mail size={14} /> Mail
+                          </a>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -294,7 +297,7 @@ export default function Home() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .tally-btn { border: 1px solid #bae6fd; background: white; color: #0369a1; border-radius: 6px; padding: 4px; cursor: pointer; }
         .tally-score { display: flex; align-items: center; gap: 6px; background: #f0f9ff; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bae6fd; }
-        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 8px 10px; outline: none; color: black; font-family: inherit; }
+        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 4px 10px; outline: none; color: black; }
         @media print { .no-print { display: none !important; } .print-only { display: block !important; } body { background: white !important; } }
       `}</style>
     </div>
