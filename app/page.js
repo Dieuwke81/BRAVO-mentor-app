@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { busRoutes, initialCategories, contactData, importantDocuments } from './data';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck, Files } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload, Printer, Calendar, UserCheck, Files } from 'lucide-react';
 
 export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
@@ -126,12 +126,13 @@ export default function Home() {
 
   const baseItems = initialCategories.flatMap(c => c.items);
   const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
+  
   const pathPercentages = routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
-    const done = items.filter(i => completed.includes(i.id)).length;
-    const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
-    const total = baseItems.length + (items.length || 0);
-    return total === 0 ? 0 : ((baseDone + done) / total) * 100;
+    const doneCount = items.filter(i => completed.includes(i.id)).length;
+    const baseDoneCount = baseItems.filter(i => completed.includes(i.id)).length;
+    const totalCount = baseItems.length + items.length;
+    return totalCount === 0 ? 0 : ((baseDoneCount + doneCount) / totalCount) * 100;
   });
 
   const totalProgress = Math.round(Math.max(...pathPercentages)) || 0;
@@ -144,23 +145,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* PRINT VIEW */}
-      <div className="print-only" style={{ display: 'none' }}>
-        <div style={{ padding: '40px', color: 'black', background: 'white', fontFamily: 'sans-serif' }}>
-          <h1 style={{ fontSize: '24px', borderBottom: '2px solid #6d28d9', color: '#6d28d9' }}>Rapport BRAVO - {activeStudent}</h1>
-          <p>Periode: {dates.start} t/m {dates.end} | Mentor: {mentorName}</p>
-          <h2 style={{ fontSize: '18px', marginTop: '20px' }}>Lijnverkenning</h2>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
-            <thead><tr style={{ background: '#eee' }}><th style={{border:'1px solid #ccc', padding:'8px'}}>Lijn</th><th style={{border:'1px solid #ccc', padding:'8px'}}>OK</th><th style={{border:'1px solid #ccc', padding:'8px'}}>M</th><th style={{border:'1px solid #ccc', padding:'8px'}}>Z</th><th style={{border:'1px solid #ccc', padding:'8px'}}>Opmerking</th></tr></thead>
-            <tbody>
-              {uniqueReportRoutes.map(r => (
-                <tr key={r.id}><td style={{ border: '1px solid #ccc', padding: '8px' }}>{r.text}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{completed.includes(r.id) ? 'X' : ''}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc', padding: '8px' }}>{notes[r.id] || ''}</td></tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
+      {/* PDF VIEWER MODAL */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'white', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -168,11 +153,18 @@ export default function Home() {
               <button onClick={() => setPdfModal(null)} style={{ background: 'white', color: 'var(--bravo-purple)', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold' }}>SLUITEN</button>
            </div>
            <div style={{ flex: 1 }}>
-              <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} style={{ width: '100%', height: '100%', border: 'none' }}></iframe>
+              <iframe 
+                src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} 
+                style={{ width: '100%', height: '100%', border: 'none' }}
+              ></iframe>
+           </div>
+           <div style={{ padding: '10px', textAlign: 'center', background: '#f3f4f6' }}>
+              <a href={pdfModal.pdf} target="_blank" style={{ fontSize: '0.8rem', color: 'var(--bravo-purple)', fontWeight: 'bold', textDecoration: 'none' }}>Laden mislukt? Open PDF direct</a>
            </div>
         </div>
       )}
 
+      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
@@ -224,7 +216,7 @@ export default function Home() {
                   <div style={{ display: 'flex', gap: '8px' }}>
                     {item.map && item.map !== '#' && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={16} /></a>}
                     {item.pdf && <button onClick={() => setPdfModal(item)} className="pdf-btn"><FileText size={16} /></button>}
-                    {item.videos && item.videos.length > 0 && item.videos[0].url && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626' }}><Youtube size={16} /></button>}
+                    {item.videos && item.videos.length > 0 && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626' }}><Youtube size={16} /></button>}
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '20px', marginLeft: '39px', padding: '10px 0' }}>
@@ -274,8 +266,8 @@ export default function Home() {
             
             <div className="card" style={{ textAlign: 'center' }}>
               <button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%', cursor: 'pointer' }}>Rapport maken</button>
-              <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%', cursor: 'pointer' }}>Download data</button>
-              <label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', cursor: 'pointer' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
+              <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%', cursor: 'pointer' }}>Exporteer {activeStudent}</button>
+              <label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', cursor: 'pointer' }}>Importeer Leerling<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
 
             {contactData.map((group, idx) => (
@@ -286,16 +278,8 @@ export default function Home() {
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.85rem', color: 'black', fontWeight: '500' }}>{c.name}</span>
                       <div style={{ display: 'flex', gap: '5px' }}>
-                        {c.phone && (
-                          <a href={`tel:${c.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'white', color: 'var(--bravo-purple)', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid var(--bravo-purple)' }}>
-                            <Phone size={14} /> {c.phone}
-                          </a>
-                        )}
-                        {c.email && (
-                          <a href={`mailto:${c.email}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #bae6fd' }}>
-                            <Mail size={14} /> Mail
-                          </a>
-                        )}
+                        {c.phone && <a href={`tel:${c.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'white', color: 'var(--bravo-purple)', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid var(--bravo-purple)' }}><Phone size={14} /> {c.phone}</a>}
+                        {c.email && <a href={`mailto:${c.email}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #bae6fd' }}><Mail size={14} /> Mail</a>}
                       </div>
                     </div>
                   ))}
