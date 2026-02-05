@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { busRoutes, initialCategories, contactData, importantDocuments } from './data';
-import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload, Printer, Calendar, UserCheck, Files } from 'lucide-react';
+import { Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck, Files } from 'lucide-react';
 
 export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
@@ -14,7 +14,6 @@ export default function Home() {
   const [dates, setDates] = useState({ start: '', end: '' });
   const [mounted, setMounted] = useState(false);
   const [baseUrl, setBaseUrl] = useState('');
-  const [newStudentName, setNewStudentName] = useState('');
   const [mainTab, setMainTab] = useState('routes');
   const [routeSubTab, setRouteSubTab] = useState('ehv-stad');
   const [videoModal, setVideoModal] = useState(null);
@@ -49,7 +48,13 @@ export default function Home() {
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { studentName: activeStudent, progress: localStorage.getItem(`bravo_progress_${activeStudent}`), tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), notes: localStorage.getItem(`bravo_notes_${activeStudent}`), dates: localStorage.getItem(`bravo_dates_${activeStudent}`) };
+    const data = { 
+      studentName: activeStudent, 
+      progress: localStorage.getItem(`bravo_progress_${activeStudent}`), 
+      tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), 
+      notes: localStorage.getItem(`bravo_notes_${activeStudent}`), 
+      dates: localStorage.getItem(`bravo_dates_${activeStudent}`) 
+    };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -97,13 +102,13 @@ export default function Home() {
   };
 
   const baseItems = initialCategories.flatMap(c => c.items);
-  const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel/valkenswaard', 'helmond', 'scholieren'];
+  const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
   const pathPercentages = routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
-    const done = items.filter(i => completed.includes(i.id)).length;
-    const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
-    const total = baseItems.length + items.length;
-    return total === 0 ? 0 : ((baseDone + done) / total) * 100;
+    const doneCount = items.filter(i => completed.includes(i.id)).length;
+    const baseDoneCount = baseItems.filter(i => completed.includes(i.id)).length;
+    const totalCount = baseItems.length + items.length;
+    return totalCount === 0 ? 0 : ((baseDoneCount + doneCount) / totalCount) * 100;
   });
 
   const totalProgress = Math.round(Math.max(...pathPercentages)) || 0;
@@ -121,7 +126,7 @@ export default function Home() {
   };
 
   const deleteStudent = (name) => {
-    if (students.length > 1 && confirm(`Verwijder ${name}?`)) {
+    if (students.length > 1 && confirm(`Verwijder alle gegevens van ${name}?`)) {
       const newList = students.filter(s => s !== name);
       setStudents(newList);
       localStorage.setItem('bravo_student_list', JSON.stringify(newList));
@@ -141,15 +146,15 @@ export default function Home() {
     <div>
       {/* PRINT VIEW */}
       <div className="print-only" style={{ display: 'none' }}>
-        <div style={{ padding: '40px', color: 'black' }}>
-          <h1 style={{ fontSize: '24px', borderBottom: '2px solid #6d28d9' }}>Rapport BRAVO - {activeStudent}</h1>
+        <div style={{ padding: '40px', color: 'black', background: 'white', fontFamily: 'sans-serif' }}>
+          <h1 style={{ fontSize: '24px', borderBottom: '2px solid #6d28d9', color: '#6d28d9' }}>Rapport BRAVO - {activeStudent}</h1>
           <p>Periode: {dates.start} t/m {dates.end} | Mentor: {mentorName}</p>
-          <h2 style={{ fontSize: '18px' }}>Lijnverkenning</h2>
+          <h2 style={{ fontSize: '18px', marginTop: '20px' }}>Lijnverkenning</h2>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
-            <thead><tr style={{ background: '#eee' }}><th>Lijn</th><th>OK</th><th>M</th><th>Z</th><th>Opmerking</th></tr></thead>
+            <thead><tr style={{ background: '#eee' }}><th style={{border:'1px solid #ccc', padding:'8px'}}>Lijn</th><th style={{border:'1px solid #ccc', padding:'8px'}}>OK</th><th style={{border:'1px solid #ccc', padding:'8px'}}>M</th><th style={{border:'1px solid #ccc', padding:'8px'}}>Z</th><th style={{border:'1px solid #ccc', padding:'8px'}}>Opmerking</th></tr></thead>
             <tbody>
               {uniqueReportRoutes.map(r => (
-                <tr key={r.id}><td style={{ border: '1px solid #ccc' }}>{r.text}</td><td style={{ border: '1px solid #ccc' }}>{completed.includes(r.id) ? 'X' : ''}</td><td style={{ border: '1px solid #ccc' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc' }}>{notes[r.id] || ''}</td></tr>
+                <tr key={r.id}><td style={{ border: '1px solid #ccc', padding: '8px' }}>{r.text}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{completed.includes(r.id) ? 'X' : ''}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc', padding: '8px' }}>{notes[r.id] || ''}</td></tr>
               ))}
             </tbody>
           </table>
@@ -226,28 +231,38 @@ export default function Home() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'm', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score"><Eye size={14} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)} className="tally-btn"><Plus size={14} /></button></div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'z', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score" style={{ background: '#f0fdf4', color: '#15803d', borderColor: '#bbf7d0' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)} className="tally-btn"><Plus size={14} /></button></div>
                 </div>
-                <div style={{ marginLeft: '39px' }}><input type="text" value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} placeholder="Opmerking..." className="note-input" /></div>
+                {/* AUTO-GROWING TEXTAREA */}
+                <div style={{ marginLeft: '39px' }}>
+                  <textarea 
+                    value={notes[item.id] || ''} 
+                    onChange={(e) => updateNote(item.id, e.target.value)}
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }}
+                    placeholder="Opmerking..." 
+                    rows={1}
+                    className="note-input"
+                    style={{ resize: 'none', overflow: 'hidden', minHeight: '34px' }}
+                  />
+                </div>
               </div>
             ))}
           </div>
         )}
 
         {mainTab === 'checklist' && (
-          <div>{initialCategories.map((cat) => (<div key={cat.id} className="card"><div className="category-header">{cat.icon}<span className="category-title">{cat.title}</span></div>{cat.items.map((it) => (<div key={it.id} className="checkbox-item" onClick={() => toggleItem(it.id)}><div className="checkbox-content"><div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(it.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(it.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(it.id) && <CheckCircle2 size={16} />}</div><span style={{ textDecoration: completed.includes(it.id) ? 'line-through' : 'none', color: completed.includes(it.id) ? '#9ca3af' : 'inherit' }}>{it.text}</span></div></div>))}</div>))}</div>
+          <div>{initialCategories.map((cat) => cat.id !== 'routes' && (<div key={cat.id} className="card"><div className="category-header">{cat.icon}<span className="category-title">{cat.title}</span></div>{cat.items.map((it) => (<div key={it.id} className="checkbox-item" onClick={() => toggleItem(it.id)}><div className="checkbox-content"><div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(it.id) ? 'none' : '2px solid #d1d5db', background: completed.includes(it.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(it.id) && <CheckCircle2 size={16} />}</div><span style={{ textDecoration: completed.includes(it.id) ? 'line-through' : 'none', color: completed.includes(it.id) ? '#9ca3af' : 'inherit' }}>{it.text}</span></div></div>))}</div>))}</div>
         )}
 
         {mainTab === 'docs' && (
           <div className="card">
             <div className="category-header"><Files size={22} /><span className="category-title">Documenten</span></div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-              {importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', textAlign: 'left' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
+              {importantDocuments && importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', textAlign: 'left' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
             </div>
           </div>
         )}
 
         {mainTab === 'info' && (
           <div>
-            {/* ZIEKMELDEN BLOK TERUGGEZET */}
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', color: '#dc2626', fontWeight: 'bold', marginBottom: '8px' }}>
                 <ShieldAlert size={20} /> ZIEKMELDEN
@@ -260,11 +275,10 @@ export default function Home() {
             
             <div className="card" style={{ textAlign: 'center' }}>
               <button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%', cursor: 'pointer' }}>Rapport maken</button>
-              <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%', cursor: 'pointer' }}>Download data</button>
-              <label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', cursor: 'pointer' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
+              <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%', cursor: 'pointer' }}>Exporteer {activeStudent}</button>
+              <label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', cursor: 'pointer' }}>Importeer Leerling<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
 
-            {/* CONTACT NUMMERS ZICHTBAAR GEMAAKT */}
             {contactData.map((group, idx) => (
               <div key={idx} className="card">
                 <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', marginBottom: '10px' }}>{group.category}</h3>
@@ -274,7 +288,7 @@ export default function Home() {
                       <span style={{ fontSize: '0.85rem', color: 'black', fontWeight: '500' }}>{c.name}</span>
                       <div style={{ display: 'flex', gap: '5px' }}>
                         {c.phone && (
-                          <a href={`tel:${c.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f3f4f6', color: 'var(--bravo-purple)', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #ddd' }}>
+                          <a href={`tel:${c.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: 'white', color: 'var(--bravo-purple)', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid var(--bravo-purple)' }}>
                             <Phone size={14} /> {c.phone}
                           </a>
                         )}
@@ -297,7 +311,7 @@ export default function Home() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .tally-btn { border: 1px solid #bae6fd; background: white; color: #0369a1; border-radius: 6px; padding: 4px; cursor: pointer; }
         .tally-score { display: flex; align-items: center; gap: 6px; background: #f0f9ff; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bae6fd; }
-        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 4px 10px; outline: none; color: black; }
+        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 8px 10px; outline: none; color: black; font-family: inherit; }
         @media print { .no-print { display: none !important; } .print-only { display: block !important; } body { background: white !important; } }
       `}</style>
     </div>
