@@ -102,7 +102,7 @@ export default function Home() {
     const items = busRoutes.filter(i => i.type === t);
     const done = items.filter(i => completed.includes(i.id)).length;
     const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
-    const total = baseItems.length + items.length;
+    const total = baseItems.length + (items.length || 0);
     return total === 0 ? 0 : ((baseDone + done) / total) * 100;
   });
 
@@ -144,12 +144,16 @@ export default function Home() {
         <div style={{ padding: '40px', color: 'black' }}>
           <h1 style={{ fontSize: '24px', borderBottom: '2px solid #6d28d9' }}>Rapport BRAVO - {activeStudent}</h1>
           <p>Periode: {dates.start} t/m {dates.end} | Mentor: {mentorName}</p>
-          <h2 style={{ fontSize: '18px' }}>Lijnverkenning</h2>
+          <h2 style={{ fontSize: '18px' }}>Checklists</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
+            {baseItems.map(it => <div key={it.id} style={{ fontSize: '11px' }}>[{completed.includes(it.id) ? 'X' : ' '}] {it.text}</div>)}
+          </div>
+          <h2 style={{ fontSize: '18px', marginTop: '20px' }}>Lijnverkenning</h2>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
             <thead><tr style={{ background: '#eee' }}><th>Lijn</th><th>OK</th><th>M</th><th>Z</th><th>Opmerking</th></tr></thead>
             <tbody>
               {uniqueReportRoutes.map(r => (
-                <tr key={r.id}><td style={{ border: '1px solid #ccc' }}>{r.text}</td><td style={{ border: '1px solid #ccc' }}>{completed.includes(r.id) ? 'X' : ''}</td><td style={{ border: '1px solid #ccc' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc' }}>{notes[r.id] || ''}</td></tr>
+                <tr key={r.id}><td style={{ border: '1px solid #ccc', padding: '4px' }}>{r.text}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{completed.includes(r.id) ? 'X' : ''}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc', padding: '4px' }}>{notes[r.id] || ''}</td></tr>
               ))}
             </tbody>
           </table>
@@ -190,15 +194,15 @@ export default function Home() {
             <button onClick={() => deleteStudent(activeStudent)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}><Trash2 size={18} /></button>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px' }} /><button onClick={() => { if(newStudentName) { addStudent(); setNewStudentName(''); } }} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
+            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Nieuwe leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px' }} /><button onClick={() => { if(newStudentName) { addStudent(); setNewStudentName(''); } }} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
           </div>
         </div>
         <div className="progress-container"><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold' }}><span>VOORTGANG: {activeStudent}</span><span>{totalProgress}%</span></div><div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div></div>
         <div style={{ display: 'flex', overflowX: 'auto', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }} className="no-scrollbar">
-          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Lijnen</button>
-          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Checklists</button>
-          <button onClick={() => setMainTab('docs')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'docs' ? 'white' : 'transparent', color: mainTab === 'docs' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Docs</button>
-          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Info</button>
+          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Lijnen</button>
+          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Checklists</button>
+          <button onClick={() => setMainTab('docs')} style={{ flex: 1, padding: '10px', borderRadius: '8px', background: mainTab === 'docs' ? 'white' : 'transparent', color: mainTab === 'docs' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Docs</button>
+          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Info</button>
         </div>
       </div>
 
@@ -226,7 +230,18 @@ export default function Home() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'm', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score"><Eye size={14} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)} className="tally-btn"><Plus size={14} /></button></div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'z', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score" style={{ background: '#f0fdf4', color: '#15803d', borderColor: '#bbf7d0' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)} className="tally-btn"><Plus size={14} /></button></div>
                 </div>
-                <div style={{ marginLeft: '39px' }}><input type="text" value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} placeholder="Opmerking..." className="note-input" /></div>
+                {/* AUTO-EXPANDING OPMERKINGENVELD */}
+                <div style={{ marginLeft: '39px' }}>
+                  <textarea 
+                    value={notes[item.id] || ''} 
+                    onChange={(e) => updateNote(item.id, e.target.value)}
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }}
+                    placeholder="Opmerking..." 
+                    rows={1}
+                    className="note-input"
+                    style={{ resize: 'none', overflow: 'hidden' }}
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -247,7 +262,6 @@ export default function Home() {
 
         {mainTab === 'info' && (
           <div>
-            {/* ZIEKMELDEN BLOK TERUGGEZET */}
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', color: '#dc2626', fontWeight: 'bold', marginBottom: '8px' }}>
                 <ShieldAlert size={20} /> ZIEKMELDEN
@@ -264,31 +278,7 @@ export default function Home() {
               <label style={{ marginTop: '10px', display: 'block', background: 'white', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', cursor: 'pointer' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
 
-            {/* CONTACT NUMMERS ZICHTBAAR GEMAAKT */}
-            {contactData.map((group, idx) => (
-              <div key={idx} className="card">
-                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', marginBottom: '10px' }}>{group.category}</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {group.contacts.map((c, i) => (
-                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.85rem', color: 'black', fontWeight: '500' }}>{c.name}</span>
-                      <div style={{ display: 'flex', gap: '5px' }}>
-                        {c.phone && (
-                          <a href={`tel:${c.phone}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f3f4f6', color: 'var(--bravo-purple)', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #ddd' }}>
-                            <Phone size={14} /> {c.phone}
-                          </a>
-                        )}
-                        {c.email && (
-                          <a href={`mailto:${c.email}`} style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#f0f9ff', color: '#0369a1', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 'bold', border: '1px solid #bae6fd' }}>
-                            <Mail size={14} /> Mail
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+            {contactData.map((group, idx) => (<div key={idx} className="card"><h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)' }}>{group.category}</h3>{group.contacts.map((c, i) => (<div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}><span>{c.name}</span><div>{c.phone && <a href={`tel:${c.phone}`} className="pdf-btn"><Phone size={14} /></a>}{c.email && <a href={`mailto:${c.email}`} className="pdf-btn"><Mail size={14} /></a>}</div></div>))}</div>))}
           </div>
         )}
       </div>
@@ -297,7 +287,7 @@ export default function Home() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .tally-btn { border: 1px solid #bae6fd; background: white; color: #0369a1; border-radius: 6px; padding: 4px; cursor: pointer; }
         .tally-score { display: flex; align-items: center; gap: 6px; background: #f0f9ff; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bae6fd; }
-        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 4px 10px; outline: none; color: black; }
+        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 8px 10px; outline: none; color: black; font-family: inherit; }
         @media print { .no-print { display: none !important; } .print-only { display: block !important; } body { background: white !important; } }
       `}</style>
     </div>
