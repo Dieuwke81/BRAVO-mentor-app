@@ -55,10 +55,10 @@ export const busRoutes = [
   { id: 'r54', type: 'ehv-streek', text: '54 Helmond Brouwhuis', pdf: '/routes/54.pdf', map: 'https://goo.gl/maps/fRwZ4hcpxHcMbpHv6?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
   { id: 'r55', type: 'ehv-streek', text: '55 Helmond Stiphout', pdf: '/routes/55.pdf', map: 'https://goo.gl/maps/NVuA2oQhG16v88669?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] }, */
   { id: 'r114', type: 'ehv-streek', text: '114 De Hurk', pdf: '/routes/114.pdf', map: 'https://goo.gl/maps/wNVDqY412Jo6KyMk7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/hBhwXIudYsA' }, { label: 'Terugrit', url: 'https://youtu.be/pe3djrT9mFk' }] },
-  { id: 'r119', type: 'ehv-streek', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
-  { id: 'r120', type: 'ehv-streek', text: '120 Best NS - ASML gebouw 4', pdf: '/routes/120.pdf', map: 'https://goo.gl/maps/TxpRYt8Jxkhh2Fk17?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
+  { id: 'r119', type: 'ehv-streek', text: '119 ASML', pdf: '/routes/119.pdf', map: 'https://goo.gl/maps/BzQ61zRScuEGTxda7' },
+  { id: 'r120', type: 'ehv-streek', text: '120 Best NS - ASML gebouw 4', pdf: '/routes/120.pdf', map: 'https://goo.gl/maps/TxpRYt8Jxkhh2Fk17?g_st=ac' },
 /*  { id: 'r123', type: 'ehv-streek', text: '123 Gemert Pelgrimsrust - Boxmeer', pdf: '/routes/123.pdf', map: 'https://goo.gl/maps/qWGwUtdUUNRXB5MD8?g_st=ac' }, */
-    { id: 'r317', type: 'ehv-streek', text: '317 Dommelen', pdf: '/routes/317.pdf', map: 'https://goo.gl/maps/6VGZqioQwPVqZta57?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
+    { id: 'r317', type: 'ehv-streek', text: '317 Dommelen', pdf: '/routes/317.pdf', map: 'https://goo.gl/maps/6VGZqioQwPVqZta57?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/iyI5uj9_R9M?si=iwsG_kjfSXUunydR' }, { label: 'Terugrit', url: 'https://youtu.be/Yl1OZD39BWQ?si=2uXO6OUo5we1s3gU' }] },
   { id: 'r318', type: 'ehv-streek', text: '318 Luyksgestel', pdf: '/routes/318.pdf', map: 'https://goo.gl/maps/vC9yVfv6rtfeETKy5?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
   { id: 'r319', type: 'ehv-streek', text: '319 Reusel', pdf: '/routes/319.pdf', map: 'https://goo.gl/maps/4JJ1icwuqNwCeUrh7?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
   { id: 'r320', type: 'ehv-streek', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf', map: 'https://goo.gl/maps/WSyXUrgdBGnSfnHk9?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
