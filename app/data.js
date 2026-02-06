@@ -48,7 +48,7 @@ export const busRoutes = [
   { id: 'r18', type: 'ehv-streek', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/aoglS4lPltI?si=Dkt8aN353u0i6yaj' }, { label: 'Terugrit', url: 'https://youtu.be/kHnBKXtgUGw?si=ErPzS9dXF1-skWQV' }] },
   { id: 'r19', type: 'ehv-streek', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: 'https://goo.gl/maps/5JPt3zvstws5gBzf6?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/OQifY9s0Pt0?si=0v8_5X8g8efCQ1cM' }, { label: 'Terugrit', url: 'https://youtu.be/4kkXDZ_ulcc?si=4lhEwwuBWrOrGiGb' }] },
   { id: 'r20', type: 'ehv-streek', text: '20 Best NS - HTC', pdf: '/routes/20 (1).pdf', map: 'https://goo.gl/maps/DzPyz1xXHau3Y2XQ9?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/iWQEefFNk8g?si=arzFRD97U8iKxVSA' }, { label: 'Terugrit', url: 'https://youtu.be/LhZsVb5IIPg?si=98CJVW-YTIsNIfnY' }] },
-    { id: 'r24', type: 'ehv-streek', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: 'https://youtu.be/zbocSyi5x2s?si=CELx50dE77tmp9J2' }] },
+    { id: 'r24', type: 'ehv-streek', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac', videos: [{ label: 'Terugrit', url: 'https://youtu.be/zbocSyi5x2s?si=CELx50dE77tmp9J2' }] },
   /*  { id: 'r28', type: 'ehv-streek', text: '28 Deurne - Meijel', pdf: '/routes/28.pdf', map: 'https://goo.gl/maps/TqL7tE7qQh8vbjcT7?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] }, */
   /*  { id: 'r52', type: 'ehv-streek', text: '52 Helmond Rijpelberg', pdf: '/routes/52.pdf', map: 'https://goo.gl/maps/7hPPB8ZNq6PHcM6b9?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
   { id: 'r53', type: 'ehv-streek', text: '53 Helmond Straakven', pdf: '/routes/53.pdf', map: 'https://goo.gl/maps/sLirkmvixTATiw7V7?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
@@ -73,11 +73,11 @@ export const busRoutes = [
 
   { id: 'r11', type: 'helmond', text: '11 Eindhoven - Weert NS', pdf: '/routes/11.pdf', map: 'https://goo.gl/maps/44XVLgFnh5fH7Dvc8?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/5qiDFBfGH0o' }, { label: 'Terugrit', url: 'https://youtu.be/qb78B89VKbg' }] },
   { id: 'r18', type: 'helmond', text: '18 Eindhoven - Bergeijk Loo', pdf: '/routes/18.pdf', map: 'https://goo.gl/maps/jFNJHZ7X1p4a8np69?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/aoglS4lPltI?si=Dkt8aN353u0i6yaj' }, { label: 'Terugrit', url: 'https://youtu.be/kHnBKXtgUGw?si=ErPzS9dXF1-skWQV' }] },
-  { id: 'r19', type: 'helmond', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: 'https://goo.gl/maps/5JPt3zvstws5gBzf6?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
-  { id: 'r20', type: 'helmond', text: '20 Best NS - HTC', pdf: '/routes/20 (1).pdf', map: 'https://goo.gl/maps/DzPyz1xXHau3Y2XQ9?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
-   
+  { id: 'r19', type: 'helmond', text: '19 Eindhoven - Bladel', pdf: '/routes/19.pdf', map: 'https://goo.gl/maps/5JPt3zvstws5gBzf6?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/OQifY9s0Pt0?si=0v8_5X8g8efCQ1cM' }, { label: 'Terugrit', url: 'https://youtu.be/4kkXDZ_ulcc?si=4lhEwwuBWrOrGiGb' }] },
+  { id: 'r20', type: 'helmond', text: '20 Best NS - HTC', pdf: '/routes/20 (1).pdf', map: 'https://goo.gl/maps/DzPyz1xXHau3Y2XQ9?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/iWQEefFNk8g?si=arzFRD97U8iKxVSA' }, { label: 'Terugrit', url: 'https://youtu.be/LhZsVb5IIPg?si=98CJVW-YTIsNIfnY' }] },
+
  { id: 'r23', type: 'helmond', text: '23 Boxmeer', pdf: '/routes/23.pdf', map: 'https://goo.gl/maps/pBPPvrjBJjB3d4N89?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
-{ id: 'r24', type: 'helmond', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
+{ id: 'r24', type: 'helmond', text: '24 Eindhoven - Helmond via Geldrop', pdf: '/routes/24.pdf', map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac', videos: [{ label: 'Terugrit', url: 'https://youtu.be/zbocSyi5x2s?si=CELx50dE77tmp9J2' }] },
   
   { id: 'r25', type: 'helmond', text: '25 Helmond - Gemert Pelgrimsrust', pdf: '/routes/25.pdf', map: 'https://goo.gl/maps/D5RWqdKkpQLaceaA8?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/whpyiLIN43A?si=2y40M1n7RBDHuIpA' }, { label: 'Terugrit', url: 'https://youtu.be/PJmDfBdkRds?si=6927MdIt_Z1Pk_AP' }] },
   { id: 'r26', type: 'helmond', text: '26 Helmond - Gemert', pdf: '/routes/26.pdf', map: 'https://goo.gl/maps/33oHJptjDKoyeTV27?g_st=ac', videos: [{ label: 'Heenrit', url: '' }, { label: 'Terugrit', url: '' }] },
@@ -86,15 +86,15 @@ export const busRoutes = [
 /*  { id: 'r123', type: 'ehv-streek', text: '123 Gemert Pelgrimsrust - Boxmeer', pdf: '/routes/123.pdf', map: 'https://goo.gl/maps/qWGwUtdUUNRXB5MD8?g_st=ac' }, */
   { id: 'r150', type: 'helmond', text: '150 Helmond - Helmond \'t Hout', pdf: '/routes/150.pdf', map: 'https://goo.gl/maps/PpE8g8jfWTkNSWwS6?g_st=ac' },
   
-  { id: 'r317', type: 'helmond', text: '317 Dommelen', pdf: '/routes/317.pdf', map: 'https://goo.gl/maps/6VGZqioQwPVqZta57?g_st=ac' },
-  { id: 'r318', type: 'helmond', text: '318 Luyksgestel', pdf: '/routes/318.pdf', map: 'https://goo.gl/maps/vC9yVfv6rtfeETKy5?g_st=ac' },
-  { id: 'r319', type: 'helmond', text: '319 Reusel', pdf: '/routes/319.pdf', map: 'https://goo.gl/maps/4JJ1icwuqNwCeUrh7?g_st=ac' },
-  { id: 'r320', type: 'helmond', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf', map: 'https://goo.gl/maps/WSyXUrgdBGnSfnHk9?g_st=ac' },
+  { id: 'r317', type: 'helmond', text: '317 Dommelen', pdf: '/routes/317.pdf', map: 'https://goo.gl/maps/6VGZqioQwPVqZta57?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/iyI5uj9_R9M?si=iwsG_kjfSXUunydR' }, { label: 'Terugrit', url: 'https://youtu.be/Yl1OZD39BWQ?si=2uXO6OUo5we1s3gU' }] },
+  { id: 'r318', type: 'helmond', text: '318 Luyksgestel', pdf: '/routes/318.pdf', map: 'https://goo.gl/maps/vC9yVfv6rtfeETKy5?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/yqc3t49LpWo?si=1mP4GfAnr-X6Gp81' }, { label: 'Terugrit', url: 'https://youtu.be/T16tAvmXSJw?si=bL55voJUotEHu0bw' }] },
+  { id: 'r319', type: 'helmond', text: '319 Reusel', pdf: '/routes/319.pdf', map: 'https://goo.gl/maps/4JJ1icwuqNwCeUrh7?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/pRHmMy5ipkI?si=ywt0GIoY16-NNQ8U' }, { label: 'Terugrit', url: 'https://youtu.be/ajvQb14Ssa8?si=q8YomI9McmmJUyAG' }] },
+  { id: 'r320', type: 'helmond', text: '320 Eindhoven - Helmond via Asten', pdf: '/routes/320.pdf', map: 'https://goo.gl/maps/WSyXUrgdBGnSfnHk9?g_st=ac', videos: [{ label: 'Heenrit Asten-Helmond', url: 'https://youtu.be/Ifl9JJUVvow?si=W_o_l8sdL95VtbeJ' }, { label: 'Terugrit Helmond-Asten', url: 'https://youtu.be/C6cXBV4MFvY?si=viLau8jB4GFOQ1uc' }, { label: 'Heenrit Eindhoven-Asten', url: 'https://youtu.be/RP2wzq9Yers?si=hPBciCOXvICXr46Y' }, { label: 'Terugrit Asten-Eindhoven', url: 'https://youtu.be/FsVcMhQtjyk?si=BeG5eGpvln29DhuG'}] },
   { id: 'r321', type: 'helmond', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf', map: 'https://goo.gl/maps/di715Und6vygLtiQ7?g_st=ac' },
-  { id: 'r322', type: 'helmond', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: 'https://goo.gl/maps/NNFGPAnn8Ai451H5A?g_st=ac' },
-  { id: 'r323', type: 'helmond', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac' },
+  { id: 'r322', type: 'helmond', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: 'https://goo.gl/maps/NNFGPAnn8Ai451H5A?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/7RYVAJtCo1U?si=rToz5-11iHuEa0-t' }, { label: 'Terugrit', url: 'https://youtu.be/tp2DxKrxD7Y?si=O3pHZt39U-u9CvlM' }] },
+  { id: 'r323', type: 'helmond', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac', },
   { id: 'r324', type: 'helmond', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/bqwSqdBEpqU' }, { label: 'Terugrit', url: 'https://youtu.be/UUhg-zk6wkc' }] },
-  
+
   
   { id: 'placeholder-sch', type: 'scholieren', text: 'Lijnen Scholieren hier invullen...', map: '#' }
 ];
