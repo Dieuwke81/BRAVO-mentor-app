@@ -66,7 +66,7 @@ export const busRoutes = [
   { id: 'r322', type: 'ehv-streek', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: 'https://goo.gl/maps/NNFGPAnn8Ai451H5A?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/7RYVAJtCo1U?si=rToz5-11iHuEa0-t' }, { label: 'Terugrit', url: 'https://youtu.be/tp2DxKrxD7Y?si=O3pHZt39U-u9CvlM' }] },
   { id: 'r323', type: 'ehv-streek', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac', },
   { id: 'r324', type: 'ehv-streek', text: '324 Geldrop Coevering', pdf: '/routes/324.pdf', map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7', videos: [{ label: 'Heenrit', url: 'https://youtu.be/bqwSqdBEpqU' }, { label: 'Terugrit', url: 'https://youtu.be/UUhg-zk6wkc' }] },
-  { id: 'r614', type: 'ehv-streek', text: '614 Jozef Eliasweg', map: '#' },
+  { id: 'r614', type: 'ehv-streek', text: '614 Jozef Eliasweg', pdf: '/routes/614.pdf', map: 'https://goo.gl/maps/P63ayoVBncr6E1XV9?g_st=ac' },
 
   /* OVERIGE RAYONS 
   { id: 'placeholder-rv', type: 'reusel-valkenswaard', text: 'Lijnen Reusel hier invullen...', map: '#' },
@@ -107,10 +107,14 @@ export const busRoutes = [
   { id: 'r321', type: 'helmond', text: '321 Eindhoven - Gemert Pelgrimsrust', pdf: '/routes/321.pdf', map: 'https://goo.gl/maps/di715Und6vygLtiQ7?g_st=ac' },
   { id: 'r322', type: 'helmond', text: '322 Eindhoven - Uden', pdf: '/routes/322.pdf', map: 'https://goo.gl/maps/NNFGPAnn8Ai451H5A?g_st=ac', videos: [{ label: 'Heenrit', url: 'https://youtu.be/7RYVAJtCo1U?si=rToz5-11iHuEa0-t' }, { label: 'Terugrit', url: 'https://youtu.be/tp2DxKrxD7Y?si=O3pHZt39U-u9CvlM' }] },
   { id: 'r323', type: 'helmond', text: '323 Eindhoven - Gemert Groenesteeg', pdf: '/routes/323.pdf', map: 'https://goo.gl/maps/fsejfuTWoqRGbKe97?g_st=ac', },
-  
-  { id: 'r614', type: 'scholieren', text: '614 Jozef Eliasweg', map: '#' },
 
-  { id: 'placeholder-sch', type: 'scholieren', text: 'Lijnen Scholieren hier invullen...', map: '#' }
+  { id: 'r610', type: 'scholieren', text: '610 Internationale school', pdf: '/routes/610.pdf', map: 'https://goo.gl/maps/S9FFTyas1NZxVzq78?g_st=ac' },
+  
+  { id: 'r614', type: 'scholieren', text: '614 Jozef Eliasweg', pdf: '/routes/614.pdf', map: 'https://goo.gl/maps/P63ayoVBncr6E1XV9?g_st=ac' },
+{ id: 'r619', type: 'scholieren', text: '619 Bladel', pdf: '/routes/619.pdf', map: 'https://goo.gl/maps/DuUyFiJDA3Quf3p58?g_st=ac' },
+{ id: 'r656', type: 'scholieren', text: '656 Budel-Valkenswaard', pdf: '/routes/656.pdf', map: 'https://goo.gl/maps/t8TdQGxJZvgGjDnV7?g_st=ac' },
+
+ /* { id: 'placeholder-sch', type: 'scholieren', text: 'Lijnen Scholieren hier invullen...', map: '#' } */
 ];
 
 export const initialCategories = [
