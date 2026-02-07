@@ -27,11 +27,14 @@ export default function Home() {
   const [newStudentName, setNewStudentName] = useState('');
   const [theme, setTheme] = useState('light');
 
+  // Initialisatie
   useEffect(() => {
     if (typeof window !== 'undefined') { 
       setBaseUrl(window.location.origin); 
       const savedTheme = localStorage.getItem('bravo_theme') || 'light';
       setTheme(savedTheme);
+      // Breng de body direct in de juiste kleur
+      document.body.className = savedTheme === 'dark' ? 'dark-mode' : '';
     }
     const savedMentor = localStorage.getItem('bravo_mentor_name');
     if (savedMentor) setMentorName(savedMentor);
@@ -44,6 +47,14 @@ export default function Home() {
     setMounted(true);
   }, []);
 
+  // Update de body class als het thema verandert
+  useEffect(() => {
+    if (mounted) {
+      document.body.className = theme === 'dark' ? 'dark-mode' : '';
+      localStorage.setItem('bravo_theme', theme);
+    }
+  }, [theme, mounted]);
+
   useEffect(() => {
     if (mounted) {
       setCompleted(JSON.parse(localStorage.getItem(`bravo_progress_${activeStudent}`) || '[]'));
@@ -55,9 +66,7 @@ export default function Home() {
   }, [activeStudent, mounted]);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('bravo_theme', newTheme);
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
   if (!mounted) return null;
@@ -134,7 +143,7 @@ export default function Home() {
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
   return (
-    <div className={theme === 'dark' ? 'dark-mode' : ''}>
+    <div className="main-wrapper">
       {/* PDF MODAL */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'var(--card-bg)', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
@@ -162,18 +171,18 @@ export default function Home() {
             <div style={{ background: 'white', padding: '8px', borderRadius: '10px', minWidth: '50px', height: '50px', display: 'flex', alignItems: 'center' }}><img src="/logo.png" alt="Logo" style={{ height: '35px' }} /></div>
             <div><h1 style={{ fontSize: '1.5rem', color: 'white' }}>BRAVO Mentor</h1><span style={{ fontSize: '0.8rem', opacity: 0.9, color: 'white' }}>HERMES</span></div>
           </div>
-          <button onClick={toggleTheme} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', padding: '10px', borderRadius: '50%', cursor: 'pointer' }}>
+          <button onClick={toggleTheme} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', padding: '10px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
           </button>
         </div>
         
         <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '10px', marginBottom: '15px' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-            <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', color: 'black', fontWeight: 'bold', background: 'white' }}>{students.map(s => <option key={s} value={s}>{s}</option>)}</select>
+            <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', color: 'black', fontWeight: 'bold', background: 'white', border: 'none' }}>{students.map(s => <option key={s} value={s}>{s}</option>)}</select>
             <button onClick={() => deleteStudent(activeStudent)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}><Trash2 size={18} /></button>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none' }} /><button onClick={() => { if(newStudentName) { addStudent(); setNewStudentName(''); } }} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
+            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', color: 'black' }} /><button onClick={() => { if(newStudentName) { addStudent(); setNewStudentName(''); } }} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
           </div>
         </div>
         <div className="progress-container"><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 'bold', color: 'white' }}><span>VOORTGANG: {activeStudent}</span><span>{totalProgress}%</span></div><div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div></div>
@@ -303,19 +312,24 @@ export default function Home() {
           --success: #10b981;
         }
 
-        .dark-mode {
-          --bg-color: #111827;
-          --card-bg: #1f2937;
-          --text-main: #f9fafb;
-          --text-sub: #9ca3af;
-          --border-color: #374151;
-          --bg-secondary: #111827;
+        body.dark-mode {
+          --bg-color: #0f172a;
+          --card-bg: #1e293b;
+          --text-main: #f1f5f9;
+          --text-sub: #94a3b8;
+          --border-color: #334155;
+          --bg-secondary: #0f172a;
         }
 
         body {
-          background-color: var(--bg-color);
+          background-color: var(--bg-color) !important;
           color: var(--text-main);
+          margin: 0;
           transition: background-color 0.3s ease;
+        }
+
+        .main-wrapper {
+          min-height: 100vh;
         }
 
         .card {
