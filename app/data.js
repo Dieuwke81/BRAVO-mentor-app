@@ -999,7 +999,7 @@ export const initialCategories = [
     title: '3. Voertuig & Bediening',
     icon: <Bus size={22} />,
     items: [
-      { id: 'v1', text: 'Stoelinstelling (A t/m L)' },
+      { id: 'v1', text: 'Stoelinstelling (Zie docs)' },
       { id: 'v2', text: 'Instellen stuurwiel & spiegels' },
       { id: 'v3', text: 'Controle op schade' },
       { id: 'v4', text: 'Bediening verlichting' },
