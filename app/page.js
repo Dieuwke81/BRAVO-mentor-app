@@ -22,17 +22,14 @@ export default function Home() {
   const [newStudentName, setNewStudentName] = useState('');
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setBaseUrl(window.location.origin);
-    }
+    if (typeof window !== 'undefined') { setBaseUrl(window.location.origin); }
     const savedMentor = localStorage.getItem('bravo_mentor_name');
     if (savedMentor) setMentorName(savedMentor);
     const savedStudents = localStorage.getItem('bravo_student_list');
     if (savedStudents) {
       const parsed = JSON.parse(savedStudents);
       if (parsed.length > 0) setStudents(parsed);
-      const lastActive = localStorage.getItem('bravo_active_student') || (parsed && parsed[0]) || 'Standaard';
-      setActiveStudent(lastActive);
+      setActiveStudent(localStorage.getItem('bravo_active_student') || 'Standaard');
     }
     setMounted(true);
   }, []);
@@ -50,16 +47,9 @@ export default function Home() {
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { 
-      studentName: activeStudent, 
-      progress: localStorage.getItem(`bravo_progress_${activeStudent}`), 
-      tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), 
-      notes: localStorage.getItem(`bravo_notes_${activeStudent}`), 
-      dates: localStorage.getItem(`bravo_dates_${activeStudent}`) 
-    };
-    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    const data = { studentName: activeStudent, progress: localStorage.getItem(`bravo_progress_${activeStudent}`), tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), notes: localStorage.getItem(`bravo_notes_${activeStudent}`), dates: localStorage.getItem(`bravo_dates_${activeStudent}`) };
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
     a.download = `MentorApp_${activeStudent}.json`;
     a.click();
   };
@@ -74,9 +64,9 @@ export default function Home() {
         const name = incoming.studentName;
         let list = JSON.parse(localStorage.getItem('bravo_student_list') || '["Standaard"]');
         if (!list.includes(name)) { list.push(name); localStorage.setItem('bravo_student_list', JSON.stringify(list)); }
-        if (incoming.progress) localStorage.setItem(`bravo_progress_${name}`, incoming.progress);
-        if (incoming.tallies) localStorage.setItem(`bravo_tallies_${name}`, incoming.tallies);
-        if (incoming.notes) localStorage.setItem(`bravo_notes_${name}`, incoming.notes);
+        localStorage.setItem(`bravo_progress_${name}`, incoming.progress);
+        localStorage.setItem(`bravo_tallies_${name}`, incoming.tallies);
+        localStorage.setItem(`bravo_notes_${name}`, incoming.notes);
         if (incoming.dates) localStorage.setItem(`bravo_dates_${name}`, incoming.dates);
         window.location.reload();
       } catch (err) { alert("Fout bij importeren."); }
@@ -85,59 +75,45 @@ export default function Home() {
   };
 
   const updateTally = (id, type, d) => {
-    const curr = tallies[id] || { m: 0, z: 0 };
-    const next = { ...tallies, [id]: { ...curr, [type]: Math.max(0, (curr[type] || 0) + d) } };
-    setTallies(next);
-    localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(next));
+    const next = { ...tallies, [id]: { ...(tallies[id] || { m: 0, z: 0 }), [type]: Math.max(0, (tallies[id]?.[type] || 0) + d) } };
+    setTallies(next); localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(next));
   };
 
   const updateNote = (id, val) => {
     const next = { ...notes, [id]: val };
-    setNotes(next);
-    localStorage.setItem(`bravo_notes_${activeStudent}`, JSON.stringify(next));
+    setNotes(next); localStorage.setItem(`bravo_notes_${activeStudent}`, JSON.stringify(next));
   };
 
   const toggleItem = (id) => {
     const next = completed.includes(id) ? completed.filter(i => i !== id) : [...completed, id];
-    setCompleted(next);
-    localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(next));
+    setCompleted(next); localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(next));
   };
 
   const addStudent = () => {
     if (newStudentName.trim() && !students.includes(newStudentName.trim())) {
       const newList = [...students, newStudentName.trim()];
-      setStudents(newList);
-      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
-      setActiveStudent(newStudentName.trim());
-      setNewStudentName('');
+      setStudents(newList); localStorage.setItem('bravo_student_list', JSON.stringify(newList));
+      setActiveStudent(newStudentName.trim()); setNewStudentName('');
     }
   };
 
   const deleteStudent = (name) => {
-    if (students.length > 1 && confirm(`Verwijder alle gegevens van ${name}?`)) {
+    if (students.length > 1 && confirm(`Verwijder ${name}?`)) {
       const newList = students.filter(s => s !== name);
-      setStudents(newList);
-      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
-      localStorage.removeItem(`bravo_progress_${name}`);
-      localStorage.removeItem(`bravo_tallies_${name}`);
-      localStorage.removeItem(`bravo_notes_${name}`);
-      localStorage.removeItem(`bravo_dates_${name}`);
+      setStudents(newList); localStorage.setItem('bravo_student_list', JSON.stringify(newList));
       setActiveStudent(newList[0]);
     }
   };
 
   const baseItems = initialCategories.flatMap(c => c.items);
   const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
-  
-  const pathPercentages = routeTypes.map(t => {
-    const typeItems = busRoutes.filter(i => i.type === t);
-    const doneCount = typeItems.filter(i => completed.includes(i.id)).length;
-    const baseDoneCount = baseItems.filter(i => completed.includes(i.id)).length;
-    const totalCount = baseItems.length + typeItems.length;
-    return totalCount === 0 ? 0 : ((baseDoneCount + doneCount) / totalCount) * 100;
-  });
+  const totalProgress = Math.round(Math.max(...routeTypes.map(t => {
+    const items = busRoutes.filter(i => i.type === t);
+    const done = items.filter(i => completed.includes(i.id)).length;
+    const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
+    return ((baseDone + done) / (baseItems.length + (items.length || 1))) * 100;
+  }))) || 0;
 
-  const totalProgress = Math.round(Math.max(...pathPercentages)) || 0;
   const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
   const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
 
@@ -147,53 +123,31 @@ export default function Home() {
 
   return (
     <div>
-      {/* PRINT VIEW */}
-      <div className="print-only" style={{ display: 'none' }}>
-        <div style={{ padding: '40px', color: 'black', background: 'white', fontFamily: 'sans-serif' }}>
-          <h1 style={{ fontSize: '24px', borderBottom: '2px solid #6d28d9', color: '#6d28d9' }}>Opleidingsrapport BRAVO - {activeStudent}</h1>
-          <p>Periode: {dates.start} t/m {dates.end} | Mentor: {mentorName}</p>
-          <h2 style={{ fontSize: '18px', marginTop: '20px' }}>Lijnverkenning</h2>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
-            <thead><tr style={{ background: '#eee' }}><th style={{border:'1px solid #ccc', padding:'8px'}}>Lijn</th><th style={{border:'1px solid #ccc', padding:'8px'}}>OK</th><th style={{border:'1px solid #ccc', padding:'8px'}}>M</th><th style={{border:'1px solid #ccc', padding:'8px'}}>Z</th><th style={{border:'1px solid #ccc', padding:'8px'}}>Opmerking</th></tr></thead>
-            <tbody>
-              {uniqueReportRoutes.map(r => (
-                <tr key={r.id}><td style={{ border: '1px solid #ccc', padding: '8px' }}>{r.text}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{completed.includes(r.id) ? 'X' : ''}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc', padding: '8px' }}>{notes[r.id] || ''}</td></tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
+      {/* PDF MODAL */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'white', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontWeight: 'bold' }}>{pdfModal.text || pdfModal.title}</span>
               <button onClick={() => setPdfModal(null)} style={{ background: 'white', color: 'var(--bravo-purple)', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold' }}>SLUITEN</button>
            </div>
-           <div style={{ flex: 1 }}>
-              <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} style={{ width: '100%', height: '100%', border: 'none' }}></iframe>
-           </div>
-           <div style={{ padding: '10px', textAlign: 'center', background: '#f3f4f6' }}>
-              <a href={pdfModal.pdf} target="_blank" style={{ fontSize: '0.8rem', color: 'var(--bravo-purple)', fontWeight: 'bold', textDecoration: 'none' }}>Laden mislukt? Open PDF direct</a>
-           </div>
+           <div style={{ flex: 1 }}><iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} style={{ width: '100%', height: '100%', border: 'none' }}></iframe></div>
         </div>
       )}
 
+      {/* VIDEO MODAL */}
       {videoModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'white', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}><h3>Video's</h3><button onClick={() => setVideoModal(null)} style={{ border: 'none', background: '#eee', borderRadius: '50%', padding: '5px' }}><X size={20} /></button></div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {videoModal.videos.map((v, i) => (<a key={i} href={v.url} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '15px', background: '#fee2e2', color: '#dc2626', textDecoration: 'none', borderRadius: '10px', fontWeight: 'bold' }}><Youtube size={20} /> {v.label}</a>))}
-              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}><h3>Video's</h3><button onClick={() => setVideoModal(null)} style={{ border: 'none', background: '#eee', borderRadius: '50%', padding: '5px' }}><X size={20} /></button></div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>{videoModal.videos.map((v, i) => (<a key={i} href={v.url} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '15px', background: '#fee2e2', color: '#dc2626', textDecoration: 'none', borderRadius: '10px', fontWeight: 'bold' }}><Youtube size={20} /> {v.label}</a>))}</div>
            </div>
         </div>
       )}
 
       <div className="header no-print">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-            <div style={{ background: 'white', padding: '8px', borderRadius: '10px', minWidth: '50px', height: '50px', display: 'flex', alignItems: 'center' }}><img src="/logo.png" alt="Logo" style={{ height: '35px' }} /></div>
-            <div><h1 style={{ fontSize: '1.5rem' }}>BRAVO Mentor</h1><span style={{ fontSize: '0.8rem', opacity: 0.9 }}>HERMES</span></div>
+          <div style={{ background: 'white', padding: '8px', borderRadius: '10px', minWidth: '50px', height: '50px', display: 'flex', alignItems: 'center' }}><img src="/logo.png" alt="Logo" style={{ height: '35px' }} /></div>
+          <div><h1 style={{ fontSize: '1.5rem' }}>BRAVO Mentor</h1><span style={{ fontSize: '0.8rem', opacity: 0.9 }}>HERMES</span></div>
         </div>
         <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '10px', marginBottom: '15px' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
@@ -220,7 +174,6 @@ export default function Home() {
             <div style={{ display: 'flex', overflowX: 'auto', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px' }} className="no-scrollbar">
               {routeTypes.map(t => (<button key={t} onClick={() => setRouteSubTab(t)} style={{ padding: '8px 15px', borderRadius: '6px', border: 'none', fontSize: '0.75rem', fontWeight: 'bold', background: routeSubTab === t ? 'white' : 'transparent', color: routeSubTab === t ? 'var(--bravo-purple)' : '#6b7280', whiteSpace: 'nowrap' }}>{t.replace('-', ' ').toUpperCase()}</button>))}
             </div>
-            <div style={{ marginBottom: '15px' }}><div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', color: '#6b7280' }}><span>VOORTGANG {routeSubTab.toUpperCase()}</span><span>{progressTab}%</span></div><div style={{ height: '6px', background: '#e5e7eb', borderRadius: '3px' }}><div style={{ height: '100%', background: 'var(--bravo-purple)', width: `${progressTab}%`, transition: 'width 0.3s' }}></div></div></div>
             {currentTabItems.map((item) => (
               <div key={item.id + item.type} className="checkbox-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -231,24 +184,14 @@ export default function Home() {
                   <div style={{ display: 'flex', gap: '8px' }}>
                     {item.map && item.map !== '#' && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={16} /></a>}
                     {item.pdf && <button onClick={() => setPdfModal(item)} className="pdf-btn"><FileText size={16} /></button>}
-                    {item.videos && item.videos.length > 0 && item.videos[0].url && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626' }}><Youtube size={16} /></button>}
+                    {item.videos && item.videos.length > 0 && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626' }}><Youtube size={16} /></button>}
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '20px', marginLeft: '39px', padding: '10px 0' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'm', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score"><Eye size={14} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)} className="tally-btn"><Plus size={14} /></button></div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'z', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score" style={{ background: '#f0fdf4', color: '#15803d', borderColor: '#bbf7d0' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)} className="tally-btn"><Plus size={14} /></button></div>
                 </div>
-                <div style={{ marginLeft: '39px' }}>
-                  <textarea 
-                    value={notes[item.id] || ''} 
-                    onChange={(e) => updateNote(item.id, e.target.value)}
-                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }}
-                    placeholder="Opmerking..." 
-                    rows={1}
-                    className="note-input"
-                    style={{ resize: 'none', overflow: 'hidden', minHeight: '34px', display: 'block' }}
-                  />
-                </div>
+                <div style={{ marginLeft: '39px' }}><textarea value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }} placeholder="Opmerking..." rows={1} className="note-input" style={{ resize: 'none', overflow: 'hidden' }} /></div>
               </div>
             ))}
           </div>
@@ -312,7 +255,7 @@ export default function Home() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .tally-btn { border: 1px solid #bae6fd; background: white; color: #0369a1; border-radius: 6px; padding: 4px; cursor: pointer; }
         .tally-score { display: flex; align-items: center; gap: 6px; background: #f0f9ff; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bae6fd; }
-        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 8px 10px; outline: none; color: black; font-family: inherit; }
+        .note-input { border: 1px solid #e5e7eb; background: #f9fafb; font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 8px 10px; outline: none; color: black; }
         @media print { .no-print { display: none !important; } .print-only { display: block !important; } body { background: white !important; } }
       `}</style>
     </div>
