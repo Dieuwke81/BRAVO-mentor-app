@@ -209,12 +209,12 @@ export const importantDocuments = [
 // Voeg dit toe aan app/data.js
 
 export const busTypes = [
-  { id: 'iveco', label: 'Iveco', type: 'Iveco Crossway LE' },
-  { id: '13m', label: '13 meter', type: 'Citea SLFA 129' },
-  { id: '18m-brt', label: '18 meter (BRT/oud)', type: 'Citea SLFA 181' },
-  { id: '18m-noors', label: '18 meter (Noors)', type: 'Citea SLFA 180' },
-  { id: '12m-stad', label: '12 meter stad', type: 'Citea LF 122' },
-  { id: '12m-streek', label: '12 meter streek', type: 'Citea LF 122' }
+  { id: 'iveco', label: 'Iveco', type: 'Iveco Crossway LE', Busnr: '5519 - 5538', Lengte: '12.2 meter', Wielbasis: '6.03 meter' },
+  { id: '13m', label: '13 meter', type: 'Citea SLFA 129', Busnr: '1220 - 1284', Lengte: '12.9 meter', Wielbasis: '6.90 meter' },
+  { id: '18m-brt', label: '18 meter (BRT/oud)', type: 'Citea SLFA 181', Busnr: '9500 - 9542', Lengte: '18.15 meter', Wielbasis: '5.25 meter' },
+  { id: '18m-noors', label: '18 meter (Noors)', type: 'Citea SLFA 180', Busnr: '9543 - 9560', Lengte: '18.0 meter', Wielbasis: '5.25 meter' },
+  { id: '12m-stad', label: '12 meter stad', type: 'Citea LF 122', Busnr: '2151 - 2182', Lengte: '12.2 meter', Wielbasis: '6.35 meter' },
+  { id: '12m-streek', label: '12 meter streek', type: 'Citea LE 122', Busnr: '2222 - 2253', Lengte: '12.2 meter', Wielbasis: '6.35 meter' }
 ];
 
 export const vehicleChecklist = [
