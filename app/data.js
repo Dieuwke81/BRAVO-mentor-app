@@ -205,3 +205,57 @@ export const importantDocuments = [
   { id: 'doc-atw', title: 'Arbeidstijdenwet (ATW)', pdf: '/docs/atw.pdf' },
   { id: 'doc-werkafspraken', title: 'Rayon Eindhoven - Werkafspraken', pdf: '/docs/afspraken.pdf' }
 ];
+
+// Voeg dit toe aan app/data.js
+
+export const busTypes = [
+  { id: 'iveco', label: 'Iveco', type: 'Iveco Crossway LE' },
+  { id: '13m', label: '13 meter', type: 'Citea SLFA 129' },
+  { id: '18m-brt', label: '18 meter (BRT/oud)', type: 'Citea SLFA 181' },
+  { id: '18m-noors', label: '18 meter (Noors)', type: 'Citea SLFA 180' },
+  { id: '12m-stad', label: '12 meter stad', type: 'Citea LF 122' },
+  { id: '12m-streek', label: '12 meter streek', type: 'Citea LF 122' }
+];
+
+export const vehicleChecklist = [
+  {
+    category: "1. Algemene uitleg voertuig",
+    items: [
+      { id: 'v_motor', text: 'Type motor (normaal / elektrisch) & Hoge spanning' },
+      { id: 'v_dimensies', text: 'Lengte / breedte / hoogte & Wielbasis' },
+      { id: 'v_spiegels', text: 'Spiegels instellen & Spiegels buiten de bus' },
+      { id: 'v_veiligheid', text: 'Veiligheidsvoorzieningen & Noodknoppen' },
+      { id: 'v_retarder', text: 'Retarder (automatisch en 3 standen)' }
+    ]
+  },
+  {
+    category: "2. Voertuigcontrole",
+    items: [
+      { id: 'v_schade_ex', text: 'Zichtcontrole schade exterieur' },
+      { id: 'v_banden', text: 'Zichtcontrole banden & lekkage' },
+      { id: 'v_vloeistof', text: 'Zichtcontrole koelvloeistof / ruitensproeier' },
+      { id: 'v_schoon', text: 'Voertuig en ruiten schoon' },
+      { id: 'v_tankdop', text: 'Tankdop gesloten' }
+    ]
+  },
+  {
+    category: "3. Chauffeurscabine en bediening",
+    items: [
+      { id: 'v_start', text: 'Hoofdschakelaar, contact en start/stop' },
+      { id: 'v_dash', text: 'Uitleg schakelaars, symbolen en menu' },
+      { id: 'v_licht', text: 'Verlichting: cabine, interieur en groot/dimlicht' },
+      { id: 'v_deuren', text: 'Bediening deuren & Noodbediening deuren' },
+      { id: 'v_klimaat', text: 'Klimaatbediening & Ontwaseming' },
+      { id: 'v_panto', text: 'Bediening pantograaf (indien aanwezig)' }
+    ]
+  },
+  {
+    category: "4. Rijvaardigheid",
+    items: [
+      { id: 'v_dnr', text: 'Procedure rijrichting kiezen (DNR)' },
+      { id: 'v_hnr', text: 'HNR (Het Nieuwe Rijden) & regenereren' },
+      { id: 'v_wiel', text: 'Rijgedrag (nadruk op wielbasis/overbouw)' },
+      { id: 'v_halte', text: 'Aanrijden van halten & bodemvrijheid' }
+    ]
+  }
+];
