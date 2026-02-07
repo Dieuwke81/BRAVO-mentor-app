@@ -115,11 +115,9 @@ export default function Home() {
   }))) || 0;
 
   const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
-  const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
-
-  const uniqueReportRoutes = [];
-  const seenIds = new Set();
-  busRoutes.forEach(r => { if ((completed.includes(r.id) || tallies[r.id]?.m > 0 || tallies[r.id]?.z > 0 || notes[r.id]) && !seenIds.has(r.id)) { uniqueReportRoutes.push(r); seenIds.add(r.id); } });
+  
+  // Helper om de huidige bus info op te halen
+  const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
   return (
     <div>
@@ -203,7 +201,31 @@ export default function Home() {
             <div style={{ display: 'flex', overflowX: 'auto', background: '#f3f4f6', padding: '4px', borderRadius: '8px', marginBottom: '20px', gap: '4px' }} className="no-scrollbar">
               {busTypes.map(bus => (<button key={bus.id} onClick={() => setActiveBus(bus.id)} style={{ padding: '10px 15px', borderRadius: '6px', border: 'none', fontSize: '0.75rem', fontWeight: 'bold', background: activeBus === bus.id ? 'white' : 'transparent', color: activeBus === bus.id ? 'var(--bravo-purple)' : '#6b7280', whiteSpace: 'nowrap' }}>{bus.label}</button>))}
             </div>
-            <p style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '15px', fontWeight: 'bold' }}>Type: {busTypes.find(b => b.id === activeBus)?.type}</p>
+
+            {/* NIEUWE TECHNISCHE INFO GRID */}
+            {currentBusInfo && (
+              <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '10px', marginBottom: '20px', border: '1px solid #e2e8f0' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 'bold' }}>Type</span>
+                    <span style={{ fontSize: '0.9rem', color: 'black', fontWeight: '600' }}>{currentBusInfo.type}</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 'bold' }}>Busnummers</span>
+                    <span style={{ fontSize: '0.9rem', color: 'black', fontWeight: '600' }}>{currentBusInfo.Busnr}</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 'bold' }}>Lengte</span>
+                    <span style={{ fontSize: '0.9rem', color: 'black', fontWeight: '600' }}>{currentBusInfo.Lengte}</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 'bold' }}>Wielbasis</span>
+                    <span style={{ fontSize: '0.9rem', color: 'black', fontWeight: '600' }}>{currentBusInfo.Wielbasis}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {vehicleChecklist.map((section, idx) => (
               <div key={idx} style={{ marginBottom: '20px' }}>
                 <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '1px solid #eee', paddingBottom: '5px', marginBottom: '10px' }}>{section.category}</h3>
