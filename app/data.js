@@ -1065,7 +1065,7 @@ export const importantDocuments = [
   { id: 'doc-stoel', title: 'Stoelafstelling', pdf: '/docs/stoelafstelling.pdf' },
 { id: 'doc-Zaagtandgrafiek en OV-planningsbegrippen', title: 'Zaagtandgrafiek en OV-planningsbegrippen', pdf: '/docs/Zaagtandgrafiek en OV-planningsbegrippen.pdf' },
  { id: 'Busboek-Zuidoost-Brabant-januari-2026', title: 'Busboek-Zuidoost-Brabant-januari-2026', pdf: '/docs/Busboek-Zuidoost-Brabant-januari-2026.pdf' },
-{ id: 'Busboek-Zuidoost-Brabant-januari-2026', title: 'Busboek-Zuidoost-Brabant-januari-2026', pdf: '/docs/Busboek-Zuidoost-Brabant-januari-2026.pdf' }
+{ id: 'Lijnennetkaart 2026', title: 'Lijnennetkaart 2026', pdf: '/docs/Lijnennetkaart 2026.pdf' }
 
 ];
 
