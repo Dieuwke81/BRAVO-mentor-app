@@ -1013,7 +1013,7 @@ export const initialCategories = [
     items: [
       { id: 's1', text: 'Inloggen Viribus (pincode via ROV)' },
       { id: 's2', text: 'Juiste omloop invoeren' },
-      { id: 's3', text: 'Gebruik KAR/VETAG' },
+      { id: 's3', text: 'Gebruik KAR/VETAG (zie docs)' },
       { id: 's4', text: 'Kaartverkoop & Ticketbox' }
     ]
   }
