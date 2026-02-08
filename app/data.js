@@ -1064,7 +1064,9 @@ export const contactData = [
 export const importantDocuments = [
   { id: 'doc-stoel', title: 'Stoelafstelling', pdf: '/docs/stoelafstelling.pdf' },
 { id: 'doc-Zaagtandgrafiek en OV-planningsbegrippen', title: 'Zaagtandgrafiek en OV-planningsbegrippen', pdf: '/docs/Zaagtandgrafiek en OV-planningsbegrippen.pdf' },
-/*  { id: 'doc-werkafspraken', title: 'Rayon Eindhoven - Werkafspraken', pdf: '/docs/afspraken.pdf' } */
+ { id: 'Busboek-Zuidoost-Brabant-januari-2026', title: 'Busboek-Zuidoost-Brabant-januari-2026', pdf: '/docs/Busboek-Zuidoost-Brabant-januari-2026.pdf' },
+{ id: 'Busboek-Zuidoost-Brabant-januari-2026', title: 'Busboek-Zuidoost-Brabant-januari-2026', pdf: '/docs/Busboek-Zuidoost-Brabant-januari-2026.pdf' }
+
 ];
 
 export const busTypes = [
