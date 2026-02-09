@@ -140,7 +140,7 @@ export default function Home() {
   const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
-  // Unieke lijnen voor rapport
+  // --- LOGICA VOOR RAPPORTAGE ---
   const reportRoutes = [];
   const seenIds = new Set();
   busRoutes.forEach(r => {
@@ -152,6 +152,14 @@ export default function Home() {
       seenIds.add(r.id);
     }
   });
+
+  const reportChecklists = initialCategories
+    .filter(cat => cat.id !== 'routes')
+    .map(cat => ({
+      ...cat,
+      checkedItems: cat.items.filter(item => completed.includes(item.id))
+    }))
+    .filter(cat => cat.checkedItems.length > 0);
 
   return (
     <div className="main-wrapper">
@@ -172,6 +180,7 @@ export default function Home() {
         </div>
       )}
 
+      {/* HEADER */}
       <div className="header no-print">
         <div className="header-top">
           <div className="brand-box">
@@ -202,6 +211,7 @@ export default function Home() {
       </div>
 
       <div className="container no-print">
+        {/* Lijnen Tab */}
         {mainTab === 'routes' && (
           <div className="card">
             <div className="sub-tabs no-scrollbar">
@@ -234,6 +244,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Voertuig Tab */}
         {mainTab === 'vehicle' && (
           <div className="card">
             <div className="cat-title"><Bus size={22} /><span>Voertuiggewenning</span></div>
@@ -253,6 +264,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Checklist Tab */}
         {mainTab === 'checklist' && (
           <div>{initialCategories.map((cat) => cat && cat.id !== 'routes' && (
             <div key={cat.id} className="card">
@@ -267,6 +279,7 @@ export default function Home() {
           ))}</div>
         )}
 
+        {/* Docs Tab */}
         {mainTab === 'docs' && (
           <div className="card">
             <div className="cat-title"><Files size={22} /><span>Documenten</span></div>
@@ -274,6 +287,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Info Tab */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren: Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
@@ -287,7 +301,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* --- RAPPORT SECTIE --- */}
+      {/* --- RAPPORT SECTIE (ALLEEN PRINT) --- */}
       <div className="print-only">
         <div style={{ textAlign: 'center', borderBottom: '3px solid var(--bravo-purple)', paddingBottom: '20px', marginBottom: '30px' }}>
           <h1 style={{ color: 'var(--bravo-purple)', fontSize: '26px', margin: '0' }}>LEERLING RAPPORTAGE</h1>
@@ -314,7 +328,7 @@ export default function Home() {
         </table>
 
         <h3>2. Voertuigbeheersing (Afgevinkt)</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '30px' }}>
           {busTypes.map(bus => {
             const allPossibleItems = vehicleChecklist.flatMap(s => s?.items || []);
             const checkedItems = allPossibleItems.filter(i => completed.includes(`${bus.id}_${i.id}`));
@@ -327,6 +341,20 @@ export default function Home() {
             );
           })}
         </div>
+
+        {reportChecklists.length > 0 && (
+          <>
+            <h3>3. Algemene Checklists (Afgevinkt)</h3>
+            {reportChecklists.map(cat => (
+              <div key={cat.id} style={{ marginBottom: '15px' }}>
+                <strong style={{ color: 'var(--bravo-purple)', borderBottom: '1px solid #eee', display: 'block', paddingBottom: '3px' }}>{cat.title}</strong>
+                <ul style={{ margin: '5px 0', paddingLeft: '20px', fontSize: '13px' }}>
+                  {cat.checkedItems.map(item => <li key={item.id}>{item.text}</li>)}
+                </ul>
+              </div>
+            ))}
+          </>
+        )}
       </div>
 
       <style jsx global>{`
@@ -357,12 +385,11 @@ export default function Home() {
         .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; touch-action: pan-x; scrollbar-width: none; }
         .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.7rem; white-space: nowrap; cursor: pointer; }
         .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        
         .item-row { padding: 15px 0; border-bottom: 1px solid var(--border); }
         .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
         .check-label { display: flex; align-items: center; cursor: pointer; flex: 1; }
         
-        /* FIX VOOR CHECKBOX POSITIE */
+        /* CHECKBOXES VOOR DE TEKST */
         .check-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; text-align: left; }
         .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
         .check-box.checked { background: var(--success); border-color: var(--success); }
