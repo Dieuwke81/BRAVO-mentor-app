@@ -130,8 +130,9 @@ export default function Home() {
   const totalProgress = Math.round(Math.max(...routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
     const done = items.filter(i => completed.includes(i.id)).length;
-    const baseDone = baseItems.filter(i => completed.includes(i.id)).length;
-    return ((baseDone + done) / (baseItems.length + (items.length || 1))) * 100;
+    const baseDoneCount = baseItems.filter(i => completed.includes(i.id)).length;
+    const total = baseItems.length + items.length;
+    return total === 0 ? 0 : ((baseDoneCount + done) / total) * 100;
   }))) || 0;
 
   const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
@@ -246,7 +247,19 @@ export default function Home() {
         )}
 
         {mainTab === 'checklist' && (
-          <div>{initialCategories.map((cat) => cat.id !== 'routes' && (<div key={cat.id} className="card"><div className="category-header">{cat.icon}<span className="category-title">{cat.title}</span></div>{cat.items.map((it) => (<div key={it.id} className="checkbox-item" onClick={() => toggleItem(it.id)}><div className="checkbox-content"><div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(it.id) ? 'none' : '2px solid var(--border-color)', background: completed.includes(it.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(it.id) && <CheckCircle2 size={16} />}</div><span style={{ textDecoration: completed.includes(it.id) ? 'line-through' : 'none', color: completed.includes(it.id) ? 'var(--text-sub)' : 'var(--text-main)' }}>{it.text}</span></div></div>))}</div>))}</div>
+          <div>{initialCategories.map((cat) => cat.id !== 'routes' && (
+            <div key={cat.id} className="card">
+              <div className="category-header">{cat.icon}<span className="category-title">{cat.title}</span></div>
+              {cat.items.map((it) => (
+                <div key={it.id} className="checkbox-item" onClick={() => toggleItem(it.id)}>
+                  <div className="checkbox-content">
+                    <div style={{ width: '24px', height: '24px', borderRadius: '6px', border: completed.includes(it.id) ? 'none' : '2px solid var(--border-color)', background: completed.includes(it.id) ? 'var(--success)' : 'transparent', marginRight: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(it.id) && <CheckCircle2 size={16} />}</div>
+                    <span style={{ textDecoration: completed.includes(it.id) ? 'line-through' : 'none', color: completed.includes(it.id) ? 'var(--text-sub)' : 'var(--text-main)', fontSize: '0.95rem' }}>{it.text}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}</div>
         )}
 
         {mainTab === 'docs' && (
@@ -262,7 +275,7 @@ export default function Home() {
           <div>
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}><div style={{ display: 'flex', gap: '10px', color: '#dc2626', fontWeight: 'bold' }}><ShieldAlert size={20} /> ZIEKMELDEN</div><p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#dc2626' }}>Binnen kantooruren: Bij je leidinggevende</p><p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#dc2626' }}>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
             <div className="card" style={{ padding: '20px' }}><h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Rapportage Gegevens</h3><div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}><div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)' }} /></div><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}><div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)', borderRadius: '8px' }} /></div><div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)', borderRadius: '8px' }} /></div></div></div></div>
-            <div className="card" style={{ textAlign: 'center' }}><button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%' }}>Rapport maken</button><button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%' }}>Download data</button><label style={{ marginTop: '10px', display: 'block', background: 'var(--card-bg)', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label></div>
+            <div className="card" style={{ textAlign: 'center' }}><button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%' }}>Rapport maken</button><button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%' }}>Exporteer data</button><label style={{ marginTop: '10px', display: 'block', background: 'var(--card-bg)', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label></div>
             
             <div className="card">
               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Nuttige Links</h3>
@@ -304,7 +317,7 @@ export default function Home() {
         .checkbox-item { display: flex; flex-direction: column; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
         .checkbox-content { display: flex; align-items: flex-start; cursor: pointer; }
         .pdf-btn { display: flex; align-items: center; gap: 5px; background: white; border: 1px solid #ddd; padding: 6px 12px; border-radius: 8px; text-decoration: none; color: var(--bravo-purple); font-weight: bold; font-size: 0.8rem; cursor: pointer; }
-        @media print { .no-print { display: none !important; } .print-only { display: block !important; } body { background: white !important; color: black !important; } }
+        @media print { .no-print { display: none !important; } .print-only { display: block !important; } body { background: white !important; color: black !important; } .card { border: none !important; background: white !important; } }
       `}</style>
     </div>
   );
