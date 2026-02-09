@@ -21,7 +21,7 @@ export default function Home() {
   const [baseUrl, setBaseUrl] = useState('');
   const [mainTab, setMainTab] = useState('routes');
   const [routeSubTab, setRouteSubTab] = useState('ehv-stad');
-  const [activeBus, setActiveBus] = useState('iveco'); // Standaard geselecteerde bus
+  const [activeBus, setActiveBus] = useState('iveco'); 
   const [videoModal, setVideoModal] = useState(null);
   const [pdfModal, setPdfModal] = useState(null);
   const [newStudentName, setNewStudentName] = useState('');
@@ -136,11 +136,13 @@ export default function Home() {
   }))) || 0;
 
   const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
+  
+  // Zoek de info op basis van het geselecteerde ID
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
   return (
     <div className="main-wrapper">
-      {/* Modals voor PDF en Video */}
+      {/* Modals */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'var(--card-bg)', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -160,7 +162,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Blauwe Header Sectie */}
       <div className="header no-print">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -189,7 +190,6 @@ export default function Home() {
           <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
 
-        {/* Tab Navigatie */}
         <div style={{ display: 'flex', overflowX: 'auto', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }} className="no-scrollbar">
           <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Lijnen</button>
           <button onClick={() => setMainTab('vehicle')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'vehicle' ? 'white' : 'transparent', color: mainTab === 'vehicle' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Voertuig</button>
@@ -200,7 +200,6 @@ export default function Home() {
       </div>
 
       <div className="container no-print">
-        {/* Lijnen Tab */}
         {mainTab === 'routes' && (
           <div className="card">
             <div style={{ display: 'flex', overflowX: 'auto', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px' }} className="no-scrollbar">
@@ -233,30 +232,19 @@ export default function Home() {
           </div>
         )}
 
-        {/* Voertuig Tab - HERSTELDE VERSIE */}
+        {/* Voertuig Tab - MET DE JUISTE KEY-NAMEN UIT JOUW DATA */}
         {mainTab === 'vehicle' && (
           <div className="card">
             <div className="category-header"><Bus size={22} /><span className="category-title">Voertuiggewenning</span></div>
             
-            {/* Bus Type Sub-Tabs */}
             <div style={{ display: 'flex', overflowX: 'auto', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px' }} className="no-scrollbar">
               {busTypes.map(bus => (
-                <button 
-                  key={bus.id} 
-                  onClick={() => setActiveBus(bus.id)} 
-                  style={{ 
-                    padding: '10px 15px', borderRadius: '6px', border: 'none', fontSize: '0.75rem', fontWeight: 'bold', 
-                    background: activeBus === bus.id ? 'var(--card-bg)' : 'transparent', 
-                    color: activeBus === bus.id ? 'var(--bravo-purple)' : 'var(--text-sub)', 
-                    whiteSpace: 'nowrap', boxShadow: activeBus === bus.id ? '0 2px 4px rgba(0,0,0,0.1)' : 'none'
-                  }}
-                >
+                <button key={bus.id} onClick={() => setActiveBus(bus.id)} style={{ padding: '10px 15px', borderRadius: '6px', border: 'none', fontSize: '0.75rem', fontWeight: 'bold', background: activeBus === bus.id ? 'var(--card-bg)' : 'transparent', color: activeBus === bus.id ? 'var(--bravo-purple)' : 'var(--text-sub)', whiteSpace: 'nowrap' }}>
                   {bus.label}
                 </button>
               ))}
             </div>
 
-            {/* HERSTELDE BUS GEGEVENS BALK */}
             {currentBusInfo && (
               <div style={{ 
                 background: 'var(--bg-secondary)', padding: '12px', borderRadius: '10px', marginBottom: '20px', 
@@ -264,22 +252,24 @@ export default function Home() {
               }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: '0.65rem', color: 'var(--text-sub)', fontWeight: 'bold', letterSpacing: '0.05em', marginBottom: '4px' }}>BUSNR</div>
-                  <div style={{ fontSize: '1rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.fleet || '-'}</div>
+                  <div style={{ fontSize: '0.95rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.Busnr || '-'}</div>
                 </div>
-                <div style={{ width: '1px', background: 'var(--border-color)', margin: '0 10px' }}></div>
+                <div style={{ width: '1px', background: 'var(--border-color)', margin: '0 5px' }}></div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-sub)', fontWeight: 'bold', letterSpacing: '0.05em', marginBottom: '4px' }}>LENGTE</div>
+                  <div style={{ fontSize: '0.95rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.Lengte || '-'}</div>
+                </div>
+                <div style={{ width: '1px', background: 'var(--border-color)', margin: '0 5px' }}></div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: '0.65rem', color: 'var(--text-sub)', fontWeight: 'bold', letterSpacing: '0.05em', marginBottom: '4px' }}>WIELBASIS</div>
-                  <div style={{ fontSize: '1rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.wheelbase || '-'}</div>
+                  <div style={{ fontSize: '0.95rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.Wielbasis || '-'}</div>
                 </div>
               </div>
             )}
 
-            {/* Checklist items voor het voertuig */}
             {vehicleChecklist.map((section, idx) => section && (
               <div key={idx} style={{ marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '1px solid var(--border-color)', paddingBottom: '5px', marginBottom: '10px', fontWeight: 'bold' }}>
-                  {section.category}
-                </h3>
+                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '1px solid var(--border-color)', paddingBottom: '5px', marginBottom: '10px', fontWeight: 'bold' }}>{section.category}</h3>
                 {section.items.map(item => (
                   <div key={item.id} className="checkbox-item" onClick={() => toggleItem(`${activeBus}_${item.id}`)}>
                     <div className="checkbox-content">
@@ -295,7 +285,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Checklists Tab */}
         {mainTab === 'checklist' && (
           <div>{initialCategories.map((cat) => cat && cat.id !== 'routes' && (
             <div key={cat.id} className="card">
@@ -314,7 +303,6 @@ export default function Home() {
           ))}</div>
         )}
 
-        {/* Docs Tab */}
         {mainTab === 'docs' && (
           <div className="card">
             <div className="category-header"><Files size={22} /><span className="category-title">Documenten</span></div>
@@ -324,7 +312,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Info Tab met Contacten en Rapportage */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
@@ -350,7 +337,6 @@ export default function Home() {
                <label style={{ marginTop: '10px', display: 'block', background: 'var(--card-bg)', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold', cursor: 'pointer', textAlign: 'center' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
 
-            {/* CONTACTGEGEVENS MET VOLLEDIG EMAILADRES */}
             {contactData.map((group, idx) => (
               <div key={idx} className="card">
                 <h3 className="category-header-text">{group.category}</h3>
@@ -380,24 +366,15 @@ export default function Home() {
         .container { padding: 15px; max-width: 600px; margin: 0 auto; }
         .card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); margin-bottom: 15px; padding: 15px; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        /* CHECKBOXEN FIX */
         .checkbox-content { display: flex; align-items: center; cursor: pointer; width: 100%; }
-        .checkbox-box { 
-          width: 24px; height: 24px; flex-shrink: 0; border-radius: 6px; 
-          border: 2px solid var(--border-color); margin-right: 15px; 
-          display: flex; align-items: center; justify-content: center; color: white;
-        }
+        .checkbox-box { width: 24px; height: 24px; flex-shrink: 0; border-radius: 6px; border: 2px solid var(--border-color); margin-right: 15px; display: flex; align-items: center; justify-content: center; color: white; }
         .checkbox-item { padding: 12px 0; border-bottom: 1px solid var(--border-color); }
 
         .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: var(--bravo-purple); }
         .category-title { font-weight: bold; font-size: 1.1rem; text-transform: uppercase; }
         .category-header-text { font-size: 0.85rem; color: #ff00ff; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; }
         
-        /* CONTACT KNOPPEN */
-        .contact-btn { 
-          padding: 6px 12px; border-radius: 8px; text-decoration: none; 
-          font-weight: bold; font-size: 0.8rem; border: 1px solid transparent; 
-        }
+        .contact-btn { padding: 6px 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; border: 1px solid transparent; }
         .phone-btn { background: rgba(129, 48, 138, 0.1); color: #ff00ff; border-color: #81308a; }
         .email-btn { background: #ffffff; color: #00a1e1; border-color: #00a1e1; }
 
