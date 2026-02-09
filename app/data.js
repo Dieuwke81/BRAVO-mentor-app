@@ -1169,5 +1169,5 @@ export const usefulLinks = [
   { name: 'OVinfo App (iOS)', url: 'https://apps.apple.com/nl/app/ovinfo/id1144468923' },
   { name: 'Bussie.app', url: 'https://www.bussie.app/' },
   { name: 'ZOB-buslijnen', url: 'https://sites.google.com/site/zobbuslijnen/' },
-  { name: 'WebComm', url: 'https://dmz-wbc-web02.connexxion.nl/' }
+  { name: 'WebComm', url: 'https://dmz-wbc-web02.connexxion.nl/WebComm/default.aspx?' }
 ];
