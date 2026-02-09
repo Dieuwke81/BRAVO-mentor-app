@@ -21,7 +21,7 @@ export default function Home() {
   const [baseUrl, setBaseUrl] = useState('');
   const [mainTab, setMainTab] = useState('routes');
   const [routeSubTab, setRouteSubTab] = useState('ehv-stad');
-  const [activeBus, setActiveBus] = useState('iveco');
+  const [activeBus, setActiveBus] = useState('iveco'); // Standaard geselecteerde bus
   const [videoModal, setVideoModal] = useState(null);
   const [pdfModal, setPdfModal] = useState(null);
   const [newStudentName, setNewStudentName] = useState('');
@@ -140,7 +140,7 @@ export default function Home() {
 
   return (
     <div className="main-wrapper">
-      {/* Modals */}
+      {/* Modals voor PDF en Video */}
       {pdfModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'var(--card-bg)', zIndex: 2000, display: 'flex', flexDirection: 'column' }}>
            <div style={{ padding: '15px', background: 'var(--bravo-purple)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -160,7 +160,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* Header */}
+      {/* Blauwe Header Sectie */}
       <div className="header no-print">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -189,6 +189,7 @@ export default function Home() {
           <div className="progress-bar"><div className="progress-fill" style={{ width: `${totalProgress}%` }}></div></div>
         </div>
 
+        {/* Tab Navigatie */}
         <div style={{ display: 'flex', overflowX: 'auto', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }} className="no-scrollbar">
           <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Lijnen</button>
           <button onClick={() => setMainTab('vehicle')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'vehicle' ? 'white' : 'transparent', color: mainTab === 'vehicle' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Voertuig</button>
@@ -232,24 +233,53 @@ export default function Home() {
           </div>
         )}
 
-        {/* Voertuig Tab */}
+        {/* Voertuig Tab - HERSTELDE VERSIE */}
         {mainTab === 'vehicle' && (
           <div className="card">
             <div className="category-header"><Bus size={22} /><span className="category-title">Voertuiggewenning</span></div>
-            <div style={{ display: 'flex', overflowX: 'auto', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '8px', marginBottom: '20px', gap: '4px' }} className="no-scrollbar">
-              {busTypes.map(bus => (<button key={bus.id} onClick={() => setActiveBus(bus.id)} style={{ padding: '10px 15px', borderRadius: '6px', border: 'none', fontSize: '0.75rem', fontWeight: 'bold', background: activeBus === bus.id ? 'var(--card-bg)' : 'transparent', color: activeBus === bus.id ? 'var(--bravo-purple)' : 'var(--text-sub)', whiteSpace: 'nowrap' }}>{bus.label}</button>))}
+            
+            {/* Bus Type Sub-Tabs */}
+            <div style={{ display: 'flex', overflowX: 'auto', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px' }} className="no-scrollbar">
+              {busTypes.map(bus => (
+                <button 
+                  key={bus.id} 
+                  onClick={() => setActiveBus(bus.id)} 
+                  style={{ 
+                    padding: '10px 15px', borderRadius: '6px', border: 'none', fontSize: '0.75rem', fontWeight: 'bold', 
+                    background: activeBus === bus.id ? 'var(--card-bg)' : 'transparent', 
+                    color: activeBus === bus.id ? 'var(--bravo-purple)' : 'var(--text-sub)', 
+                    whiteSpace: 'nowrap', boxShadow: activeBus === bus.id ? '0 2px 4px rgba(0,0,0,0.1)' : 'none'
+                  }}
+                >
+                  {bus.label}
+                </button>
+              ))}
             </div>
+
+            {/* HERSTELDE BUS GEGEVENS BALK */}
             {currentBusInfo && (
-              <div style={{ background: 'var(--bg-secondary)', padding: '15px', borderRadius: '10px', marginBottom: '20px', border: '1px solid var(--border-color)' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <div><label style={{ fontSize: '0.7rem', color: 'var(--text-sub)', fontWeight: 'bold' }}>BUSNR</label><div style={{ fontSize: '0.9rem', color: 'var(--text-main)', fontWeight: '600' }}>{currentBusInfo.fleet}</div></div>
-                  <div><label style={{ fontSize: '0.7rem', color: 'var(--text-sub)', fontWeight: 'bold' }}>WIELBASIS</label><div style={{ fontSize: '0.9rem', color: 'var(--text-main)', fontWeight: '600' }}>{currentBusInfo.wheelbase}</div></div>
+              <div style={{ 
+                background: 'var(--bg-secondary)', padding: '12px', borderRadius: '10px', marginBottom: '20px', 
+                border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-around', textAlign: 'center' 
+              }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-sub)', fontWeight: 'bold', letterSpacing: '0.05em', marginBottom: '4px' }}>BUSNR</div>
+                  <div style={{ fontSize: '1rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.fleet || '-'}</div>
+                </div>
+                <div style={{ width: '1px', background: 'var(--border-color)', margin: '0 10px' }}></div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-sub)', fontWeight: 'bold', letterSpacing: '0.05em', marginBottom: '4px' }}>WIELBASIS</div>
+                  <div style={{ fontSize: '1rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.wheelbase || '-'}</div>
                 </div>
               </div>
             )}
+
+            {/* Checklist items voor het voertuig */}
             {vehicleChecklist.map((section, idx) => section && (
               <div key={idx} style={{ marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '1px solid var(--border-color)', paddingBottom: '5px', marginBottom: '10px' }}>{section.category}</h3>
+                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '1px solid var(--border-color)', paddingBottom: '5px', marginBottom: '10px', fontWeight: 'bold' }}>
+                  {section.category}
+                </h3>
                 {section.items.map(item => (
                   <div key={item.id} className="checkbox-item" onClick={() => toggleItem(`${activeBus}_${item.id}`)}>
                     <div className="checkbox-content">
@@ -294,7 +324,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Info Tab */}
+        {/* Info Tab met Contacten en Rapportage */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
@@ -314,17 +344,10 @@ export default function Home() {
                </div>
             </div>
 
-            <div className="card" style={{ textAlign: 'center' }}>
+            <div className="card">
                <button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%' }}>Rapport maken</button>
                <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%' }}>Download data</button>
-               <label style={{ marginTop: '10px', display: 'block', background: 'var(--card-bg)', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold', cursor: 'pointer' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
-            </div>
-
-            <div className="card">
-              <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Nuttige Links</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {usefulLinks && usefulLinks.map((link, i) => (<a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '10px', textDecoration: 'none', color: 'var(--text-main)' }}><span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{link.name}</span><ExternalLink size={18} color="var(--bravo-purple)" /></a>))}
-              </div>
+               <label style={{ marginTop: '10px', display: 'block', background: 'var(--card-bg)', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold', cursor: 'pointer', textAlign: 'center' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
 
             {/* CONTACTGEGEVENS MET VOLLEDIG EMAILADRES */}
@@ -357,7 +380,7 @@ export default function Home() {
         .container { padding: 15px; max-width: 600px; margin: 0 auto; }
         .card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); margin-bottom: 15px; padding: 15px; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        /* FIX CHECKBOXEN */
+        /* CHECKBOXEN FIX */
         .checkbox-content { display: flex; align-items: center; cursor: pointer; width: 100%; }
         .checkbox-box { 
           width: 24px; height: 24px; flex-shrink: 0; border-radius: 6px; 
@@ -366,25 +389,17 @@ export default function Home() {
         }
         .checkbox-item { padding: 12px 0; border-bottom: 1px solid var(--border-color); }
 
+        .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: var(--bravo-purple); }
+        .category-title { font-weight: bold; font-size: 1.1rem; text-transform: uppercase; }
         .category-header-text { font-size: 0.85rem; color: #ff00ff; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; }
         
-        /* STYLING CONTACT KNOPPEN */
+        /* CONTACT KNOPPEN */
         .contact-btn { 
           padding: 6px 12px; border-radius: 8px; text-decoration: none; 
           font-weight: bold; font-size: 0.8rem; border: 1px solid transparent; 
-          transition: opacity 0.2s;
         }
-        .phone-btn { 
-          background: rgba(129, 48, 138, 0.1); 
-          color: #ff00ff; 
-          border-color: #81308a; 
-        }
-        .email-btn { 
-          background: #ffffff; 
-          color: #00a1e1; 
-          border-color: #00a1e1; 
-        }
-        body.dark-mode .email-btn { background: #ffffff; color: #00a1e1; }
+        .phone-btn { background: rgba(129, 48, 138, 0.1); color: #ff00ff; border-color: #81308a; }
+        .email-btn { background: #ffffff; color: #00a1e1; border-color: #00a1e1; }
 
         .tally-btn { border: 1px solid var(--border-color); background: var(--card-bg); color: var(--bravo-purple); border-radius: 6px; padding: 4px; cursor: pointer; }
         .tally-score { display: flex; align-items: center; gap: 6px; background: var(--bg-secondary); color: var(--text-main); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid var(--border-color); }
