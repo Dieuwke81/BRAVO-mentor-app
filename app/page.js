@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { busRoutes, initialCategories, contactData, importantDocuments, busTypes, vehicleChecklist, usefulLinks } from './data';
 import { 
   Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, 
@@ -26,6 +26,9 @@ export default function Home() {
   const [pdfModal, setPdfModal] = useState(null);
   const [newStudentName, setNewStudentName] = useState('');
   const [theme, setTheme] = useState('light');
+
+  // Refs voor alle textareas om hoogte te berekenen
+  const textareaRefs = useRef({});
 
   useEffect(() => {
     if (typeof window !== 'undefined') { 
@@ -61,6 +64,17 @@ export default function Home() {
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
+
+  // Fix voor meegroeiende textareas bij verandering van tab of inhoud
+  useEffect(() => {
+    Object.keys(textareaRefs.current).forEach(id => {
+      const el = textareaRefs.current[id];
+      if (el) {
+        el.style.height = 'auto';
+        el.style.height = el.scrollHeight + 'px';
+      }
+    });
+  }, [notes, mainTab, routeSubTab]);
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
   if (!mounted) return null;
@@ -140,7 +154,7 @@ export default function Home() {
   const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
-  // Rapportage filters
+  // Filters voor Rapport
   const reportRoutes = [];
   const seenIds = new Set();
   busRoutes.forEach(r => {
@@ -180,7 +194,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* HEADER LOOK */}
+      {/* HEADER */}
       <div className="header no-print">
         <div className="header-top">
           <div className="brand-box">
@@ -244,14 +258,9 @@ export default function Home() {
                   <div className="tally-box green"><button onClick={() => updateTally(item.id, 'z', -1)}><Minus size={16} /></button><div className="score"><Navigation size={16} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)}><Plus size={16} /></button></div>
                 </div>
                 <textarea 
+                  ref={el => textareaRefs.current[item.id] = el}
                   value={notes[item.id] || ''} 
                   onChange={(e) => updateNote(item.id, e.target.value)} 
-                  onInput={(e) => {
-                    requestAnimationFrame(() => {
-                      e.target.style.height = 'auto';
-                      e.target.style.height = e.target.scrollHeight + 'px';
-                    });
-                  }}
                   placeholder="Opmerking..." 
                   className="note-area" 
                   rows={1} 
@@ -318,7 +327,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* RAPPORT (PRINT) */}
+      {/* RAPPORT (ALLEEN BIJ PRINT) */}
       <div className="print-only">
         <div style={{ textAlign: 'center', borderBottom: '3px solid var(--bravo-purple)', paddingBottom: '20px', marginBottom: '30px' }}>
           <h1 style={{ color: 'var(--bravo-purple)', fontSize: '26px', margin: '0' }}>LEERLING RAPPORTAGE</h1>
@@ -327,17 +336,21 @@ export default function Home() {
             <span><strong>Mentor:</strong> {mentorName}</span><span><strong>Periode:</strong> {dates.start} t/m {dates.end}</span><span><strong>Voortgang:</strong> {totalProgress}%</span>
           </div>
         </div>
-
         <h3>1. Gereden Lijnen & Resultaten</h3>
         <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '30px' }}>
           <thead><tr style={{ background: '#f0f0f0' }}><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Lijn</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Status</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>M</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Z</th><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Opmerkingen</th></tr></thead>
           <tbody>
             {reportRoutes.map(r => (
-              <tr key={r.id}><td style={{ border: '1px solid #ccc', padding: '10px' }}>{r.text}</td><td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{completed.includes(r.id) ? '✅' : '-'}</td><td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc', padding: '10px' }}>{notes[r.id] || ''}</td></tr>
+              <tr key={r.id}>
+                <td style={{ border: '1px solid #ccc', padding: '10px' }}>{r.text}</td>
+                <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{completed.includes(r.id) ? '✅' : '-'}</td>
+                <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td>
+                <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td>
+                <td style={{ border: '1px solid #ccc', padding: '10px', whiteSpace: 'pre-wrap' }}>{notes[r.id] || ''}</td>
+              </tr>
             ))}
           </tbody>
         </table>
-
         <h3>2. Voertuigbeheersing (Afgevinkt)</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '30px' }}>
           {busTypes.map(bus => {
@@ -347,7 +360,6 @@ export default function Home() {
             return (<div key={bus.id} style={{ border: '1px solid #ccc', padding: '12px', borderRadius: '10px' }}><strong style={{ color: 'var(--bravo-purple)' }}>{bus.label}</strong><br/><span style={{ fontSize: '12px' }}>{checked.length} / {allItems.length} items afgerond</span></div>);
           })}
         </div>
-
         {reportChecklists.length > 0 && (
           <><h3>3. Algemene Checklists (Afgevinkt)</h3>{reportChecklists.map(cat => (
             <div key={cat.id} style={{ marginBottom: '15px' }}><strong style={{ color: 'var(--bravo-purple)', borderBottom: '1px solid #eee', display: 'block', paddingBottom: '3px' }}>{cat.title}</strong><ul style={{ margin: '5px 0', paddingLeft: '20px', fontSize: '13px' }}>{cat.checkedItems.map(item => <li key={item.id}>{item.text}</li>)}</ul></div>
@@ -359,6 +371,7 @@ export default function Home() {
         :root { --bravo-purple: #542e91; --bravo-blue: #009fe3; --bravo-red: #e3004f; --bg: #f3f4f6; --card: #ffffff; --text: #1f2937; --sub: #6b7280; --border: #e5e7eb; --success: #10b981; }
         body.dark-mode { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --sub: #94a3b8; --border: #334155; }
         body { background-color: var(--bg) !important; color: var(--text); margin: 0; font-family: -apple-system, system-ui, sans-serif; overflow-x: hidden; }
+        
         .header { background: linear-gradient(135deg, var(--bravo-purple) 0%, var(--bravo-blue) 100%); padding: 25px 20px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
         .logo-container { background: white; padding: 6px; border-radius: 12px; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .logo-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
@@ -367,26 +380,31 @@ export default function Home() {
         .brand-text h1 { color: white; margin: 0; font-size: 1.4rem; }
         .brand-text span { color: rgba(255,255,255,0.8); font-size: 0.8rem; }
         .theme-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px; border-radius: 50%; cursor: pointer; }
+
         .student-box { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 14px; margin-bottom: 15px; }
         .student-box .row { display: flex; gap: 8px; margin-bottom: 8px; }
         .student-select, .student-input { flex: 1; padding: 10px; border-radius: 8px; border: none; outline: none; font-size: 0.9rem; }
         .del-btn { background: var(--bravo-red); color: white; border: none; width: 42px; border-radius: 8px; cursor: pointer; }
         .add-btn { background: var(--success); color: white; border: none; width: 42px; border-radius: 8px; cursor: pointer; }
+
+        .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; }
         .bar-bg { background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
         .bar-fill { height: 100%; background: white; transition: width 0.5s ease; }
-        .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; }
-        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; }
+
+        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
         .main-tabs button { flex: 1; padding: 10px; border-radius: 8px; background: transparent; color: white; border: none; font-weight: bold; font-size: 0.75rem; cursor: pointer; white-space: nowrap; }
         .main-tabs button.active { background: white; color: var(--bravo-purple); }
+
         .container { padding: 15px; max-width: 600px; margin: 0 auto; box-sizing: border-box; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        
         .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; touch-action: pan-x; scrollbar-width: none; }
         .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.7rem; white-space: nowrap; cursor: pointer; }
         .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        .rayon-progress .labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: bold; color: var(--sub); margin-bottom: 5px; padding-right: 2px; }
-        .rayon-progress .bar-bg { height: 6px; }
-        .rayon-progress .bar-fill { background: var(--bravo-purple); }
+        .rayon-progress .labels { display: flex; justify-content: space-between; gap: 10px; font-size: 0.75rem; font-weight: bold; color: var(--sub); margin-bottom: 5px; }
+        .rayon-progress .bar-bg { background: var(--border); height: 6px; border-radius: 3px; overflow: hidden; }
+        .rayon-progress .bar-fill { background: var(--bravo-purple); height: 100%; }
 
         .item-row { padding: 15px 0; border-bottom: 1px solid var(--border); }
         .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
@@ -398,31 +416,41 @@ export default function Home() {
         .action-btns { display: flex; gap: 6px; flex-shrink: 0; }
         .act-btn { width: 40px; height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bravo-purple); cursor: pointer; }
         .act-btn.vid { background: #fee2e2; color: var(--bravo-red); border-color: #fecaca; }
-        .note-area { margin-left: 38px; width: calc(100% - 38px); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; resize: none; overflow: hidden; box-sizing: border-box; min-height: 40px; }
+
+        .note-area { margin-left: 38px; width: calc(100% - 38px); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; resize: none; overflow: hidden; box-sizing: border-box; min-height: 40px; line-height: 1.4; }
+
         .doc-list-vertical { display: flex; flex-direction: column; gap: 10px; width: 100%; }
         .doc-item-vertical { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; text-align: left; color: var(--text); cursor: pointer; width: 100%; box-sizing: border-box; }
         .useful-link-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 10px; text-decoration: none; color: var(--text); border: 1px solid var(--border); }
+        
         .bus-specs { display: flex; justify-content: space-around; background: var(--bg); padding: 12px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
         .spec { text-align: center; flex: 1; }
+        .spec span { font-size: 0.65rem; color: var(--sub); font-weight: bold; display: block; }
+        .spec strong { font-size: 0.95rem; }
         .divider { width: 1px; background: var(--border); margin: 0 5px; }
+
         .ziekmelden { background: #fff1f2; border-color: #fecaca; color: var(--bravo-red); }
         .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; font-size: 0.9rem; }
         .btn.success { background: var(--success); color: white; }
         .btn.purple { background: var(--bravo-purple); color: white; }
         .btn.outline { background: var(--card); border: 2px solid var(--bravo-purple); color: var(--bravo-purple); text-align: center; display: block; box-sizing: border-box; }
+
         .contact-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 5px; flex-wrap: wrap; }
         .contact-row .links { display: flex; gap: 4px; }
         .contact-row a { padding: 6px 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.75rem; border: 1px solid; }
         .contact-row .phone { color: var(--bravo-purple); border-color: var(--bravo-purple); background: rgba(84,46,145,0.05); }
         .contact-row .email { color: var(--bravo-blue); border-color: var(--bravo-blue); background: white; }
+
         .tally-row { display: flex; gap: 10px; margin-left: 38px; margin-bottom: 8px; flex-wrap: wrap; }
         .tally-box { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); height: 34px; }
         .tally-box button { background: transparent; border: none; padding: 0 8px; color: var(--bravo-purple); cursor: pointer; }
         .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
+        
         .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flexDirection: column; }
         .pdf-header { padding: 15px; background: var(--bravo-purple); color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .pdf-viewer { flex: 1; border: none; width: 100%; height: 100%; }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .print-only { display: none; }
         @media print { 
