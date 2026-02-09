@@ -161,7 +161,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* ORIGINELE HEADER LOOK */}
+      {/* HEADER LOOK HERSTELD */}
       <div className="header no-print">
         <div className="header-top">
           <div className="brand-box">
@@ -199,7 +199,6 @@ export default function Home() {
       </div>
 
       <div className="container no-print">
-        {/* Lijnen Tab */}
         {mainTab === 'routes' && (
           <div className="card">
             <div className="sub-tabs no-scrollbar">
@@ -224,7 +223,6 @@ export default function Home() {
                     {item.videos && item.videos.length > 0 && <button onClick={() => setVideoModal(item)} className="act-btn vid"><Youtube size={20} /></button>}
                   </div>
                 </div>
-                
                 <div className="tally-row">
                   <div className="tally-box">
                     <button onClick={() => updateTally(item.id, 'm', -1)}><Minus size={16} /></button>
@@ -237,21 +235,12 @@ export default function Home() {
                     <button onClick={() => updateTally(item.id, 'z', 1)}><Plus size={16} /></button>
                   </div>
                 </div>
-                
-                <textarea 
-                  value={notes[item.id] || ''} 
-                  onChange={(e) => updateNote(item.id, e.target.value)} 
-                  onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }}
-                  placeholder="Opmerking..." 
-                  className="note-area"
-                  rows={1}
-                />
+                <textarea value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }} placeholder="Opmerking..." className="note-area" rows={1} />
               </div>
             ))}
           </div>
         )}
 
-        {/* Voertuig Tab */}
         {mainTab === 'vehicle' && (
           <div className="card">
             <div className="cat-title"><Bus size={22} /><span>Voertuiggewenning</span></div>
@@ -267,7 +256,7 @@ export default function Home() {
                 <div className="spec"><span>WIELBASIS</span><strong>{currentBusInfo.Wielbasis}</strong></div>
               </div>
             )}
-            {vehicleChecklist.map((section, idx) => section && (
+            {vehicleChecklist.map((section, idx) => (
               <div key={idx} className="checklist-section">
                 <h3>{section.category}</h3>
                 {section.items.map(item => (
@@ -281,7 +270,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Checklist Tab */}
         {mainTab === 'checklist' && (
           <div>
             {initialCategories.map((cat) => cat && cat.id !== 'routes' && (
@@ -298,13 +286,12 @@ export default function Home() {
           </div>
         )}
 
-        {/* Docs Tab */}
         {mainTab === 'docs' && (
           <div className="card">
             <div className="cat-title"><Files size={22} /><span>Documenten</span></div>
-            <div className="doc-list">
+            <div className="doc-list-vertical">
               {importantDocuments.map((doc) => (
-                <button key={doc.id} onClick={() => setPdfModal(doc)} className="doc-item">
+                <button key={doc.id} onClick={() => setPdfModal(doc)} className="doc-item-vertical">
                   <FileText size={24} /> <span>{doc.title}</span>
                 </button>
               ))}
@@ -312,7 +299,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Info Tab */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card ziekmelden">
@@ -320,19 +306,19 @@ export default function Home() {
                <p>Binnen kantooruren: Bij je leidinggevende</p>
                <p>Buiten kantooruren: Bel ROV (030-2849494)</p>
             </div>
-            <div className="card rapportage">
-               <h3>Rapportage Gegevens</h3>
-               <div className="form-group"><label>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} /></div>
-               <div className="form-row">
-                  <div className="form-group"><label>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div>
-                  <div className="form-group"><label>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div>
-               </div>
+            
+            {/* NUTTIGE LINKS TERUGGEZET */}
+            <div className="card">
+              <h3 className="group-title">Nuttige Links</h3>
+              <div className="links-list">
+                {usefulLinks && usefulLinks.map((link, i) => (
+                  <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="useful-link-item">
+                    <span>{link.name}</span><ExternalLink size={18} />
+                  </a>
+                ))}
+              </div>
             </div>
-            <div className="card center">
-               <button onClick={() => window.print()} className="btn success">Rapport maken</button>
-               <button onClick={exportData} className="btn purple">Download data</button>
-               <label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
-            </div>
+
             {contactData.map((group, idx) => (
               <div key={idx} className="card">
                 <h3 className="group-title">{group.category}</h3>
@@ -347,114 +333,98 @@ export default function Home() {
                 ))}
               </div>
             ))}
+
+            <div className="card center">
+               <button onClick={() => window.print()} className="btn success">Rapport maken</button>
+               <button onClick={exportData} className="btn purple">Download data</button>
+               <label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
+            </div>
           </div>
         )}
       </div>
 
       <style jsx global>{`
-        :root { 
-          --bravo-purple: #542e91; --bravo-blue: #009fe3; --bravo-red: #e3004f;
-          --bg: #f3f4f6; --card: #ffffff; --text: #1f2937; --sub: #6b7280; --border: #e5e7eb; --success: #10b981; 
-        }
+        :root { --bravo-purple: #542e91; --bravo-blue: #009fe3; --bravo-red: #e3004f; --bg: #f3f4f6; --card: #ffffff; --text: #1f2937; --sub: #6b7280; --border: #e5e7eb; --success: #10b981; }
         body.dark-mode { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --sub: #94a3b8; --border: #334155; }
-        body { background-color: var(--bg) !important; color: var(--text); margin: 0; font-family: -apple-system, system-ui, sans-serif; }
+        body { background-color: var(--bg) !important; color: var(--text); margin: 0; font-family: -apple-system, system-ui, sans-serif; overflow-x: hidden; }
         
-        .header { background: linear-gradient(135deg, var(--bravo-purple) 0%, var(--bravo-blue) 100%); padding: 25px 20px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
+        .header { background: linear-gradient(135deg, var(--bravo-purple) 0%, var(--bravo-blue) 100%); padding: 25px 20px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; width: 100%; box-sizing: border-box; }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .brand-box { display: flex; align-items: center; gap: 15px; }
-        .logo-container { background: white; padding: 8px; border-radius: 12px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
-        .logo-container img { height: 35px; }
-        .brand-text h1 { color: white; margin: 0; font-size: 1.5rem; }
+        .logo-container { background: white; padding: 6px; border-radius: 12px; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .logo-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .brand-text h1 { color: white; margin: 0; font-size: 1.4rem; }
         .brand-text span { color: rgba(255,255,255,0.8); font-size: 0.8rem; }
         .theme-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px; border-radius: 50%; cursor: pointer; }
 
         .student-box { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 14px; margin-bottom: 15px; }
         .student-box .row { display: flex; gap: 8px; margin-bottom: 8px; }
-        .student-box .row:last-child { margin-bottom: 0; }
-        .student-select, .student-input { flex: 1; padding: 10px; border-radius: 8px; border: none; outline: none; font-weight: 500; }
+        .student-select, .student-input { flex: 1; padding: 10px; border-radius: 8px; border: none; outline: none; font-weight: 500; font-size: 0.9rem; }
         .del-btn { background: var(--bravo-red); color: white; border: none; width: 42px; border-radius: 8px; cursor: pointer; }
         .add-btn { background: var(--success); color: white; border: none; width: 42px; border-radius: 8px; cursor: pointer; }
 
-        .total-progress { margin-bottom: 20px; }
-        .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; }
+        .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; }
         .bar-bg { background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
         .bar-fill { height: 100%; background: white; transition: width 0.5s ease; }
 
-        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; }
+        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; }
         .main-tabs button { flex: 1; padding: 10px; border-radius: 8px; background: transparent; color: white; border: none; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
         .main-tabs button.active { background: white; color: var(--bravo-purple); }
 
-        .container { padding: 15px; max-width: 600px; margin: 0 auto; }
+        .container { padding: 15px; max-width: 600px; margin: 0 auto; box-sizing: border-box; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         
-        .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; }
-        .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.75rem; white-space: nowrap; cursor: pointer; }
+        .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; touch-action: pan-x; -webkit-overflow-scrolling: touch; }
+        .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.7rem; white-space: nowrap; cursor: pointer; }
         .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-        .rayon-progress .labels { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: bold; color: var(--sub); margin-bottom: 4px; }
-        .rayon-progress .bar-bg { background: var(--border); height: 6px; }
-        .rayon-progress .bar-fill { background: var(--bravo-purple); }
-
         .item-row { padding: 15px 0; border-bottom: 1px solid var(--border); }
-        .item-row:last-child { border-bottom: none; }
-        .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
         .check-label { display: flex; align-items: center; cursor: pointer; flex: 1; }
-        .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.2s; color: white; }
+        .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
         .check-box.checked { background: var(--success); border-color: var(--success); }
-        .strikethrough { text-decoration: line-through; color: var(--sub); }
-
-        .action-btns { display: flex; gap: 8px; }
-        .act-btn { width: 40px; height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bravo-purple); text-decoration: none; cursor: pointer; }
+        
+        .action-btns { display: flex; gap: 6px; flex-shrink: 0; }
+        .act-btn { width: 40px; height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bravo-purple); cursor: pointer; }
         .act-btn.vid { background: #fee2e2; color: var(--bravo-red); border-color: #fecaca; }
 
-        .tally-row { display: flex; gap: 15px; margin-left: 38px; margin-bottom: 10px; }
-        .tally-box { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); overflow: hidden; }
-        .tally-box button { padding: 8px; background: transparent; border: none; color: var(--bravo-purple); cursor: pointer; }
-        .tally-box .score { padding: 0 8px; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
-        .tally-box.green { border-color: #bbf7d0; }
-        .tally-box.green .score { color: #15803d; }
+        .note-area { margin-left: 38px; width: calc(100% - 38px); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; resize: none; overflow: hidden; box-sizing: border-box; }
 
-        .note-area { margin-left: 38px; width: calc(100% - 38px); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; resize: none; overflow: hidden; }
+        /* DOCS VERTICAAL FIX */
+        .doc-list-vertical { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .doc-item-vertical { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; text-align: left; color: var(--text); cursor: pointer; width: 100%; box-sizing: border-box; }
 
-        .cat-title { display: flex; align-items: center; gap: 10px; font-weight: bold; color: var(--bravo-purple); font-size: 1.1rem; margin-bottom: 15px; }
+        /* NUTTIGE LINKS */
+        .links-list { display: flex; flex-direction: column; gap: 8px; }
+        .useful-link-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 10px; text-decoration: none; color: var(--text); border: 1px solid var(--border); }
+        .useful-link-item span { font-weight: 500; font-size: 0.9rem; }
+
+        .cat-title { display: flex; align-items: center; gap: 10px; font-weight: bold; color: var(--bravo-purple); margin-bottom: 15px; }
         .bus-specs { display: flex; justify-content: space-around; background: var(--bg); padding: 12px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
-        .spec { text-align: center; }
-        .spec span { font-size: 0.65rem; color: var(--sub); font-weight: bold; display: block; }
-        .spec strong { font-size: 0.95rem; color: var(--text); }
-        .divider { width: 1px; background: var(--border); }
-
-        .check-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
-        .checklist-section h3 { font-size: 0.9rem; color: var(--bravo-purple); border-bottom: 1px solid var(--border); padding-bottom: 5px; margin: 15px 0 10px; }
-
-        .doc-list { display: flex; flexDirection: column; gap: 10px; }
-        .doc-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; text-align: left; color: var(--text); cursor: pointer; }
-        .doc-item span { font-weight: 600; }
+        .spec { text-align: center; flex: 1; }
+        .spec span { font-size: 0.6rem; color: var(--sub); font-weight: bold; display: block; margin-bottom: 2px; }
+        .spec strong { font-size: 0.9rem; }
+        .divider { width: 1px; background: var(--border); margin: 0 5px; }
 
         .ziekmelden { background: #fff1f2; border-color: #fecaca; color: var(--bravo-red); }
-        .alert-head { display: flex; gap: 10px; font-weight: bold; margin-bottom: 5px; }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 0.8rem; color: var(--sub); margin-bottom: 4px; }
-        .form-group input { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); outline: none; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; }
+        .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; font-size: 0.9rem; }
         .btn.success { background: var(--success); color: white; }
         .btn.purple { background: var(--bravo-purple); color: white; }
-        .btn.outline { background: var(--card); border: 2px solid var(--bravo-purple); color: var(--bravo-purple); text-align: center; display: block; }
+        .btn.outline { background: var(--card); border: 2px solid var(--bravo-purple); color: var(--bravo-purple); text-align: center; display: block; box-sizing: border-box; }
 
-        .contact-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .group-title { color: var(--bravo-purple); font-size: 0.85rem; text-transform: uppercase; margin-bottom: 15px; }
-        .contact-row .name { font-weight: 600; font-size: 0.9rem; }
-        .contact-row .links { display: flex; gap: 6px; }
-        .contact-row a { padding: 6px 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; border: 1px solid; }
+        .contact-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 5px; flex-wrap: wrap; }
+        .contact-row .links { display: flex; gap: 4px; }
+        .contact-row a { padding: 6px 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.75rem; border: 1px solid; }
         .contact-row .phone { color: var(--bravo-purple); border-color: var(--bravo-purple); background: rgba(84,46,145,0.05); }
         .contact-row .email { color: var(--bravo-blue); border-color: var(--bravo-blue); background: white; }
 
-        .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flexDirection: column; }
-        .pdf-header { padding: 15px; background: var(--bravo-purple); color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
-        .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .pdf-viewer { flex: 1; border: none; width: 100%; height: 100%; }
+        .tally-row { display: flex; gap: 10px; margin-left: 38px; margin-bottom: 8px; flex-wrap: wrap; }
+        .tally-box { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); height: 34px; }
+        .tally-box button { background: transparent; border: none; padding: 0 8px; color: var(--bravo-purple); cursor: pointer; }
+        .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        @media print { .no-print { display: none !important; } }
       `}</style>
     </div>
   );
