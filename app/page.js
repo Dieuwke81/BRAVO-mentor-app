@@ -140,7 +140,7 @@ export default function Home() {
   const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
-  // --- LOGICA VOOR RAPPORTAGE ---
+  // Rapportage filters
   const reportRoutes = [];
   const seenIds = new Set();
   busRoutes.forEach(r => {
@@ -180,7 +180,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* HEADER */}
+      {/* HEADER LOOK */}
       <div className="header no-print">
         <div className="header-top">
           <div className="brand-box">
@@ -217,10 +217,15 @@ export default function Home() {
             <div className="sub-tabs no-scrollbar">
               {routeTypes.map(t => (<button key={t} onClick={() => setRouteSubTab(t)} className={routeSubTab === t ? 'active' : ''}>{t.replace('-', ' ').toUpperCase()}</button>))}
             </div>
+            
             <div className="rayon-progress">
-              <div className="labels"><span>VOORTGANG {routeSubTab.toUpperCase()}</span><span>{progressTab}%</span></div>
+              <div className="labels">
+                <span>VOORTGANG {routeSubTab.replace('-', ' ').toUpperCase()}</span>
+                <span>{progressTab}%</span>
+              </div>
               <div className="bar-bg"><div className="bar-fill" style={{ width: `${progressTab}%` }}></div></div>
             </div>
+
             {currentTabItems.map((item) => (
               <div key={item.id} className="item-row">
                 <div className="top-line">
@@ -238,7 +243,19 @@ export default function Home() {
                   <div className="tally-box"><button onClick={() => updateTally(item.id, 'm', -1)}><Minus size={16} /></button><div className="score"><Eye size={16} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)}><Plus size={16} /></button></div>
                   <div className="tally-box green"><button onClick={() => updateTally(item.id, 'z', -1)}><Minus size={16} /></button><div className="score"><Navigation size={16} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)}><Plus size={16} /></button></div>
                 </div>
-                <textarea value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }} placeholder="Opmerking..." className="note-area" rows={1} />
+                <textarea 
+                  value={notes[item.id] || ''} 
+                  onChange={(e) => updateNote(item.id, e.target.value)} 
+                  onInput={(e) => {
+                    requestAnimationFrame(() => {
+                      e.target.style.height = 'auto';
+                      e.target.style.height = e.target.scrollHeight + 'px';
+                    });
+                  }}
+                  placeholder="Opmerking..." 
+                  className="note-area" 
+                  rows={1} 
+                />
               </div>
             ))}
           </div>
@@ -301,7 +318,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* --- RAPPORT SECTIE (ALLEEN PRINT) --- */}
+      {/* RAPPORT (PRINT) */}
       <div className="print-only">
         <div style={{ textAlign: 'center', borderBottom: '3px solid var(--bravo-purple)', paddingBottom: '20px', marginBottom: '30px' }}>
           <h1 style={{ color: 'var(--bravo-purple)', fontSize: '26px', margin: '0' }}>LEERLING RAPPORTAGE</h1>
@@ -316,13 +333,7 @@ export default function Home() {
           <thead><tr style={{ background: '#f0f0f0' }}><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Lijn</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Status</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>M</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Z</th><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Opmerkingen</th></tr></thead>
           <tbody>
             {reportRoutes.map(r => (
-              <tr key={r.id}>
-                <td style={{ border: '1px solid #ccc', padding: '10px' }}>{r.text}</td>
-                <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{completed.includes(r.id) ? '✅' : '-'}</td>
-                <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td>
-                <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td>
-                <td style={{ border: '1px solid #ccc', padding: '10px' }}>{notes[r.id] || ''}</td>
-              </tr>
+              <tr key={r.id}><td style={{ border: '1px solid #ccc', padding: '10px' }}>{r.text}</td><td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{completed.includes(r.id) ? '✅' : '-'}</td><td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td><td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td><td style={{ border: '1px solid #ccc', padding: '10px' }}>{notes[r.id] || ''}</td></tr>
             ))}
           </tbody>
         </table>
@@ -330,30 +341,17 @@ export default function Home() {
         <h3>2. Voertuigbeheersing (Afgevinkt)</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '30px' }}>
           {busTypes.map(bus => {
-            const allPossibleItems = vehicleChecklist.flatMap(s => s?.items || []);
-            const checkedItems = allPossibleItems.filter(i => completed.includes(`${bus.id}_${i.id}`));
-            if (checkedItems.length === 0) return null;
-            return (
-              <div key={bus.id} style={{ border: '1px solid #ccc', padding: '12px', borderRadius: '10px' }}>
-                <strong style={{ color: 'var(--bravo-purple)' }}>{bus.label}</strong><br/>
-                <span style={{ fontSize: '12px' }}>{checkedItems.length} / {allPossibleItems.length} items afgerond</span>
-              </div>
-            );
+            const allItems = vehicleChecklist.flatMap(s => s?.items || []);
+            const checked = allItems.filter(i => completed.includes(`${bus.id}_${i.id}`));
+            if (checked.length === 0) return null;
+            return (<div key={bus.id} style={{ border: '1px solid #ccc', padding: '12px', borderRadius: '10px' }}><strong style={{ color: 'var(--bravo-purple)' }}>{bus.label}</strong><br/><span style={{ fontSize: '12px' }}>{checked.length} / {allItems.length} items afgerond</span></div>);
           })}
         </div>
 
         {reportChecklists.length > 0 && (
-          <>
-            <h3>3. Algemene Checklists (Afgevinkt)</h3>
-            {reportChecklists.map(cat => (
-              <div key={cat.id} style={{ marginBottom: '15px' }}>
-                <strong style={{ color: 'var(--bravo-purple)', borderBottom: '1px solid #eee', display: 'block', paddingBottom: '3px' }}>{cat.title}</strong>
-                <ul style={{ margin: '5px 0', paddingLeft: '20px', fontSize: '13px' }}>
-                  {cat.checkedItems.map(item => <li key={item.id}>{item.text}</li>)}
-                </ul>
-              </div>
-            ))}
-          </>
+          <><h3>3. Algemene Checklists (Afgevinkt)</h3>{reportChecklists.map(cat => (
+            <div key={cat.id} style={{ marginBottom: '15px' }}><strong style={{ color: 'var(--bravo-purple)', borderBottom: '1px solid #eee', display: 'block', paddingBottom: '3px' }}>{cat.title}</strong><ul style={{ margin: '5px 0', paddingLeft: '20px', fontSize: '13px' }}>{cat.checkedItems.map(item => <li key={item.id}>{item.text}</li>)}</ul></div>
+          ))}</>
         )}
       </div>
 
@@ -377,7 +375,7 @@ export default function Home() {
         .bar-bg { background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
         .bar-fill { height: 100%; background: white; transition: width 0.5s ease; }
         .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; }
-        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
+        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; }
         .main-tabs button { flex: 1; padding: 10px; border-radius: 8px; background: transparent; color: white; border: none; font-weight: bold; font-size: 0.75rem; cursor: pointer; white-space: nowrap; }
         .main-tabs button.active { background: white; color: var(--bravo-purple); }
         .container { padding: 15px; max-width: 600px; margin: 0 auto; box-sizing: border-box; }
@@ -385,11 +383,14 @@ export default function Home() {
         .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; touch-action: pan-x; scrollbar-width: none; }
         .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.7rem; white-space: nowrap; cursor: pointer; }
         .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
+        .rayon-progress .labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: bold; color: var(--sub); margin-bottom: 5px; padding-right: 2px; }
+        .rayon-progress .bar-bg { height: 6px; }
+        .rayon-progress .bar-fill { background: var(--bravo-purple); }
+
         .item-row { padding: 15px 0; border-bottom: 1px solid var(--border); }
         .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
         .check-label { display: flex; align-items: center; cursor: pointer; flex: 1; }
-        
-        /* CHECKBOXES VOOR DE TEKST */
         .check-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; text-align: left; }
         .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
         .check-box.checked { background: var(--success); border-color: var(--success); }
@@ -397,7 +398,7 @@ export default function Home() {
         .action-btns { display: flex; gap: 6px; flex-shrink: 0; }
         .act-btn { width: 40px; height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bravo-purple); cursor: pointer; }
         .act-btn.vid { background: #fee2e2; color: var(--bravo-red); border-color: #fecaca; }
-        .note-area { margin-left: 38px; width: calc(100% - 38px); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; resize: none; overflow: hidden; box-sizing: border-box; }
+        .note-area { margin-left: 38px; width: calc(100% - 38px); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; resize: none; overflow: hidden; box-sizing: border-box; min-height: 40px; }
         .doc-list-vertical { display: flex; flex-direction: column; gap: 10px; width: 100%; }
         .doc-item-vertical { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; text-align: left; color: var(--text); cursor: pointer; width: 100%; box-sizing: border-box; }
         .useful-link-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 10px; text-decoration: none; color: var(--text); border: 1px solid var(--border); }
@@ -423,7 +424,6 @@ export default function Home() {
         .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .pdf-viewer { flex: 1; border: none; width: 100%; height: 100%; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-
         .print-only { display: none; }
         @media print { 
           .no-print { display: none !important; } 
