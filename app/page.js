@@ -68,8 +68,9 @@ export default function Home() {
 
   const exportData = () => {
     const data = { studentName: activeStudent, progress: localStorage.getItem(`bravo_progress_${activeStudent}`), tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), notes: localStorage.getItem(`bravo_notes_${activeStudent}`), dates: localStorage.getItem(`bravo_dates_${activeStudent}`) };
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
+    a.href = URL.createObjectURL(blob);
     a.download = `MentorApp_${activeStudent}.json`;
     a.click();
   };
@@ -95,6 +96,7 @@ export default function Home() {
   };
 
   const updateTally = (id, type, d) => {
+    const curr = tallies[id] || { m: 0, z: 0 };
     const next = { ...tallies, [id]: { ...(tallies[id] || { m: 0, z: 0 }), [type]: Math.max(0, (tallies[id]?.[type] || 0) + d) } };
     setTallies(next); localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(next));
   };
@@ -129,10 +131,10 @@ export default function Home() {
   const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
   const totalProgress = Math.round(Math.max(...routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
-    const done = items.filter(i => completed.includes(i.id)).length;
+    const doneCount = items.filter(i => completed.includes(i.id)).length;
     const baseDoneCount = baseItems.filter(i => completed.includes(i.id)).length;
     const total = baseItems.length + items.length;
-    return total === 0 ? 0 : ((baseDoneCount + done) / total) * 100;
+    return total === 0 ? 0 : ((baseDoneCount + doneCount) / total) * 100;
   }))) || 0;
 
   const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
@@ -217,7 +219,17 @@ export default function Home() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'm', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score"><Eye size={14} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)} className="tally-btn"><Plus size={14} /></button></div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'z', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score" style={{ background: '#f0fdf4', color: '#15803d', borderColor: '#bbf7d0' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)} className="tally-btn"><Plus size={14} /></button></div>
                 </div>
-                <div style={{ marginLeft: '39px' }}><textarea value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }} placeholder="Opmerking..." rows={1} className="note-input" style={{ resize: 'none', overflow: 'hidden' }} /></div>
+                <div style={{ marginLeft: '39px' }}>
+                  <textarea 
+                    value={notes[item.id] || ''} 
+                    onChange={(e) => updateNote(item.id, e.target.value)} 
+                    onInput={(e) => { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }} 
+                    placeholder="Opmerking..." 
+                    rows={1} 
+                    className="note-input" 
+                    style={{ resize: 'none', overflow: 'hidden' }} 
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -237,17 +249,17 @@ export default function Home() {
                 </div>
               </div>
             )}
-            {vehicleChecklist.map((section, idx) => (
+            {vehicleChecklist.map((section, idx) => ( section && (
               <div key={idx} style={{ marginBottom: '20px' }}>
                 <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '1px solid var(--border-color)', paddingBottom: '5px', marginBottom: '10px' }}>{section.category}</h3>
                 {section.items.map(item => (<div key={item.id} className="checkbox-item" onClick={() => toggleItem(`${activeBus}_${item.id}`)}><div className="checkbox-content"><div style={{ width: '22px', height: '22px', borderRadius: '6px', border: completed.includes(`${activeBus}_${item.id}`) ? 'none' : '2px solid var(--border-color)', background: completed.includes(`${activeBus}_${item.id}`) ? 'var(--success)' : 'transparent', marginRight: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>{completed.includes(`${activeBus}_${item.id}`) && <CheckCircle2 size={14} />}</div><span style={{ fontSize: '0.9rem', color: 'var(--text-main)' }}>{item.text}</span></div></div>))}
               </div>
-            ))}
+            )))}
           </div>
         )}
 
         {mainTab === 'checklist' && (
-          <div>{initialCategories.map((cat) => cat.id !== 'routes' && (
+          <div>{initialCategories.map((cat) => cat && cat.id !== 'routes' && (
             <div key={cat.id} className="card">
               <div className="category-header">{cat.icon}<span className="category-title">{cat.title}</span></div>
               {cat.items.map((it) => (
@@ -266,7 +278,7 @@ export default function Home() {
           <div className="card">
             <div className="category-header"><Files size={22} /><span className="category-title">Documenten</span></div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-              {importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '10px', textAlign: 'left', color: 'var(--text-main)' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
+              {importantDocuments && importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '10px', textAlign: 'left', color: 'var(--text-main)' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
             </div>
           </div>
         )}
@@ -275,15 +287,13 @@ export default function Home() {
           <div>
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}><div style={{ display: 'flex', gap: '10px', color: '#dc2626', fontWeight: 'bold' }}><ShieldAlert size={20} /> ZIEKMELDEN</div><p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#dc2626' }}>Binnen kantooruren: Bij je leidinggevende</p><p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#dc2626' }}>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
             <div className="card" style={{ padding: '20px' }}><h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Rapportage Gegevens</h3><div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}><div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)' }} /></div><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}><div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)', borderRadius: '8px' }} /></div><div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)', borderRadius: '8px' }} /></div></div></div></div>
-            <div className="card" style={{ textAlign: 'center' }}><button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%' }}>Rapport maken</button><button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%' }}>Exporteer data</button><label style={{ marginTop: '10px', display: 'block', background: 'var(--card-bg)', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label></div>
-            
+            <div className="card" style={{ textAlign: 'center' }}><button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%' }}>Rapport maken</button><button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%' }}>Download data</button><label style={{ marginTop: '10px', display: 'block', background: 'var(--card-bg)', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label></div>
             <div className="card">
               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Nuttige Links</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {usefulLinks.map((link, i) => (<a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '10px', textDecoration: 'none', color: 'var(--text-main)' }}><span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{link.name}</span><ExternalLink size={18} color="var(--bravo-purple)" /></a>))}
+                {usefulLinks && usefulLinks.map((link, i) => (<a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '10px', textDecoration: 'none', color: 'var(--text-main)' }}><span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{link.name}</span><ExternalLink size={18} color="var(--bravo-purple)" /></a>))}
               </div>
             </div>
-
             {contactData.map((group, idx) => (
               <div key={idx} className="card">
                 <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', marginBottom: '10px' }}>{group.category}</h3>
