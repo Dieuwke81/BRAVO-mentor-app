@@ -125,8 +125,10 @@ export default function Home() {
     }
   };
 
+  // Voortgangsberekeningen
   const baseItems = initialCategories.flatMap(c => c.items);
   const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
+  
   const totalProgress = Math.round(Math.max(...routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
     const doneCount = items.filter(i => completed.includes(i.id)).length;
@@ -161,7 +163,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* HEADER LOOK HERSTELD */}
+      {/* HEADER SECTION */}
       <div className="header no-print">
         <div className="header-top">
           <div className="brand-box">
@@ -199,6 +201,7 @@ export default function Home() {
       </div>
 
       <div className="container no-print">
+        {/* Lijnen Tab */}
         {mainTab === 'routes' && (
           <div className="card">
             <div className="sub-tabs no-scrollbar">
@@ -241,6 +244,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Voertuig Tab */}
         {mainTab === 'vehicle' && (
           <div className="card">
             <div className="cat-title"><Bus size={22} /><span>Voertuiggewenning</span></div>
@@ -270,6 +274,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Checklist Tab */}
         {mainTab === 'checklist' && (
           <div>
             {initialCategories.map((cat) => cat && cat.id !== 'routes' && (
@@ -286,6 +291,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Docs Tab */}
         {mainTab === 'docs' && (
           <div className="card">
             <div className="cat-title"><Files size={22} /><span>Documenten</span></div>
@@ -299,6 +305,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Info Tab */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card ziekmelden">
@@ -307,7 +314,6 @@ export default function Home() {
                <p>Buiten kantooruren: Bel ROV (030-2849494)</p>
             </div>
             
-            {/* NUTTIGE LINKS TERUGGEZET */}
             <div className="card">
               <h3 className="group-title">Nuttige Links</h3>
               <div className="links-list">
@@ -317,6 +323,21 @@ export default function Home() {
                   </a>
                 ))}
               </div>
+            </div>
+
+            <div className="card rapportage">
+               <h3>Rapportage Gegevens</h3>
+               <div className="form-group"><label>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} /></div>
+               <div className="form-row">
+                  <div className="form-group"><label>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div>
+                  <div className="form-group"><label>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div>
+               </div>
+            </div>
+
+            <div className="card center">
+               <button onClick={() => window.print()} className="btn success">Rapport maken</button>
+               <button onClick={exportData} className="btn purple">Download data</button>
+               <label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
 
             {contactData.map((group, idx) => (
@@ -333,14 +354,59 @@ export default function Home() {
                 ))}
               </div>
             ))}
-
-            <div className="card center">
-               <button onClick={() => window.print()} className="btn success">Rapport maken</button>
-               <button onClick={exportData} className="btn purple">Download data</button>
-               <label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
-            </div>
           </div>
         )}
+      </div>
+
+      {/* --- DEZE SECTIE IS ALLEEN VOOR HET RAPPORT (WORDT OP SCHERM VERBORGEN) --- */}
+      <div className="print-only">
+        <div style={{ textAlign: 'center', borderBottom: '3px solid var(--bravo-purple)', paddingBottom: '20px', marginBottom: '30px' }}>
+          <h1 style={{ color: 'var(--bravo-purple)', fontSize: '28px', margin: '0' }}>STAGIERE RAPPORTAGE</h1>
+          <h2 style={{ margin: '5px 0' }}>{activeStudent}</h2>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', marginTop: '10px', fontSize: '14px' }}>
+            <span><strong>Mentor:</strong> {mentorName}</span>
+            <span><strong>Periode:</strong> {dates.start} t/m {dates.end}</span>
+            <span><strong>Totaal Voortgang:</strong> {totalProgress}%</span>
+          </div>
+        </div>
+
+        <h3>1. Gereden Lijnen & Resultaten</h3>
+        <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '30px' }}>
+          <thead>
+            <tr style={{ background: '#f0f0f0' }}>
+              <th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Lijn</th>
+              <th style={{ border: '1px solid #ccc', padding: '10px' }}>Status</th>
+              <th style={{ border: '1px solid #ccc', padding: '10px' }}>Mee (M)</th>
+              <th style={{ border: '1px solid #ccc', padding: '10px' }}>Zelf (Z)</th>
+              <th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Opmerkingen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {busRoutes.filter(r => completed.includes(r.id) || tallies[r.id]?.m > 0 || tallies[r.id]?.z > 0 || notes[r.id]).map(r => (
+              <tr key={r.id}>
+                <td style={{ border: '1px solid #ccc', padding: '10px' }}>{r.text}</td>
+                <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{completed.includes(r.id) ? '✅' : '-'}</td>
+                <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.m || 0}</td>
+                <td style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'center' }}>{tallies[r.id]?.z || 0}</td>
+                <td style={{ border: '1px solid #ccc', padding: '10px' }}>{notes[r.id] || ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <h3>2. Voertuigbeheersing</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+          {busTypes.map(bus => {
+            const busDone = vehicleChecklist.flatMap(s => s.items).filter(i => completed.includes(`${bus.id}_${i.id}`)).length;
+            if (busDone === 0) return null;
+            return (
+              <div key={bus.id} style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '10px' }}>
+                <strong style={{ color: 'var(--bravo-purple)' }}>{bus.label}</strong><br/>
+                <span style={{ fontSize: '12px' }}>Checklist voltooid</span>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <style jsx global>{`
@@ -348,10 +414,10 @@ export default function Home() {
         body.dark-mode { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --sub: #94a3b8; --border: #334155; }
         body { background-color: var(--bg) !important; color: var(--text); margin: 0; font-family: -apple-system, system-ui, sans-serif; overflow-x: hidden; }
         
-        .header { background: linear-gradient(135deg, var(--bravo-purple) 0%, var(--bravo-blue) 100%); padding: 25px 20px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; width: 100%; box-sizing: border-box; }
+        .header { background: linear-gradient(135deg, var(--bravo-purple) 0%, var(--bravo-blue) 100%); padding: 25px 20px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; box-sizing: border-box; }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .brand-box { display: flex; align-items: center; gap: 15px; }
-        .logo-container { background: white; padding: 6px; border-radius: 12px; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .logo-container { background: white; padding: 6px; border-radius: 12px; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
         .logo-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .brand-text h1 { color: white; margin: 0; font-size: 1.4rem; }
         .brand-text span { color: rgba(255,255,255,0.8); font-size: 0.8rem; }
@@ -367,14 +433,14 @@ export default function Home() {
         .bar-bg { background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
         .bar-fill { height: 100%; background: white; transition: width 0.5s ease; }
 
-        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; }
-        .main-tabs button { flex: 1; padding: 10px; border-radius: 8px; background: transparent; color: white; border: none; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
+        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
+        .main-tabs button { flex: 1; padding: 10px; border-radius: 8px; background: transparent; color: white; border: none; font-weight: bold; font-size: 0.75rem; cursor: pointer; white-space: nowrap; }
         .main-tabs button.active { background: white; color: var(--bravo-purple); }
 
         .container { padding: 15px; max-width: 600px; margin: 0 auto; box-sizing: border-box; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         
-        .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; touch-action: pan-x; -webkit-overflow-scrolling: touch; }
+        .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; touch-action: pan-x; scrollbar-width: none; }
         .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.7rem; white-space: nowrap; cursor: pointer; }
         .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
@@ -390,20 +456,14 @@ export default function Home() {
 
         .note-area { margin-left: 38px; width: calc(100% - 38px); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; resize: none; overflow: hidden; box-sizing: border-box; }
 
-        /* DOCS VERTICAAL FIX */
         .doc-list-vertical { display: flex; flex-direction: column; gap: 10px; width: 100%; }
         .doc-item-vertical { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; text-align: left; color: var(--text); cursor: pointer; width: 100%; box-sizing: border-box; }
 
-        /* NUTTIGE LINKS */
         .links-list { display: flex; flex-direction: column; gap: 8px; }
         .useful-link-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 10px; text-decoration: none; color: var(--text); border: 1px solid var(--border); }
-        .useful-link-item span { font-weight: 500; font-size: 0.9rem; }
 
-        .cat-title { display: flex; align-items: center; gap: 10px; font-weight: bold; color: var(--bravo-purple); margin-bottom: 15px; }
         .bus-specs { display: flex; justify-content: space-around; background: var(--bg); padding: 12px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
         .spec { text-align: center; flex: 1; }
-        .spec span { font-size: 0.6rem; color: var(--sub); font-weight: bold; display: block; margin-bottom: 2px; }
-        .spec strong { font-size: 0.9rem; }
         .divider { width: 1px; background: var(--border); margin: 0 5px; }
 
         .ziekmelden { background: #fff1f2; border-color: #fecaca; color: var(--bravo-red); }
@@ -424,7 +484,14 @@ export default function Home() {
         .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        @media print { .no-print { display: none !important; } }
+
+        /* --- PRINT STYLING --- */
+        .print-only { display: none; }
+        @media print { 
+          .no-print { display: none !important; } 
+          .print-only { display: block !important; padding: 20px; color: black; background: white; } 
+          body { background: white !important; }
+        }
       `}</style>
     </div>
   );
