@@ -136,8 +136,6 @@ export default function Home() {
   }))) || 0;
 
   const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
-  
-  // Zoek de info op basis van het geselecteerde ID
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
   return (
@@ -157,11 +155,12 @@ export default function Home() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
            <div style={{ background: 'var(--card-bg)', width: '100%', maxWidth: '500px', borderTopLeftRadius: '20px', borderTopRightRadius: '20px', padding: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}><h3 style={{ color: 'var(--text-main)' }}>Video's</h3><button onClick={() => setVideoModal(null)} style={{ border: 'none', background: 'var(--bg-secondary)', color: 'var(--text-main)', borderRadius: '50%', padding: '5px' }}><X size={20} /></button></div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>{videoModal.videos.map((v, i) => (<a key={i} href={v.url} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '15px', background: '#fee2e2', color: '#dc2626', textDecoration: 'none', borderRadius: '10px', fontWeight: 'bold' }}><Youtube size={20} /> {v.label}</a>))}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>{videoModal.videos.map((v, i) => (<a key={i} href={v.url} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '15px', background: '#fee2e2', color: 'var(--bravo-red)', textDecoration: 'none', borderRadius: '10px', fontWeight: 'bold' }}><Youtube size={20} /> {v.label}</a>))}</div>
            </div>
         </div>
       )}
 
+      {/* Header met Bravo Gradiënt */}
       <div className="header no-print">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -176,7 +175,7 @@ export default function Home() {
         <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '10px', marginBottom: '15px' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
             <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', color: 'black', fontWeight: 'bold', background: 'white', border: 'none' }}>{students.map(s => <option key={s} value={s}>{s}</option>)}</select>
-            <button onClick={() => deleteStudent(activeStudent)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}><Trash2 size={18} /></button>
+            <button onClick={() => deleteStudent(activeStudent)} style={{ background: 'var(--bravo-red)', color: 'white', border: 'none', padding: '8px', borderRadius: '6px' }}><Trash2 size={18} /></button>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
             <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." style={{ flex: 1, padding: '8px', borderRadius: '6px', border: 'none', color: 'black' }} /><button onClick={addStudent} style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '6px' }}><Plus size={18} /></button>
@@ -191,15 +190,16 @@ export default function Home() {
         </div>
 
         <div style={{ display: 'flex', overflowX: 'auto', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }} className="no-scrollbar">
-          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Lijnen</button>
-          <button onClick={() => setMainTab('vehicle')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'vehicle' ? 'white' : 'transparent', color: mainTab === 'vehicle' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Voertuig</button>
-          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Checklists</button>
-          <button onClick={() => setMainTab('docs')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'docs' ? 'white' : 'transparent', color: mainTab === 'docs' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Docs</button>
-          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Info</button>
+          {['routes', 'vehicle', 'checklist', 'docs', 'info'].map((tab) => (
+            <button key={tab} onClick={() => setMainTab(tab)} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === tab ? 'white' : 'transparent', color: mainTab === tab ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>
+              {tab === 'routes' ? 'Lijnen' : tab === 'vehicle' ? 'Voertuig' : tab === 'checklist' ? 'Checklists' : tab === 'docs' ? 'Docs' : 'Info'}
+            </button>
+          ))}
         </div>
       </div>
 
       <div className="container no-print">
+        {/* Lijnen Tab */}
         {mainTab === 'routes' && (
           <div className="card">
             <div style={{ display: 'flex', overflowX: 'auto', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px' }} className="no-scrollbar">
@@ -217,26 +217,23 @@ export default function Home() {
                   <div style={{ display: 'flex', gap: '8px' }}>
                     {item.map && item.map !== '#' && <a href={item.map} target="_blank" className="pdf-btn"><MapPin size={16} /></a>}
                     {item.pdf && <button onClick={() => setPdfModal(item)} className="pdf-btn"><FileText size={16} /></button>}
-                    {item.videos && item.videos.length > 0 && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626' }}><Youtube size={16} /></button>}
+                    {item.videos && item.videos.length > 0 && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: 'var(--bravo-red)' }}><Youtube size={16} /></button>}
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '20px', marginLeft: '39px', padding: '10px 0' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'm', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score"><Eye size={14} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)} className="tally-btn"><Plus size={14} /></button></div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'z', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score" style={{ background: '#f0fdf4', color: '#15803d', borderColor: '#bbf7d0' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)} className="tally-btn"><Plus size={14} /></button></div>
                 </div>
-                <div style={{ marginLeft: '39px' }}>
-                  <textarea value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} placeholder="Opmerking..." rows={1} className="note-input" style={{ resize: 'none' }} />
-                </div>
+                <textarea value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} placeholder="Opmerking..." rows={1} className="note-input" style={{ resize: 'none', marginLeft: '39px', width: 'calc(100% - 39px)' }} />
               </div>
             ))}
           </div>
         )}
 
-        {/* Voertuig Tab - MET DE JUISTE KEY-NAMEN UIT JOUW DATA */}
+        {/* Voertuig Tab met Busnr/Lengte/Wielbasis uit jouw data */}
         {mainTab === 'vehicle' && (
           <div className="card">
             <div className="category-header"><Bus size={22} /><span className="category-title">Voertuiggewenning</span></div>
-            
             <div style={{ display: 'flex', overflowX: 'auto', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '8px', marginBottom: '15px', gap: '4px' }} className="no-scrollbar">
               {busTypes.map(bus => (
                 <button key={bus.id} onClick={() => setActiveBus(bus.id)} style={{ padding: '10px 15px', borderRadius: '6px', border: 'none', fontSize: '0.75rem', fontWeight: 'bold', background: activeBus === bus.id ? 'var(--card-bg)' : 'transparent', color: activeBus === bus.id ? 'var(--bravo-purple)' : 'var(--text-sub)', whiteSpace: 'nowrap' }}>
@@ -246,30 +243,27 @@ export default function Home() {
             </div>
 
             {currentBusInfo && (
-              <div style={{ 
-                background: 'var(--bg-secondary)', padding: '12px', borderRadius: '10px', marginBottom: '20px', 
-                border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-around', textAlign: 'center' 
-              }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '0.65rem', color: 'var(--text-sub)', fontWeight: 'bold', letterSpacing: '0.05em', marginBottom: '4px' }}>BUSNR</div>
-                  <div style={{ fontSize: '0.95rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.Busnr || '-'}</div>
+              <div className="bus-info-grid">
+                <div className="bus-info-col">
+                  <div className="bus-info-label">BUSNR</div>
+                  <div className="bus-info-value">{currentBusInfo.Busnr || '-'}</div>
                 </div>
-                <div style={{ width: '1px', background: 'var(--border-color)', margin: '0 5px' }}></div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '0.65rem', color: 'var(--text-sub)', fontWeight: 'bold', letterSpacing: '0.05em', marginBottom: '4px' }}>LENGTE</div>
-                  <div style={{ fontSize: '0.95rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.Lengte || '-'}</div>
+                <div className="bus-info-divider"></div>
+                <div className="bus-info-col">
+                  <div className="bus-info-label">LENGTE</div>
+                  <div className="bus-info-value">{currentBusInfo.Lengte || '-'}</div>
                 </div>
-                <div style={{ width: '1px', background: 'var(--border-color)', margin: '0 5px' }}></div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '0.65rem', color: 'var(--text-sub)', fontWeight: 'bold', letterSpacing: '0.05em', marginBottom: '4px' }}>WIELBASIS</div>
-                  <div style={{ fontSize: '0.95rem', color: 'var(--text-main)', fontWeight: '800' }}>{currentBusInfo.Wielbasis || '-'}</div>
+                <div className="bus-info-divider"></div>
+                <div className="bus-info-col">
+                  <div className="bus-info-label">WIELBASIS</div>
+                  <div className="bus-info-value">{currentBusInfo.Wielbasis || '-'}</div>
                 </div>
               </div>
             )}
 
             {vehicleChecklist.map((section, idx) => section && (
               <div key={idx} style={{ marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '1px solid var(--border-color)', paddingBottom: '5px', marginBottom: '10px', fontWeight: 'bold' }}>{section.category}</h3>
+                <h3 className="section-title">{section.category}</h3>
                 {section.items.map(item => (
                   <div key={item.id} className="checkbox-item" onClick={() => toggleItem(`${activeBus}_${item.id}`)}>
                     <div className="checkbox-content">
@@ -285,6 +279,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Checklists Tab */}
         {mainTab === 'checklist' && (
           <div>{initialCategories.map((cat) => cat && cat.id !== 'routes' && (
             <div key={cat.id} className="card">
@@ -303,6 +298,7 @@ export default function Home() {
           ))}</div>
         )}
 
+        {/* Docs Tab */}
         {mainTab === 'docs' && (
           <div className="card">
             <div className="category-header"><Files size={22} /><span className="category-title">Documenten</span></div>
@@ -312,39 +308,40 @@ export default function Home() {
           </div>
         )}
 
+        {/* Info Tab */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
-            <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
-               <div style={{ display: 'flex', gap: '10px', color: '#dc2626', fontWeight: 'bold' }}><ShieldAlert size={20} /> ZIEKMELDEN</div>
-               <p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#dc2626' }}>Binnen kantooruren: Bij je leidinggevende</p>
-               <p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#dc2626' }}>Buiten kantooruren: Bel ROV (030-2849494)</p>
+            <div className="card danger-card">
+               <div style={{ display: 'flex', gap: '10px', color: 'var(--bravo-red)', fontWeight: 'bold' }}><ShieldAlert size={20} /> ZIEKMELDEN</div>
+               <p style={{ margin: '4px 0', fontSize: '0.9rem', color: 'var(--bravo-red)' }}>Binnen kantooruren: Bij je leidinggevende</p>
+               <p style={{ margin: '4px 0', fontSize: '0.9rem', color: 'var(--bravo-red)' }}>Buiten kantooruren: Bel ROV (030-2849494)</p>
             </div>
 
-            <div className="card" style={{ padding: '20px' }}>
-               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Rapportage Gegevens</h3>
+            <div className="card">
+               <h3 className="section-title">Rapportage Gegevens</h3>
                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                  <div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)' }} /></div>
+                  <div><label className="input-label">Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} className="main-input" /></div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                     <div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)', borderRadius: '8px' }} /></div>
-                     <div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)', borderRadius: '8px' }} /></div>
+                     <div><label className="input-label">Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} className="main-input" /></div>
+                     <div><label className="input-label">Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} className="main-input" /></div>
                   </div>
                </div>
             </div>
 
-            <div className="card">
-               <button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%' }}>Rapport maken</button>
-               <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%' }}>Download data</button>
-               <label style={{ marginTop: '10px', display: 'block', background: 'var(--card-bg)', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold', cursor: 'pointer', textAlign: 'center' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
+            <div className="card" style={{ textAlign: 'center' }}>
+               <button onClick={() => window.print()} className="action-btn success-btn">Rapport maken</button>
+               <button onClick={exportData} className="action-btn purple-btn">Download data</button>
+               <label className="action-btn outline-btn">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
 
             {contactData.map((group, idx) => (
               <div key={idx} className="card">
-                <h3 className="category-header-text">{group.category}</h3>
+                <h3 className="brand-header">{group.category}</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {group.contacts.map((c, i) => (
-                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-                      <span style={{ fontSize: '0.85rem', color: 'var(--text-main)', fontWeight: '600' }}>{c.name}</span>
-                      <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                    <div key={i} className="contact-row">
+                      <span className="contact-name">{c.name}</span>
+                      <div className="contact-actions">
                         {c.phone && <a href={`tel:${c.phone}`} className="contact-btn phone-btn">{c.phone}</a>}
                         {c.email && <a href={`mailto:${c.email}`} className="contact-btn email-btn">{c.email}</a>}
                       </div>
@@ -358,29 +355,62 @@ export default function Home() {
       </div>
 
       <style jsx global>{`
-        :root { --bg-color: #f3f4f6; --card-bg: #ffffff; --text-main: #1f2937; --text-sub: #6b7280; --border-color: #e5e7eb; --bg-secondary: #f9fafb; --bravo-purple: #81308a; --success: #10b981; }
+        :root { 
+          --bravo-purple: #542e91; 
+          --bravo-blue: #009fe3; 
+          --bravo-red: #e3004f;
+          --bg-color: #f3f4f6; 
+          --card-bg: #ffffff; 
+          --text-main: #1f2937; 
+          --text-sub: #6b7280; 
+          --border-color: #e5e7eb; 
+          --bg-secondary: #f9fafb; 
+          --success: #10b981; 
+        }
         body.dark-mode { --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8; --border-color: #334155; --bg-secondary: #0f172a; }
         body { background-color: var(--bg-color) !important; color: var(--text-main); margin: 0; font-family: -apple-system, system-ui, sans-serif; }
         
-        .header { background: linear-gradient(135deg, #81308a 0%, #00a1e1 100%); padding: 25px 20px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
+        .header { background: linear-gradient(135deg, var(--bravo-purple) 0%, var(--bravo-blue) 100%); padding: 25px 20px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
         .container { padding: 15px; max-width: 600px; margin: 0 auto; }
         .card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); margin-bottom: 15px; padding: 15px; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        
+        .danger-card { background: #fff1f2; border-color: #fecaca; }
+
+        /* CHECKBOXEN FIX */
         .checkbox-content { display: flex; align-items: center; cursor: pointer; width: 100%; }
-        .checkbox-box { width: 24px; height: 24px; flex-shrink: 0; border-radius: 6px; border: 2px solid var(--border-color); margin-right: 15px; display: flex; align-items: center; justify-content: center; color: white; }
+        .checkbox-box { width: 24px; height: 24px; flex-shrink: 0; border-radius: 6px; border: 2px solid var(--border-color); margin-right: 15px; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.2s; }
         .checkbox-item { padding: 12px 0; border-bottom: 1px solid var(--border-color); }
 
         .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: var(--bravo-purple); }
         .category-title { font-weight: bold; font-size: 1.1rem; text-transform: uppercase; }
-        .category-header-text { font-size: 0.85rem; color: #ff00ff; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; }
+        .brand-header { font-size: 0.85rem; color: var(--bravo-purple); text-transform: uppercase; font-weight: bold; margin-bottom: 15px; }
+        .section-title { fontSize: 0.9rem; color: var(--bravo-purple); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 10px; font-weight: bold; }
+
+        /* BUS INFO BALK */
+        .bus-info-grid { background: var(--bg-secondary); padding: 12px; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); display: flex; justify-content: space-around; text-align: center; }
+        .bus-info-col { flex: 1; }
+        .bus-info-label { fontSize: 0.65rem; color: var(--text-sub); fontWeight: bold; letterSpacing: 0.05em; margin-bottom: 4px; }
+        .bus-info-value { fontSize: 0.95rem; color: var(--text-main); fontWeight: 800; }
+        .bus-info-divider { width: 1px; background: var(--border-color); margin: 0 5px; }
         
-        .contact-btn { padding: 6px 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; border: 1px solid transparent; }
-        .phone-btn { background: rgba(129, 48, 138, 0.1); color: #ff00ff; border-color: #81308a; }
-        .email-btn { background: #ffffff; color: #00a1e1; border-color: #00a1e1; }
+        /* CONTACT GEGEVENS */
+        .contact-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .contact-name { fontSize: 0.85rem; color: var(--text-main); fontWeight: 600; }
+        .contact-actions { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+        .contact-btn { padding: 6px 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.8rem; border: 1px solid transparent; transition: opacity 0.2s; }
+        .phone-btn { background: rgba(84, 46, 145, 0.1); color: var(--bravo-purple); border-color: var(--bravo-purple); }
+        .email-btn { background: #ffffff; color: var(--bravo-blue); border-color: var(--bravo-blue); }
+
+        /* INPUTS & KNOPPEN */
+        .main-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); color: var(--text-main); background: var(--card-bg); outline: none; }
+        .input-label { fontSize: 0.8rem; color: var(--text-sub); display: block; margin-bottom: 4px; }
+        .action-btn { display: block; width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; text-align: center; }
+        .success-btn { background: var(--success); color: white; }
+        .purple-btn { background: var(--bravo-purple); color: white; }
+        .outline-btn { background: var(--card-bg); color: var(--bravo-purple); border: 2px solid var(--bravo-purple); }
 
         .tally-btn { border: 1px solid var(--border-color); background: var(--card-bg); color: var(--bravo-purple); border-radius: 6px; padding: 4px; cursor: pointer; }
         .tally-score { display: flex; align-items: center; gap: 6px; background: var(--bg-secondary); color: var(--text-main); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid var(--border-color); }
-        .note-input { border: 1px solid var(--border-color); background: var(--bg-secondary); font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 8px 10px; outline: none; color: var(--text-main); margin-top: 5px; }
+        .note-input { border: 1px solid var(--border-color); background: var(--bg-secondary); font-size: 0.85rem; border-radius: 8px; padding: 8px 10px; outline: none; color: var(--text-main); margin-top: 5px; }
         
         .progress-bar { height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; margin-top: 5px; overflow: hidden; }
         .progress-fill { height: 100%; background: white; transition: width 0.5s ease; }
