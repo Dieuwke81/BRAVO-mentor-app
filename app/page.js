@@ -136,7 +136,6 @@ export default function Home() {
   }))) || 0;
 
   const currentTabItems = busRoutes.filter(i => i.type === routeSubTab);
-  const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
   return (
@@ -295,7 +294,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Info Tab - HIER STOND DE INFO DIE VERDWENEN WAS */}
+        {/* Info Tab */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
@@ -328,16 +327,17 @@ export default function Home() {
               </div>
             </div>
 
+            {/* CONTACTGEGEVENS MET VOLLEDIG EMAILADRES */}
             {contactData.map((group, idx) => (
               <div key={idx} className="card">
-                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', marginBottom: '10px' }}>{group.category}</h3>
+                <h3 className="category-header-text">{group.category}</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {group.contacts.map((c, i) => (
-                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.85rem', color: 'var(--text-main)', fontWeight: '500' }}>{c.name}</span>
-                      <div style={{ display: 'flex', gap: '5px' }}>
-                        {c.phone && <a href={`tel:${c.phone}`} style={{ padding: '6px 10px', background: 'var(--card-bg)', border: '1px solid var(--bravo-purple)', borderRadius: '8px', textDecoration: 'none', color: 'var(--bravo-purple)', fontWeight: 'bold', fontSize: '0.8rem' }}>{c.phone}</a>}
-                        {c.email && <a href={`mailto:${c.email}`} style={{ padding: '6px 10px', background: '#f0f9ff', borderRadius: '8px', textDecoration: 'none', color: '#0369a1', fontWeight: 'bold', fontSize: '0.8rem' }}>Mail</a>}
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                      <span style={{ fontSize: '0.85rem', color: 'var(--text-main)', fontWeight: '600' }}>{c.name}</span>
+                      <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                        {c.phone && <a href={`tel:${c.phone}`} className="contact-btn phone-btn">{c.phone}</a>}
+                        {c.email && <a href={`mailto:${c.email}`} className="contact-btn email-btn">{c.email}</a>}
                       </div>
                     </div>
                   ))}
@@ -365,6 +365,26 @@ export default function Home() {
           display: flex; align-items: center; justify-content: center; color: white;
         }
         .checkbox-item { padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+
+        .category-header-text { font-size: 0.85rem; color: #ff00ff; text-transform: uppercase; font-weight: bold; margin-bottom: 15px; }
+        
+        /* STYLING CONTACT KNOPPEN */
+        .contact-btn { 
+          padding: 6px 12px; border-radius: 8px; text-decoration: none; 
+          font-weight: bold; font-size: 0.8rem; border: 1px solid transparent; 
+          transition: opacity 0.2s;
+        }
+        .phone-btn { 
+          background: rgba(129, 48, 138, 0.1); 
+          color: #ff00ff; 
+          border-color: #81308a; 
+        }
+        .email-btn { 
+          background: #ffffff; 
+          color: #00a1e1; 
+          border-color: #00a1e1; 
+        }
+        body.dark-mode .email-btn { background: #ffffff; color: #00a1e1; }
 
         .tally-btn { border: 1px solid var(--border-color); background: var(--card-bg); color: var(--bravo-purple); border-radius: 6px; padding: 4px; cursor: pointer; }
         .tally-score { display: flex; align-items: center; gap: 6px; background: var(--bg-secondary); color: var(--text-main); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid var(--border-color); }
