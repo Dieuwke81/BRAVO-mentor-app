@@ -27,7 +27,6 @@ export default function Home() {
   const [newStudentName, setNewStudentName] = useState('');
   const [theme, setTheme] = useState('light');
 
-  // Refs voor alle textareas om hoogte te berekenen
   const textareaRefs = useRef({});
 
   useEffect(() => {
@@ -65,7 +64,7 @@ export default function Home() {
     }
   }, [activeStudent, mounted]);
 
-  // Fix voor meegroeiende textareas bij verandering van tab of inhoud
+  // Zorgt dat alle opmerkingen-vakken de juiste hoogte hebben bij laden/wisselen
   useEffect(() => {
     Object.keys(textareaRefs.current).forEach(id => {
       const el = textareaRefs.current[id];
@@ -154,7 +153,7 @@ export default function Home() {
   const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
-  // Filters voor Rapport
+  // Rapportage filters
   const reportRoutes = [];
   const seenIds = new Set();
   busRoutes.forEach(r => {
@@ -231,15 +230,10 @@ export default function Home() {
             <div className="sub-tabs no-scrollbar">
               {routeTypes.map(t => (<button key={t} onClick={() => setRouteSubTab(t)} className={routeSubTab === t ? 'active' : ''}>{t.replace('-', ' ').toUpperCase()}</button>))}
             </div>
-            
             <div className="rayon-progress">
-              <div className="labels">
-                <span>VOORTGANG {routeSubTab.replace('-', ' ').toUpperCase()}</span>
-                <span>{progressTab}%</span>
-              </div>
+              <div className="labels"><span>VOORTGANG {routeSubTab.toUpperCase()}</span><span>{progressTab}%</span></div>
               <div className="bar-bg"><div className="bar-fill" style={{ width: `${progressTab}%` }}></div></div>
             </div>
-
             {currentTabItems.map((item) => (
               <div key={item.id} className="item-row">
                 <div className="top-line">
@@ -318,8 +312,31 @@ export default function Home() {
           <div style={{ paddingBottom: '40px' }}>
             <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren: Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
             <div className="card"><h3 className="group-title">Nuttige Links</h3><div className="links-list">{usefulLinks.map((link, i) => (<a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="useful-link-item"><span>{link.name}</span><ExternalLink size={18} /></a>))}</div></div>
-            <div className="card rapportage"><h3>Rapportage Gegevens</h3><div className="form-group"><label>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} /></div><div className="form-row"><div className="form-group"><label>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div><div className="form-group"><label>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div></div></div>
-            <div className="card center"><button onClick={() => window.print()} className="btn success">Rapport maken</button><button onClick={exportData} className="btn purple">Download data</button><label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label></div>
+            
+            {/* RAPPORTAGE GEGEVENS - UITGELIJND */}
+            <div className="card rapportage">
+               <h3>Rapportage Gegevens</h3>
+               <div className="form-group">
+                  <label>Mentor</label>
+                  <input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} />
+               </div>
+               <div className="form-row">
+                  <div className="form-group">
+                    <label>Start</label>
+                    <input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} />
+                  </div>
+                  <div className="form-group">
+                    <label>Eind</label>
+                    <input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} />
+                  </div>
+               </div>
+            </div>
+
+            <div className="card center">
+               <button onClick={() => window.print()} className="btn success">Rapport maken</button>
+               <button onClick={exportData} className="btn purple">Download data</button>
+               <label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
+            </div>
             {contactData.map((group, idx) => (
               <div key={idx} className="card"><h3 className="group-title">{group.category}</h3>{group.contacts.map((c, i) => (<div key={i} className="contact-row"><span className="name">{c.name}</span><div className="links">{c.phone && <a href={`tel:${c.phone}`} className="phone">{c.phone}</a>}{c.email && <a href={`mailto:${c.email}`} className="email">{c.email}</a>}</div></div>))}</div>
             ))}
@@ -327,7 +344,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* RAPPORT (ALLEEN BIJ PRINT) */}
+      {/* RAPPORT (PRINT) */}
       <div className="print-only">
         <div style={{ textAlign: 'center', borderBottom: '3px solid var(--bravo-purple)', paddingBottom: '20px', marginBottom: '30px' }}>
           <h1 style={{ color: 'var(--bravo-purple)', fontSize: '26px', margin: '0' }}>LEERLING RAPPORTAGE</h1>
@@ -402,7 +419,7 @@ export default function Home() {
         .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.7rem; white-space: nowrap; cursor: pointer; }
         .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        .rayon-progress .labels { display: flex; justify-content: space-between; gap: 10px; font-size: 0.75rem; font-weight: bold; color: var(--sub); margin-bottom: 5px; }
+        .rayon-progress .labels { display: flex; justify-content: space-between; gap: 20px; font-size: 0.75rem; font-weight: bold; color: var(--sub); margin-bottom: 5px; }
         .rayon-progress .bar-bg { background: var(--border); height: 6px; border-radius: 3px; overflow: hidden; }
         .rayon-progress .bar-fill { background: var(--bravo-purple); height: 100%; }
 
@@ -430,6 +447,11 @@ export default function Home() {
         .divider { width: 1px; background: var(--border); margin: 0 5px; }
 
         .ziekmelden { background: #fff1f2; border-color: #fecaca; color: var(--bravo-red); }
+        .form-group { margin-bottom: 12px; width: 100%; display: flex; flex-direction: column; }
+        .form-group label { display: block; font-size: 0.8rem; color: var(--sub); margin-bottom: 4px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: #000; outline: none; box-sizing: border-box; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
         .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; font-size: 0.9rem; }
         .btn.success { background: var(--success); color: white; }
         .btn.purple { background: var(--bravo-purple); color: white; }
