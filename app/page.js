@@ -125,9 +125,9 @@ export default function Home() {
     }
   };
 
-  // Voortgang
   const baseItems = initialCategories.flatMap(c => c.items);
   const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
+  
   const totalProgress = Math.round(Math.max(...routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
     const doneCount = items.filter(i => completed.includes(i.id)).length;
@@ -140,15 +140,13 @@ export default function Home() {
   const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
-  // Filter unieke lijnen voor het rapport:
-  // - Afgevinkt OF geturft (M/Z > 0) OF een opmerking aanwezig
+  // Unieke lijnen voor rapport
   const reportRoutes = [];
   const seenIds = new Set();
   busRoutes.forEach(r => {
     const hasTally = (tallies[r.id]?.m > 0) || (tallies[r.id]?.z > 0);
     const hasNote = notes[r.id] && notes[r.id].trim() !== "";
     const isDone = completed.includes(r.id);
-
     if ((isDone || hasTally || hasNote) && !seenIds.has(r.id)) {
       reportRoutes.push(r);
       seenIds.add(r.id);
@@ -174,7 +172,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* HEADER */}
       <div className="header no-print">
         <div className="header-top">
           <div className="brand-box">
@@ -205,7 +202,6 @@ export default function Home() {
       </div>
 
       <div className="container no-print">
-        {/* Lijnen Tab */}
         {mainTab === 'routes' && (
           <div className="card">
             <div className="sub-tabs no-scrollbar">
@@ -238,7 +234,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Voertuig Tab */}
         {mainTab === 'vehicle' && (
           <div className="card">
             <div className="cat-title"><Bus size={22} /><span>Voertuiggewenning</span></div>
@@ -247,23 +242,31 @@ export default function Home() {
             {vehicleChecklist.map((section, idx) => (
               <div key={idx} className="checklist-section">
                 <h3>{section.category}</h3>
-                {section.items.map(item => (<div key={item.id} className="check-item" onClick={() => toggleItem(`${activeBus}_${item.id}`)}><div className={`check-box ${completed.includes(`${activeBus}_${item.id}`) ? 'checked' : ''}`}>{completed.includes(`${activeBus}_${item.id}`) && <CheckCircle2 size={16} />}</div><span>{item.text}</span></div>))}
+                {section.items.map(item => (
+                  <div key={item.id} className="check-item" onClick={() => toggleItem(`${activeBus}_${item.id}`)}>
+                    <div className={`check-box ${completed.includes(`${activeBus}_${item.id}`) ? 'checked' : ''}`}>{completed.includes(`${activeBus}_${item.id}`) && <CheckCircle2 size={16} />}</div>
+                    <span>{item.text}</span>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
         )}
 
-        {/* Checklist Tab */}
         {mainTab === 'checklist' && (
           <div>{initialCategories.map((cat) => cat && cat.id !== 'routes' && (
             <div key={cat.id} className="card">
               <div className="cat-title">{cat.icon}<span>{cat.title}</span></div>
-              {cat.items.map((it) => (<div key={it.id} className="check-item" onClick={() => toggleItem(it.id)}><div className={`check-box ${completed.includes(it.id) ? 'checked' : ''}`}>{completed.includes(it.id) && <CheckCircle2 size={18} />}</div><span className={completed.includes(it.id) ? 'strikethrough' : ''}>{it.text}</span></div>))}
+              {cat.items.map((it) => (
+                <div key={it.id} className="check-item" onClick={() => toggleItem(it.id)}>
+                  <div className={`check-box ${completed.includes(it.id) ? 'checked' : ''}`}>{completed.includes(it.id) && <CheckCircle2 size={18} />}</div>
+                  <span className={completed.includes(it.id) ? 'strikethrough' : ''}>{it.text}</span>
+                </div>
+              ))}
             </div>
           ))}</div>
         )}
 
-        {/* Docs Tab */}
         {mainTab === 'docs' && (
           <div className="card">
             <div className="cat-title"><Files size={22} /><span>Documenten</span></div>
@@ -271,7 +274,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Info Tab */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren: Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
@@ -285,7 +287,7 @@ export default function Home() {
         )}
       </div>
 
-      {/* --- RAPPORT SECTIE (ALLEEN PRINT) --- */}
+      {/* --- RAPPORT SECTIE --- */}
       <div className="print-only">
         <div style={{ textAlign: 'center', borderBottom: '3px solid var(--bravo-purple)', paddingBottom: '20px', marginBottom: '30px' }}>
           <h1 style={{ color: 'var(--bravo-purple)', fontSize: '26px', margin: '0' }}>LEERLING RAPPORTAGE</h1>
@@ -314,11 +316,13 @@ export default function Home() {
         <h3>2. Voertuigbeheersing (Afgevinkt)</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
           {busTypes.map(bus => {
-            const checkedItems = vehicleChecklist.flatMap(s => s?.items || []).filter(i => completed.includes(`${bus.id}_${i.id}`));
+            const allPossibleItems = vehicleChecklist.flatMap(s => s?.items || []);
+            const checkedItems = allPossibleItems.filter(i => completed.includes(`${bus.id}_${i.id}`));
             if (checkedItems.length === 0) return null;
             return (
               <div key={bus.id} style={{ border: '1px solid #ccc', padding: '12px', borderRadius: '10px' }}>
-                <strong style={{ color: 'var(--bravo-purple)' }}>{bus.label}</strong><br/><span style={{ fontSize: '12px' }}>{checkedItems.length} items afgerond</span>
+                <strong style={{ color: 'var(--bravo-purple)' }}>{bus.label}</strong><br/>
+                <span style={{ fontSize: '12px' }}>{checkedItems.length} / {allPossibleItems.length} items afgerond</span>
               </div>
             );
           })}
@@ -345,7 +349,7 @@ export default function Home() {
         .bar-bg { background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
         .bar-fill { height: 100%; background: white; transition: width 0.5s ease; }
         .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; }
-        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; }
+        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
         .main-tabs button { flex: 1; padding: 10px; border-radius: 8px; background: transparent; color: white; border: none; font-weight: bold; font-size: 0.75rem; cursor: pointer; white-space: nowrap; }
         .main-tabs button.active { background: white; color: var(--bravo-purple); }
         .container { padding: 15px; max-width: 600px; margin: 0 auto; box-sizing: border-box; }
@@ -353,11 +357,16 @@ export default function Home() {
         .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; touch-action: pan-x; scrollbar-width: none; }
         .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.7rem; white-space: nowrap; cursor: pointer; }
         .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
         .item-row { padding: 15px 0; border-bottom: 1px solid var(--border); }
         .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
         .check-label { display: flex; align-items: center; cursor: pointer; flex: 1; }
-        .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
+        
+        /* FIX VOOR CHECKBOX POSITIE */
+        .check-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; text-align: left; }
+        .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
         .check-box.checked { background: var(--success); border-color: var(--success); }
+        
         .action-btns { display: flex; gap: 6px; flex-shrink: 0; }
         .act-btn { width: 40px; height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bravo-purple); cursor: pointer; }
         .act-btn.vid { background: #fee2e2; color: var(--bravo-red); border-color: #fecaca; }
