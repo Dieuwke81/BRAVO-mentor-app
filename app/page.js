@@ -63,7 +63,6 @@ export default function Home() {
   }, [activeStudent, mounted]);
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
-
   if (!mounted) return null;
 
   const exportData = () => {
@@ -192,11 +191,11 @@ export default function Home() {
         </div>
 
         <div style={{ display: 'flex', overflowX: 'auto', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', marginTop: '20px', padding: '4px', gap: '4px' }} className="no-scrollbar">
-          {['routes', 'vehicle', 'checklist', 'docs', 'info'].map((tab) => (
-            <button key={tab} onClick={() => setMainTab(tab)} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === tab ? 'white' : 'transparent', color: mainTab === tab ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem', textTransform: 'capitalize' }}>
-              {tab === 'routes' ? 'Lijnen' : tab === 'vehicle' ? 'Voertuig' : tab === 'checklist' ? 'Checklists' : tab === 'docs' ? 'Docs' : 'Info'}
-            </button>
-          ))}
+          <button onClick={() => setMainTab('routes')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'routes' ? 'white' : 'transparent', color: mainTab === 'routes' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Lijnen</button>
+          <button onClick={() => setMainTab('vehicle')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'vehicle' ? 'white' : 'transparent', color: mainTab === 'vehicle' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Voertuig</button>
+          <button onClick={() => setMainTab('checklist')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'checklist' ? 'white' : 'transparent', color: mainTab === 'checklist' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Checklists</button>
+          <button onClick={() => setMainTab('docs')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'docs' ? 'white' : 'transparent', color: mainTab === 'docs' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Docs</button>
+          <button onClick={() => setMainTab('info')} style={{ flex: 1, padding: '10px 15px', borderRadius: '8px', background: mainTab === 'info' ? 'white' : 'transparent', color: mainTab === 'info' ? 'var(--bravo-purple)' : 'white', fontWeight: 'bold', fontSize: '0.75rem' }}>Info</button>
         </div>
       </div>
 
@@ -222,7 +221,6 @@ export default function Home() {
                     {item.videos && item.videos.length > 0 && <button onClick={() => setVideoModal(item)} className="pdf-btn" style={{ background: '#fee2e2', color: '#dc2626' }}><Youtube size={16} /></button>}
                   </div>
                 </div>
-                {/* Tallies and Notes */}
                 <div style={{ display: 'flex', gap: '20px', marginLeft: '39px', padding: '10px 0' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'm', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score"><Eye size={14} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)} className="tally-btn"><Plus size={14} /></button></div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><button onClick={() => updateTally(item.id, 'z', -1)} className="tally-btn"><Minus size={14} /></button><div className="tally-score" style={{ background: '#f0fdf4', color: '#15803d', borderColor: '#bbf7d0' }}><Navigation size={14} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)} className="tally-btn"><Plus size={14} /></button></div>
@@ -242,6 +240,14 @@ export default function Home() {
             <div style={{ display: 'flex', overflowX: 'auto', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '8px', marginBottom: '20px', gap: '4px' }} className="no-scrollbar">
               {busTypes.map(bus => (<button key={bus.id} onClick={() => setActiveBus(bus.id)} style={{ padding: '10px 15px', borderRadius: '6px', border: 'none', fontSize: '0.75rem', fontWeight: 'bold', background: activeBus === bus.id ? 'var(--card-bg)' : 'transparent', color: activeBus === bus.id ? 'var(--bravo-purple)' : 'var(--text-sub)', whiteSpace: 'nowrap' }}>{bus.label}</button>))}
             </div>
+            {currentBusInfo && (
+              <div style={{ background: 'var(--bg-secondary)', padding: '15px', borderRadius: '10px', marginBottom: '20px', border: '1px solid var(--border-color)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div><label style={{ fontSize: '0.7rem', color: 'var(--text-sub)', fontWeight: 'bold' }}>BUSNR</label><div style={{ fontSize: '0.9rem', color: 'var(--text-main)', fontWeight: '600' }}>{currentBusInfo.fleet}</div></div>
+                  <div><label style={{ fontSize: '0.7rem', color: 'var(--text-sub)', fontWeight: 'bold' }}>WIELBASIS</label><div style={{ fontSize: '0.9rem', color: 'var(--text-main)', fontWeight: '600' }}>{currentBusInfo.wheelbase}</div></div>
+                </div>
+              </div>
+            )}
             {vehicleChecklist.map((section, idx) => section && (
               <div key={idx} style={{ marginBottom: '20px' }}>
                 <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', borderBottom: '1px solid var(--border-color)', paddingBottom: '5px', marginBottom: '10px' }}>{section.category}</h3>
@@ -279,27 +285,65 @@ export default function Home() {
           ))}</div>
         )}
 
-        {/* Docs & Info (geen checkboxen hier, layout behouden) */}
+        {/* Docs Tab */}
         {mainTab === 'docs' && (
           <div className="card">
             <div className="category-header"><Files size={22} /><span className="category-title">Documenten</span></div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
-              {importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '10px', textAlign: 'left', color: 'var(--text-main)' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
+              {importantDocuments && importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '15px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '10px', textAlign: 'left', color: 'var(--text-main)' }}><FileText size={24} color="var(--bravo-purple)" /><span style={{ fontWeight: '600' }}>{doc.title}</span></button>))}
             </div>
           </div>
         )}
 
+        {/* Info Tab - HIER STOND DE INFO DIE VERDWENEN WAS */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
-             <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca' }}>
+            <div className="card" style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '15px', marginBottom: '20px' }}>
                <div style={{ display: 'flex', gap: '10px', color: '#dc2626', fontWeight: 'bold' }}><ShieldAlert size={20} /> ZIEKMELDEN</div>
                <p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#dc2626' }}>Binnen kantooruren: Bij je leidinggevende</p>
                <p style={{ margin: '4px 0', fontSize: '0.9rem', color: '#dc2626' }}>Buiten kantooruren: Bel ROV (030-2849494)</p>
-             </div>
-             <div className="card">
+            </div>
+
+            <div className="card" style={{ padding: '20px' }}>
+               <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Rapportage Gegevens</h3>
+               <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)' }} /></div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                     <div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)', borderRadius: '8px' }} /></div>
+                     <div><label style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} style={{ width: '100%', padding: '10px', border: '1px solid var(--border-color)', color: 'var(--text-main)', background: 'var(--card-bg)', borderRadius: '8px' }} /></div>
+                  </div>
+               </div>
+            </div>
+
+            <div className="card" style={{ textAlign: 'center' }}>
                <button onClick={() => window.print()} style={{ background: '#10b981', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', fontWeight: 'bold', width: '100%' }}>Rapport maken</button>
                <button onClick={exportData} style={{ marginTop: '10px', background: 'var(--bravo-purple)', color: 'white', padding: '12px', borderRadius: '10px', border: 'none', width: '100%' }}>Download data</button>
-             </div>
+               <label style={{ marginTop: '10px', display: 'block', background: 'var(--card-bg)', color: 'var(--bravo-purple)', padding: '12px', borderRadius: '10px', border: '2px solid var(--bravo-purple)', fontWeight: 'bold', cursor: 'pointer' }}>Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
+            </div>
+
+            <div className="card">
+              <h3 style={{ fontSize: '1rem', color: 'var(--bravo-purple)', marginBottom: '15px', fontWeight: 'bold' }}>Nuttige Links</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {usefulLinks && usefulLinks.map((link, i) => (<a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '10px', textDecoration: 'none', color: 'var(--text-main)' }}><span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{link.name}</span><ExternalLink size={18} color="var(--bravo-purple)" /></a>))}
+              </div>
+            </div>
+
+            {contactData.map((group, idx) => (
+              <div key={idx} className="card">
+                <h3 style={{ fontSize: '0.9rem', color: 'var(--bravo-purple)', marginBottom: '10px' }}>{group.category}</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {group.contacts.map((c, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.85rem', color: 'var(--text-main)', fontWeight: '500' }}>{c.name}</span>
+                      <div style={{ display: 'flex', gap: '5px' }}>
+                        {c.phone && <a href={`tel:${c.phone}`} style={{ padding: '6px 10px', background: 'var(--card-bg)', border: '1px solid var(--bravo-purple)', borderRadius: '8px', textDecoration: 'none', color: 'var(--bravo-purple)', fontWeight: 'bold', fontSize: '0.8rem' }}>{c.phone}</a>}
+                        {c.email && <a href={`mailto:${c.email}`} style={{ padding: '6px 10px', background: '#f0f9ff', borderRadius: '8px', textDecoration: 'none', color: '#0369a1', fontWeight: 'bold', fontSize: '0.8rem' }}>Mail</a>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -307,47 +351,27 @@ export default function Home() {
       <style jsx global>{`
         :root { --bg-color: #f3f4f6; --card-bg: #ffffff; --text-main: #1f2937; --text-sub: #6b7280; --border-color: #e5e7eb; --bg-secondary: #f9fafb; --bravo-purple: #81308a; --success: #10b981; }
         body.dark-mode { --bg-color: #0f172a; --card-bg: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8; --border-color: #334155; --bg-secondary: #0f172a; }
-        body { background-color: var(--bg-color) !important; color: var(--text-main); margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg-color) !important; color: var(--text-main); margin: 0; font-family: -apple-system, system-ui, sans-serif; }
         
         .header { background: linear-gradient(135deg, #81308a 0%, #00a1e1 100%); padding: 25px 20px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
         .container { padding: 15px; max-width: 600px; margin: 0 auto; }
         .card { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); margin-bottom: 15px; padding: 15px; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        .checkbox-item { padding: 12px 0; border-bottom: 1px solid var(--border-color); }
-        .checkbox-item:last-child { border-bottom: none; }
-        
-        /* DE FIX VOOR DE CHECKBOXEN */
-        .checkbox-content { 
-          display: flex; 
-          align-items: center; /* Verticaal gecentreerd met de tekstregel */
-          cursor: pointer; 
-          width: 100%;
-        }
-        
+        /* FIX CHECKBOXEN */
+        .checkbox-content { display: flex; align-items: center; cursor: pointer; width: 100%; }
         .checkbox-box { 
-          width: 24px; 
-          height: 24px; 
-          flex-shrink: 0; /* Voorkomt dat het vinkje vervormt */
-          border-radius: 6px; 
-          border: 2px solid var(--border-color); 
-          margin-right: 15px; 
-          display: flex; 
-          align-items: center; 
-          justify-content: center; 
-          transition: all 0.2s;
-          color: white;
+          width: 24px; height: 24px; flex-shrink: 0; border-radius: 6px; 
+          border: 2px solid var(--border-color); margin-right: 15px; 
+          display: flex; align-items: center; justify-content: center; color: white;
         }
+        .checkbox-item { padding: 12px 0; border-bottom: 1px solid var(--border-color); }
 
-        .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: var(--bravo-purple); }
-        .category-title { font-weight: bold; font-size: 1.1rem; text-transform: uppercase; }
-        
         .tally-btn { border: 1px solid var(--border-color); background: var(--card-bg); color: var(--bravo-purple); border-radius: 6px; padding: 4px; cursor: pointer; }
         .tally-score { display: flex; align-items: center; gap: 6px; background: var(--bg-secondary); color: var(--text-main); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: 1px solid var(--border-color); }
         .note-input { border: 1px solid var(--border-color); background: var(--bg-secondary); font-size: 0.85rem; width: 100%; border-radius: 8px; padding: 8px 10px; outline: none; color: var(--text-main); margin-top: 5px; }
         
         .progress-bar { height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; margin-top: 5px; overflow: hidden; }
         .progress-fill { height: 100%; background: white; transition: width 0.5s ease; }
-        
         .pdf-btn { display: flex; align-items: center; justify-content: center; background: var(--bg-secondary); border: 1px solid var(--border-color); width: 34px; height: 34px; border-radius: 8px; color: var(--bravo-purple); cursor: pointer; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         @media print { .no-print { display: none !important; } .card { box-shadow: none; border: 1px solid #eee; } }
