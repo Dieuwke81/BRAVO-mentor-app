@@ -33,15 +33,11 @@ export default function Home() {
 
   const cleanTitle = (str) => str.replace(/^\d+\.\s*/, '');
 
-  // Veilige JSON parse functie om crashes te voorkomen
   const safeParse = (key, fallback) => {
     try {
       const data = localStorage.getItem(key);
       return data ? JSON.parse(data) : fallback;
-    } catch (e) {
-      console.error("Fout bij laden van data voor: " + key);
-      return fallback;
-    }
+    } catch (e) { return fallback; }
   };
 
   useEffect(() => {
@@ -53,14 +49,10 @@ export default function Home() {
     }
     const savedMentor = localStorage.getItem('bravo_mentor_name');
     if (savedMentor) setMentorName(savedMentor);
-    
     const savedStudents = safeParse('bravo_student_list', ['Standaard']);
     setStudents(savedStudents);
     const lastActive = localStorage.getItem('bravo_active_student');
-    if (lastActive && savedStudents.includes(lastActive)) {
-      setActiveStudent(lastActive);
-    }
-    
+    if (lastActive && savedStudents.includes(lastActive)) setActiveStudent(lastActive);
     setMounted(true);
   }, []);
 
@@ -100,14 +92,7 @@ export default function Home() {
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { 
-      studentName: activeStudent, 
-      progress: JSON.stringify(completed), 
-      tallies: JSON.stringify(tallies), 
-      notes: JSON.stringify(notes), 
-      dates: JSON.stringify(dates),
-      reportNote: reportNote 
-    };
+    const data = { studentName: activeStudent, progress: JSON.stringify(completed), tallies: JSON.stringify(tallies), notes: JSON.stringify(notes), dates: JSON.stringify(dates), reportNote: reportNote };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -123,70 +108,47 @@ export default function Home() {
       try {
         const incoming = JSON.parse(event.target.result);
         const name = incoming.studentName;
-        
-        // Update studentenlijst
         let list = safeParse('bravo_student_list', ['Standaard']);
-        if (!list.includes(name)) { 
-          list.push(name); 
-          localStorage.setItem('bravo_student_list', JSON.stringify(list)); 
-        }
-
-        // Zorg dat we altijd strings opslaan om JSON.parse crashes te voorkomen
+        if (!list.includes(name)) { list.push(name); localStorage.setItem('bravo_student_list', JSON.stringify(list)); }
         const ensureString = (val) => typeof val === 'string' ? val : JSON.stringify(val);
-
         localStorage.setItem(`bravo_progress_${name}`, ensureString(incoming.progress));
         localStorage.setItem(`bravo_tallies_${name}`, ensureString(incoming.tallies));
         localStorage.setItem(`bravo_notes_${name}`, ensureString(incoming.notes));
         if (incoming.dates) localStorage.setItem(`bravo_dates_${name}`, ensureString(incoming.dates));
         if (incoming.reportNote) localStorage.setItem(`bravo_report_note_${name}`, incoming.reportNote);
-        
-        alert("Import geslaagd! De pagina wordt nu herladen.");
         window.location.reload();
-      } catch (err) { 
-        alert("Fout bij importeren. Bestand is mogelijk beschadigd."); 
-      }
+      } catch (err) { alert("Fout bij importeren."); }
     };
     reader.readAsText(file);
   };
 
   const updateTally = (id, type, d) => {
     const next = { ...tallies, [id]: { ...(tallies[id] || { m: 0, z: 0 }), [type]: Math.max(0, (tallies[id]?.[type] || 0) + d) } };
-    setTallies(next); 
-    localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(next));
+    setTallies(next); localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(next));
   };
 
   const updateNote = (id, val) => {
     const next = { ...notes, [id]: val };
-    setNotes(next); 
-    localStorage.setItem(`bravo_notes_${activeStudent}`, JSON.stringify(next));
+    setNotes(next); localStorage.setItem(`bravo_notes_${activeStudent}`, JSON.stringify(next));
   };
 
   const toggleItem = (id) => {
     const next = completed.includes(id) ? completed.filter(i => i !== id) : [...completed, id];
-    setCompleted(next); 
-    localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(next));
+    setCompleted(next); localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(next));
   };
 
   const addStudent = () => {
     if (newStudentName.trim() && !students.includes(newStudentName.trim())) {
       const newList = [...students, newStudentName.trim()];
-      setStudents(newList); 
-      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
-      setActiveStudent(newStudentName.trim()); 
-      setNewStudentName('');
+      setStudents(newList); localStorage.setItem('bravo_student_list', JSON.stringify(newList));
+      setActiveStudent(newStudentName.trim()); setNewStudentName('');
     }
   };
 
   const deleteStudent = (name) => {
-    if (students.length > 1 && confirm(`Verwijder alle gegevens van ${name}?`)) {
+    if (students.length > 1 && confirm(`Verwijder ${name}?`)) {
       const newList = students.filter(s => s !== name);
-      setStudents(newList); 
-      localStorage.setItem('bravo_student_list', JSON.stringify(newList));
-      localStorage.removeItem(`bravo_progress_${name}`);
-      localStorage.removeItem(`bravo_tallies_${name}`);
-      localStorage.removeItem(`bravo_notes_${name}`);
-      localStorage.removeItem(`bravo_dates_${name}`);
-      localStorage.removeItem(`bravo_report_note_${name}`);
+      setStudents(newList); localStorage.setItem('bravo_student_list', JSON.stringify(newList));
       setActiveStudent(newList[0]);
     }
   };
@@ -274,6 +236,7 @@ export default function Home() {
       </div>
 
       <div className="container no-print">
+        {/* Lijnen Tab */}
         {mainTab === 'routes' && (
           <div className="card">
             <div className="sub-tabs no-scrollbar">
@@ -300,22 +263,30 @@ export default function Home() {
                   <div className="tally-box"><button onClick={() => updateTally(item.id, 'm', -1)}><Minus size={16} /></button><div className="score"><Eye size={16} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)}><Plus size={16} /></button></div>
                   <div className="tally-box green"><button onClick={() => updateTally(item.id, 'z', -1)}><Minus size={16} /></button><div className="score"><Navigation size={16} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)}><Plus size={16} /></button></div>
                 </div>
-                <textarea 
-                  ref={el => textareaRefs.current[item.id] = el}
-                  value={notes[item.id] || ''} 
-                  onChange={(e) => updateNote(item.id, e.target.value)} 
-                  placeholder="Opmerking..." className="note-area" rows={1} 
-                />
+                <textarea ref={el => textareaRefs.current[item.id] = el} value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} placeholder="Opmerking..." className="note-area" rows={1} />
               </div>
             ))}
           </div>
         )}
 
+        {/* Voertuig Tab */}
         {mainTab === 'vehicle' && (
           <div className="card">
-            <div className="cat-title"><Bus size={22} /><span>{cleanTitle("Voertuiggewenning")}</span></div>
+            <div className="cat-title"><Bus size={22} /><span>Voertuiggewenning</span></div>
             <div className="sub-tabs no-scrollbar">{busTypes.map(bus => (<button key={bus.id} onClick={() => setActiveBus(bus.id)} className={activeBus === bus.id ? 'active' : ''}>{bus.label}</button>))}</div>
-            {currentBusInfo && <div className="bus-specs"><div className="spec"><span>BUSNR</span><strong>{currentBusInfo.Busnr}</strong></div><div className="divider"></div><div className="spec"><span>LENGTE</span><strong>{currentBusInfo.Lengte}</strong></div><div className="divider"></div><div className="spec"><span>WIELBASIS</span><strong>{currentBusInfo.Wielbasis}</strong></div></div>}
+            {currentBusInfo && (
+              <div className="bus-specs">
+                <div className="spec full-width"><span>TYPE</span><strong>{currentBusInfo.type}</strong></div>
+                <div className="divider-h"></div>
+                <div className="row-specs">
+                  <div className="spec"><span>BUSNR</span><strong>{currentBusInfo.Busnr}</strong></div>
+                  <div className="divider"></div>
+                  <div className="spec"><span>LENGTE</span><strong>{currentBusInfo.Lengte}</strong></div>
+                  <div className="divider"></div>
+                  <div className="spec"><span>WIELBASIS</span><strong>{currentBusInfo.Wielbasis}</strong></div>
+                </div>
+              </div>
+            )}
             {vehicleChecklist.map((section, idx) => (
               <div key={idx} className="checklist-section">
                 <h3>{cleanTitle(section.category)}</h3>
@@ -330,6 +301,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Checklist Tab */}
         {mainTab === 'checklist' && (
           <div>{initialCategories.map((cat) => cat && cat.id !== 'routes' && (
             <div key={cat.id} className="card">
@@ -344,6 +316,7 @@ export default function Home() {
           ))}</div>
         )}
 
+        {/* Docs Tab */}
         {mainTab === 'docs' && (
           <div className="card">
             <div className="cat-title"><Files size={22} /><span>Documenten</span></div>
@@ -351,35 +324,18 @@ export default function Home() {
           </div>
         )}
 
+        {/* Info Tab */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren: Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
             <div className="card"><h3 className="group-title">Nuttige Links</h3><div className="links-list">{usefulLinks.map((link, i) => (<a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="useful-link-item"><span>{link.name}</span><ExternalLink size={18} /></a>))}</div></div>
-            
             <div className="card rapportage">
                <h3>Rapportage Gegevens</h3>
                <div className="form-group"><label>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} /></div>
-               <div className="form-row">
-                  <div className="form-group"><label>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div>
-                  <div className="form-group"><label>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div>
-               </div>
-               <div className="form-group" style={{ marginTop: '10px' }}>
-                  <label>Algemene Opmerking Rapport</label>
-                  <textarea 
-                    ref={reportNoteRef}
-                    value={reportNote} 
-                    onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }}
-                    placeholder="Typ hier een toelichting voor het rapport..." 
-                    className="note-area" style={{ marginLeft: 0, width: '100%' }} rows={2} 
-                  />
-               </div>
+               <div className="form-row"><div className="form-group"><label>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div><div className="form-group"><label>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div></div>
+               <div className="form-group" style={{ marginTop: '10px' }}><label>Algemene Opmerking Rapport</label><textarea ref={reportNoteRef} value={reportNote} onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }} placeholder="Typ hier een toelichting voor het rapport..." className="note-area" style={{ marginLeft: 0, width: '100%' }} rows={2} /></div>
             </div>
-
-            <div className="card center">
-               <button onClick={() => window.print()} className="btn success">Rapport maken</button>
-               <button onClick={exportData} className="btn purple">Download data</button>
-               <label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
-            </div>
+            <div className="card center"><button onClick={() => window.print()} className="btn success">Rapport maken</button><button onClick={exportData} className="btn purple">Download data</button><label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label></div>
             {contactData.map((group, idx) => (
               <div key={idx} className="card"><h3 className="group-title">{group.category}</h3>{group.contacts.map((c, i) => (<div key={i} className="contact-row"><span className="name">{c.name}</span><div className="links">{c.phone && <a href={`tel:${c.phone}`} className="phone">{c.phone}</a>}{c.email && <a href={`mailto:${c.email}`} className="email">{c.email}</a>}</div></div>))}</div>
             ))}
@@ -412,7 +368,7 @@ export default function Home() {
             const allItems = vehicleChecklist.flatMap(s => s?.items || []);
             const checked = allItems.filter(i => completed.includes(`${bus.id}_${i.id}`));
             if (checked.length === 0) return null;
-            return (<div key={bus.id} style={{ border: '1px solid #ccc', padding: '12px', borderRadius: '10px' }}><strong style={{ color: 'var(--bravo-purple)' }}>{bus.label}</strong><br/><span style={{ fontSize: '12px' }}>{checked.length} / {allItems.length} items afgerond</span></div>);
+            return (<div key={bus.id} style={{ border: '1px solid #ccc', padding: '12px', borderRadius: '10px' }}><strong style={{ color: 'var(--bravo-purple)' }}>{bus.label} - {bus.type}</strong><br/><span style={{ fontSize: '12px' }}>{checked.length} / {allItems.length} items afgerond</span></div>);
           })}
         </div>
         {reportChecklists.length > 0 && (
@@ -466,14 +422,17 @@ export default function Home() {
         .doc-list-vertical { display: flex; flex-direction: column; gap: 10px; width: 100%; }
         .doc-item-vertical { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; text-align: left; color: var(--text); cursor: pointer; width: 100%; box-sizing: border-box; }
         .useful-link-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 10px; text-decoration: none; color: var(--text); border: 1px solid var(--border); }
-        .bus-specs { display: flex; justify-content: space-around; background: var(--bg); padding: 12px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
-        .spec { text-align: center; flex: 1; }
+        .bus-specs { background: var(--bg); padding: 12px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
+        .row-specs { display: flex; justify-content: space-around; margin-top: 10px; }
+        .spec { text-align: center; }
+        .spec.full-width { text-align: left; padding-left: 10px; }
         .spec span { font-size: 0.65rem; color: var(--sub); font-weight: bold; display: block; }
         .spec strong { font-size: 0.95rem; }
         .divider { width: 1px; background: var(--border); margin: 0 5px; }
+        .divider-h { height: 1px; background: var(--border); margin: 5px 0; }
         .cat-title { display: flex; align-items: center; gap: 20px; font-weight: bold; color: var(--bravo-purple); margin-bottom: 15px; }
         .ziekmelden { background: #fff1f2; border-color: #fecaca; color: var(--bravo-red); }
-        .form-group { margin-bottom: 12px; width: 100%; display: flex; flex-direction: column; }
+        .form-group { margin-bottom: 12px; width: 100%; }
         .form-group label { display: block; font-size: 0.8rem; color: var(--sub); margin-bottom: 4px; font-weight: bold; }
         .form-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: #000; outline: none; box-sizing: border-box; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
