@@ -17,6 +17,7 @@ export default function Home() {
   const [notes, setNotes] = useState({});
   const [mentorName, setMentorName] = useState('');
   const [dates, setDates] = useState({ start: '', end: '' });
+  const [reportNote, setReportNote] = useState(''); // Nieuwe state voor algemene opmerking
   const [mounted, setMounted] = useState(false);
   const [baseUrl, setBaseUrl] = useState('');
   const [mainTab, setMainTab] = useState('routes');
@@ -28,8 +29,8 @@ export default function Home() {
   const [theme, setTheme] = useState('light');
 
   const textareaRefs = useRef({});
+  const reportNoteRef = useRef(null);
 
-  // Helper functie om nummers aan het begin van een tekst te verwijderen (bijv "2. " wordt "")
   const cleanTitle = (str) => str.replace(/^\d+\.\s*/, '');
 
   useEffect(() => {
@@ -63,11 +64,14 @@ export default function Home() {
       setTallies(JSON.parse(localStorage.getItem(`bravo_tallies_${activeStudent}`) || '{}'));
       setNotes(JSON.parse(localStorage.getItem(`bravo_notes_${activeStudent}`) || '{}'));
       setDates(JSON.parse(localStorage.getItem(`bravo_dates_${activeStudent}`) || '{"start":"","end":""}'));
+      setReportNote(localStorage.getItem(`bravo_report_note_${activeStudent}`) || '');
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
 
+  // Hoogte berekenen voor alle tekstvakken
   useEffect(() => {
+    // Voor de lijnen
     Object.keys(textareaRefs.current).forEach(id => {
       const el = textareaRefs.current[id];
       if (el) {
@@ -75,13 +79,25 @@ export default function Home() {
         el.style.height = el.scrollHeight + 'px';
       }
     });
-  }, [notes, mainTab, routeSubTab]);
+    // Voor het algemene rapportage vak
+    if (reportNoteRef.current) {
+      reportNoteRef.current.style.height = 'auto';
+      reportNoteRef.current.style.height = reportNoteRef.current.scrollHeight + 'px';
+    }
+  }, [notes, reportNote, mainTab, routeSubTab]);
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { studentName: activeStudent, progress: localStorage.getItem(`bravo_progress_${activeStudent}`), tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), notes: localStorage.getItem(`bravo_notes_${activeStudent}`), dates: localStorage.getItem(`bravo_dates_${activeStudent}`) };
+    const data = { 
+      studentName: activeStudent, 
+      progress: localStorage.getItem(`bravo_progress_${activeStudent}`), 
+      tallies: localStorage.getItem(`bravo_tallies_${activeStudent}`), 
+      notes: localStorage.getItem(`bravo_notes_${activeStudent}`), 
+      dates: localStorage.getItem(`bravo_dates_${activeStudent}`),
+      reportNote: reportNote 
+    };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -103,6 +119,7 @@ export default function Home() {
         localStorage.setItem(`bravo_tallies_${name}`, incoming.tallies);
         localStorage.setItem(`bravo_notes_${name}`, incoming.notes);
         if (incoming.dates) localStorage.setItem(`bravo_dates_${name}`, incoming.dates);
+        if (incoming.reportNote) localStorage.setItem(`bravo_report_note_${name}`, incoming.reportNote);
         window.location.reload();
       } catch (err) { alert("Fout bij importeren."); }
     };
@@ -140,12 +157,11 @@ export default function Home() {
     }
   };
 
-  const baseItems = initialCategories.flatMap(c => c.items);
   const routeTypes = ['ehv-stad', 'ehv-streek', 'reusel-valkenswaard', 'helmond', 'scholieren'];
-  
   const totalProgress = Math.round(Math.max(...routeTypes.map(t => {
     const items = busRoutes.filter(i => i.type === t);
     const doneCount = items.filter(i => completed.includes(i.id)).length;
+    const baseItems = initialCategories.flatMap(c => c.items);
     const baseDoneCount = baseItems.filter(i => completed.includes(i.id)).length;
     const total = baseItems.length + items.length;
     return total === 0 ? 0 : ((baseDoneCount + doneCount) / total) * 100;
@@ -155,7 +171,7 @@ export default function Home() {
   const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
-  // Filters voor Rapport
+  // Rapport filters
   const reportRoutes = [];
   const seenIds = new Set();
   busRoutes.forEach(r => {
@@ -331,6 +347,19 @@ export default function Home() {
                     <input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} />
                   </div>
                </div>
+               {/* NIEUWE ALGEMENE OPMERKING INPUT */}
+               <div className="form-group" style={{ marginTop: '10px' }}>
+                  <label>Algemene Opmerking Rapport</label>
+                  <textarea 
+                    ref={reportNoteRef}
+                    value={reportNote} 
+                    onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }}
+                    placeholder="Typ hier een toelichting voor het rapport..." 
+                    className="note-area"
+                    style={{ marginLeft: 0, width: '100%' }}
+                    rows={2} 
+                  />
+               </div>
             </div>
 
             <div className="card center">
@@ -354,6 +383,15 @@ export default function Home() {
             <span><strong>Mentor:</strong> {mentorName}</span><span><strong>Periode:</strong> {dates.start} t/m {dates.end}</span><span><strong>Voortgang:</strong> {totalProgress}%</span>
           </div>
         </div>
+
+        {/* ALGEMENE OPMERKING OP HET RAPPORT */}
+        {reportNote && (
+          <div style={{ marginBottom: '30px', border: '1px solid #ccc', padding: '15px', borderRadius: '10px', background: '#f9f9f9' }}>
+            <h3 style={{ marginTop: 0, fontSize: '16px', color: 'var(--bravo-purple)' }}>Algemene toelichting</h3>
+            <div style={{ whiteSpace: 'pre-wrap', fontSize: '14px', lineHeight: '1.5' }}>{reportNote}</div>
+          </div>
+        )}
+
         <h3>1. Gereden Lijnen & Resultaten</h3>
         <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '30px' }}>
           <thead><tr style={{ background: '#f0f0f0' }}><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Lijn</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Status</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>M</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Z</th><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Opmerkingen</th></tr></thead>
@@ -369,6 +407,7 @@ export default function Home() {
             ))}
           </tbody>
         </table>
+
         <h3>2. Voertuigbeheersing (Afgevinkt)</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '30px' }}>
           {busTypes.map(bus => {
@@ -447,7 +486,6 @@ export default function Home() {
         .spec strong { font-size: 0.95rem; }
         .divider { width: 1px; background: var(--border); margin: 0 5px; }
 
-        /* FIX VOOR ICOON RUIMTE */
         .cat-title { display: flex; align-items: center; gap: 20px; font-weight: bold; color: var(--bravo-purple); margin-bottom: 15px; }
 
         .ziekmelden { background: #fff1f2; border-color: #fecaca; color: var(--bravo-red); }
