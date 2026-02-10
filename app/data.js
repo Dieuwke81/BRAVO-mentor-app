@@ -1126,9 +1126,9 @@ export const vehicleChecklist = [
   {
     category: '1. Algemene uitleg voertuig',
     items: [
-      { id: 'v_motor', text: 'Type motor (normaal / elektrisch) & Hoge spanning' },
-      { id: 'v_dimensies', text: 'Lengte / breedte / hoogte & Wielbasis' },
-      { id: 'v_spiegels', text: 'Spiegels instellen & Spiegels buiten de bus' },
+      { id: 'v_motor', text: 'Type motor (diesel / elektrisch) & Hoge spanning' },
+      { id: 'v_dimensies', text: 'Lengte / breedte / hoogte & Wielbasis (let op de rechterspiegel van de 18m Noors en de 13m!)' },
+      { id: 'v_spiegels', text: 'Spiegels/camera's instellen' },
       { id: 'v_veiligheid', text: 'Veiligheidsvoorzieningen & Noodknoppen' },
       { id: 'v_retarder', text: 'Retarder (automatisch en 3 standen)' }
     ]
@@ -1136,11 +1136,12 @@ export const vehicleChecklist = [
   {
     category: '2. Voertuigcontrole',
     items: [
-      { id: 'v_schade_ex', text: 'Zichtcontrole schade exterieur' },
-      { id: 'v_banden', text: 'Zichtcontrole banden & lekkage' },
-      { id: 'v_vloeistof', text: 'Zichtcontrole koelvloeistof / ruitensproeier' },
+      { id: 'v_schade_ex', text: 'Zichtcontrole schade' },
+      { id: 'v_', text: '' },
+      { id: 'v_', text: '' },
       { id: 'v_schoon', text: 'Voertuig en ruiten schoon' },
-      { id: 'v_tankdop', text: 'Tankdop gesloten' }
+      { id: 'v_tankdop', text: 'Tankdop gesloten' },
+      { id: 'v_soc', text: 'SOC controleren (state of charge)' }
     ]
   },
   {
