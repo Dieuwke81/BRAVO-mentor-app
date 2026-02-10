@@ -29,6 +29,9 @@ export default function Home() {
 
   const textareaRefs = useRef({});
 
+  // Helper functie om nummers aan het begin van een tekst te verwijderen (bijv "2. " wordt "")
+  const cleanTitle = (str) => str.replace(/^\d+\.\s*/, '');
+
   useEffect(() => {
     if (typeof window !== 'undefined') { 
       setBaseUrl(window.location.origin); 
@@ -64,7 +67,6 @@ export default function Home() {
     }
   }, [activeStudent, mounted]);
 
-  // Zorgt dat alle opmerkingen-vakken de juiste hoogte hebben bij laden/wisselen
   useEffect(() => {
     Object.keys(textareaRefs.current).forEach(id => {
       const el = textareaRefs.current[id];
@@ -153,7 +155,7 @@ export default function Home() {
   const progressTab = Math.round((currentTabItems.filter(i => completed.includes(i.id)).length / (currentTabItems.length || 1)) * 100);
   const currentBusInfo = busTypes.find(b => b.id === activeBus);
 
-  // Rapportage filters
+  // Filters voor Rapport
   const reportRoutes = [];
   const seenIds = new Set();
   busRoutes.forEach(r => {
@@ -267,12 +269,12 @@ export default function Home() {
         {/* Voertuig Tab */}
         {mainTab === 'vehicle' && (
           <div className="card">
-            <div className="cat-title"><Bus size={22} /><span>Voertuiggewenning</span></div>
+            <div className="cat-title"><Bus size={22} /><span>{cleanTitle("Voertuiggewenning")}</span></div>
             <div className="sub-tabs no-scrollbar">{busTypes.map(bus => (<button key={bus.id} onClick={() => setActiveBus(bus.id)} className={activeBus === bus.id ? 'active' : ''}>{bus.label}</button>))}</div>
             {currentBusInfo && <div className="bus-specs"><div className="spec"><span>BUSNR</span><strong>{currentBusInfo.Busnr}</strong></div><div className="divider"></div><div className="spec"><span>LENGTE</span><strong>{currentBusInfo.Lengte}</strong></div><div className="divider"></div><div className="spec"><span>WIELBASIS</span><strong>{currentBusInfo.Wielbasis}</strong></div></div>}
             {vehicleChecklist.map((section, idx) => (
               <div key={idx} className="checklist-section">
-                <h3>{section.category}</h3>
+                <h3>{cleanTitle(section.category)}</h3>
                 {section.items.map(item => (
                   <div key={item.id} className="check-item" onClick={() => toggleItem(`${activeBus}_${item.id}`)}>
                     <div className={`check-box ${completed.includes(`${activeBus}_${item.id}`) ? 'checked' : ''}`}>{completed.includes(`${activeBus}_${item.id}`) && <CheckCircle2 size={16} />}</div>
@@ -288,7 +290,7 @@ export default function Home() {
         {mainTab === 'checklist' && (
           <div>{initialCategories.map((cat) => cat && cat.id !== 'routes' && (
             <div key={cat.id} className="card">
-              <div className="cat-title">{cat.icon}<span>{cat.title}</span></div>
+              <div className="cat-title">{cat.icon}<span>{cleanTitle(cat.title)}</span></div>
               {cat.items.map((it) => (
                 <div key={it.id} className="check-item" onClick={() => toggleItem(it.id)}>
                   <div className={`check-box ${completed.includes(it.id) ? 'checked' : ''}`}>{completed.includes(it.id) && <CheckCircle2 size={18} />}</div>
@@ -313,7 +315,6 @@ export default function Home() {
             <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren: Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
             <div className="card"><h3 className="group-title">Nuttige Links</h3><div className="links-list">{usefulLinks.map((link, i) => (<a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="useful-link-item"><span>{link.name}</span><ExternalLink size={18} /></a>))}</div></div>
             
-            {/* RAPPORTAGE GEGEVENS - UITGELIJND */}
             <div className="card rapportage">
                <h3>Rapportage Gegevens</h3>
                <div className="form-group">
@@ -379,7 +380,7 @@ export default function Home() {
         </div>
         {reportChecklists.length > 0 && (
           <><h3>3. Algemene Checklists (Afgevinkt)</h3>{reportChecklists.map(cat => (
-            <div key={cat.id} style={{ marginBottom: '15px' }}><strong style={{ color: 'var(--bravo-purple)', borderBottom: '1px solid #eee', display: 'block', paddingBottom: '3px' }}>{cat.title}</strong><ul style={{ margin: '5px 0', paddingLeft: '20px', fontSize: '13px' }}>{cat.checkedItems.map(item => <li key={item.id}>{item.text}</li>)}</ul></div>
+            <div key={cat.id} style={{ marginBottom: '15px' }}><strong style={{ color: 'var(--bravo-purple)', borderBottom: '1px solid #eee', display: 'block', paddingBottom: '3px' }}>{cleanTitle(cat.title)}</strong><ul style={{ margin: '5px 0', paddingLeft: '20px', fontSize: '13px' }}>{cat.checkedItems.map(item => <li key={item.id}>{item.text}</li>)}</ul></div>
           ))}</>
         )}
       </div>
@@ -445,6 +446,9 @@ export default function Home() {
         .spec span { font-size: 0.65rem; color: var(--sub); font-weight: bold; display: block; }
         .spec strong { font-size: 0.95rem; }
         .divider { width: 1px; background: var(--border); margin: 0 5px; }
+
+        /* FIX VOOR ICOON RUIMTE */
+        .cat-title { display: flex; align-items: center; gap: 20px; font-weight: bold; color: var(--bravo-purple); margin-bottom: 15px; }
 
         .ziekmelden { background: #fff1f2; border-color: #fecaca; color: var(--bravo-red); }
         .form-group { margin-bottom: 12px; width: 100%; display: flex; flex-direction: column; }
