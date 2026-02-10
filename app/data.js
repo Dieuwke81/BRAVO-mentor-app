@@ -1137,8 +1137,8 @@ export const vehicleChecklist = [
     category: '2. Voertuigcontrole',
     items: [
       { id: 'v_schade_ex', text: 'Zichtcontrole schade' },
-      { id: 'v_', text: '' },
-      { id: 'v_', text: '' },
+    /*  { id: 'v_', text: '' },
+      { id: 'v_', text: '' }, */
       { id: 'v_schoon', text: 'Voertuig en ruiten schoon' },
       { id: 'v_tankdop', text: 'Tankdop gesloten' },
       { id: 'v_soc', text: 'SOC controleren (state of charge)' }
