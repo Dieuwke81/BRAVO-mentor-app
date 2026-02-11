@@ -325,6 +325,10 @@ export default function Home() {
         {mainTab === 'docs' && (
           <div className="card">
             <div className="cat-title"><Files size={22} /><span>Documenten</span></div>
+          <div className="docs-info-box">
+  <Info size={18} />
+  <p>Soms duurt het openen van het bestand even.<br/>Het kan soms helpen om het bestand opnieuw te openen.</p>
+</div>
             <div className="doc-list-vertical">{importantDocuments.map((doc) => (<button key={doc.id} onClick={() => setPdfModal(doc)} className="doc-item-vertical"><FileText size={24} /> <span>{doc.title}</span></button>))}</div>
           </div>
         )}
@@ -406,6 +410,22 @@ export default function Home() {
         .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; }
         .bar-bg { background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
         .bar-fill { height: 100%; background: white; transition: width 0.5s ease; }
+.docs-info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 15px;
+  color: var(--sub);
+}
+.docs-info-box p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
 
         .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
         .main-tabs button { flex: 1; padding: 10px; border-radius: 8px; background: transparent; color: white; border: none; font-weight: bold; font-size: 0.75rem; cursor: pointer; white-space: nowrap; }
