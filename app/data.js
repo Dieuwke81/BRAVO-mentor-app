@@ -1066,7 +1066,8 @@ export const importantDocuments = [
 { id: 'doc-Zaagtandgrafiek en OV-planningsbegrippen', title: 'Zaagtandgrafiek en OV-planningsbegrippen', pdf: '/docs/Zaagtandgrafiek en OV-planningsbegrippen.pdf' },
  { id: 'Busboek-Zuidoost-Brabant-januari-2026', title: 'Busboek-Zuidoost-Brabant-januari-2026', pdf: '/docs/Busboek-Zuidoost-Brabant-januari-2026.pdf' },
 { id: 'Lijnennetkaart 2026', title: 'Lijnennetkaart 2026', pdf: '/docs/Lijnennetkaart 2026.pdf' },
-  { id: 'Handleiding 1ste keer inloggen HRM met AFAS', title: 'Handleiding 1ste keer inloggen HRM met AFAS', pdf: '/docs/Handleiding inloggen voor nieuwe gebruikers (Versie 1).pdf' }
+  { id: 'Handleiding 1ste keer inloggen HRM met AFAS', title: 'Handleiding 1ste keer inloggen HRM met AFAS', pdf: '/docs/Handleiding inloggen voor nieuwe gebruikers (Versie 1).pdf' },
+  { id: 'KAR en VETAG', title: 'KAR en VETAG.', pdf: '/docs/KAR en VETAG.pdf' }
   
 
 ];
