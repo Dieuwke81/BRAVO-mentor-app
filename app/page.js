@@ -188,11 +188,16 @@ export default function Home() {
 
   return (
     <div className="main-wrapper">
-      {/* Modals */}
+      {/* PDF MODAL HERSTELD */}
       {pdfModal && (
         <div className="pdf-overlay">
-           <div className="pdf-header"><span>{pdfModal.text || pdfModal.title}</span><button onClick={() => setPdfModal(null)}>SLUITEN</button></div>
-           <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} className="pdf-viewer"></iframe>
+           <div className="pdf-header">
+              <span>{pdfModal.text || pdfModal.title}</span>
+              <button onClick={() => setPdfModal(null)}>SLUITEN</button>
+           </div>
+           <div className="pdf-body">
+              <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} className="pdf-viewer"></iframe>
+           </div>
         </div>
       )}
 
@@ -382,6 +387,7 @@ export default function Home() {
         :root { --bravo-purple: #542e91; --bravo-blue: #009fe3; --bravo-red: #e3004f; --bg: #f3f4f6; --card: #ffffff; --text: #1f2937; --sub: #6b7280; --border: #e5e7eb; --success: #10b981; }
         body.dark-mode { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --sub: #94a3b8; --border: #334155; }
         body { background-color: var(--bg) !important; color: var(--text); margin: 0; font-family: -apple-system, system-ui, sans-serif; overflow-x: hidden; }
+        
         .header { background: linear-gradient(135deg, var(--bravo-purple) 0%, var(--bravo-blue) 100%); padding: 25px 20px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
         .logo-container { background: white; padding: 6px; border-radius: 12px; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .logo-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
@@ -390,38 +396,48 @@ export default function Home() {
         .brand-text h1 { color: white; margin: 0; font-size: 1.4rem; }
         .brand-text span { color: rgba(255,255,255,0.8); font-size: 0.8rem; }
         .theme-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px; border-radius: 50%; cursor: pointer; }
+
         .student-box { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 14px; margin-bottom: 15px; }
         .student-box .row { display: flex; gap: 8px; margin-bottom: 8px; }
         .student-select, .student-input { flex: 1; padding: 10px; border-radius: 8px; border: none; outline: none; font-size: 0.9rem; }
         .del-btn { background: var(--bravo-red); color: white; border: none; width: 42px; border-radius: 8px; cursor: pointer; }
         .add-btn { background: var(--success); color: white; border: none; width: 42px; border-radius: 8px; cursor: pointer; }
+
+        .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; }
         .bar-bg { background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
         .bar-fill { height: 100%; background: white; transition: width 0.5s ease; }
-        .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; }
+
         .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
         .main-tabs button { flex: 1; padding: 10px; border-radius: 8px; background: transparent; color: white; border: none; font-weight: bold; font-size: 0.75rem; cursor: pointer; white-space: nowrap; }
         .main-tabs button.active { background: white; color: var(--bravo-purple); }
+
         .container { padding: 15px; max-width: 600px; margin: 0 auto; box-sizing: border-box; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; touch-action: pan-x; scrollbar-width: none; }
         .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.7rem; white-space: nowrap; cursor: pointer; }
         .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
         .rayon-progress .labels { display: flex; justify-content: space-between; gap: 20px; font-size: 0.75rem; font-weight: bold; color: var(--sub); margin-bottom: 5px; }
         .rayon-progress .bar-bg { background: var(--border); height: 6px; border-radius: 3px; overflow: hidden; }
         .rayon-progress .bar-fill { background: var(--bravo-purple); height: 100%; }
+
         .item-row { padding: 15px 0; border-bottom: 1px solid var(--border); }
         .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
         .check-label { display: flex; align-items: center; cursor: pointer; flex: 1; }
         .check-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; text-align: left; }
         .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
         .check-box.checked { background: var(--success); border-color: var(--success); }
+        
         .action-btns { display: flex; gap: 6px; flex-shrink: 0; }
         .act-btn { width: 40px; height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bravo-purple); cursor: pointer; }
         .act-btn.vid { background: #fee2e2; color: var(--bravo-red); border-color: #fecaca; }
+
         .note-area { margin-left: 38px; width: calc(100% - 38px); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 0.85rem; background: var(--bg); color: var(--text); outline: none; resize: none; overflow: hidden; box-sizing: border-box; min-height: 40px; line-height: 1.4; }
+
         .doc-list-vertical { display: flex; flex-direction: column; gap: 10px; width: 100%; }
         .doc-item-vertical { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; text-align: left; color: var(--text); cursor: pointer; width: 100%; box-sizing: border-box; }
         .useful-link-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg); border-radius: 10px; text-decoration: none; color: var(--text); border: 1px solid var(--border); }
+        
         .bus-specs { background: var(--bg); padding: 12px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
         .row-specs { display: flex; justify-content: space-around; margin-top: 10px; }
         .spec { text-align: center; }
@@ -430,29 +446,36 @@ export default function Home() {
         .spec strong { font-size: 0.95rem; }
         .divider { width: 1px; background: var(--border); margin: 0 5px; }
         .divider-h { height: 1px; background: var(--border); margin: 5px 0; }
+
         .cat-title { display: flex; align-items: center; gap: 20px; font-weight: bold; color: var(--bravo-purple); margin-bottom: 15px; }
         .ziekmelden { background: #fff1f2; border-color: #fecaca; color: var(--bravo-red); }
         .form-group { margin-bottom: 12px; width: 100%; }
         .form-group label { display: block; font-size: 0.8rem; color: var(--sub); margin-bottom: 4px; font-weight: bold; }
         .form-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: #000; outline: none; box-sizing: border-box; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
         .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: bold; margin-bottom: 10px; cursor: pointer; font-size: 0.9rem; }
         .btn.success { background: var(--success); color: white; }
         .btn.purple { background: var(--bravo-purple); color: white; }
         .btn.outline { background: var(--card); border: 2px solid var(--bravo-purple); color: var(--bravo-purple); text-align: center; display: block; box-sizing: border-box; }
+
         .contact-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 5px; flex-wrap: wrap; }
         .contact-row .links { display: flex; gap: 4px; }
         .contact-row a { padding: 6px 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.75rem; border: 1px solid; }
         .contact-row .phone { color: var(--bravo-purple); border-color: var(--bravo-purple); background: rgba(84,46,145,0.05); }
         .contact-row .email { color: var(--bravo-blue); border-color: var(--bravo-blue); background: white; }
+
         .tally-row { display: flex; gap: 10px; margin-left: 38px; margin-bottom: 8px; flex-wrap: wrap; }
         .tally-box { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); height: 34px; }
         .tally-box button { background: transparent; border: none; padding: 0 8px; color: var(--bravo-purple); cursor: pointer; }
         .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
-        .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flexDirection: column; }
+        
+        .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flex-direction: column; }
         .pdf-header { padding: 15px; background: var(--bravo-purple); color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .pdf-viewer { flex: 1; border: none; width: 100%; height: 100%; }
+        .pdf-body { flex: 1; width: 100%; height: 100%; }
+        .pdf-viewer { border: none; width: 100%; height: 100%; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .print-only { display: none; }
         @media print { 
