@@ -754,7 +754,7 @@ export const busRoutes = [
 {
     id: 'Opkomst Helmond',
     type: 'helmond',
-    text: 'Ookomst stalling Helmond',
+    text: 'Opkomst stalling Helmond',
     pdf: '/docs/Opkomst stalling Helmond.pdf',
  /*   map: 'https://goo.gl/maps/a5P1qJycoE39Jhnc8?g_st=ac',
     videos: [
