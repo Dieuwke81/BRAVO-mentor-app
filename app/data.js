@@ -751,17 +751,7 @@ export const busRoutes = [
   },
 
   /* HELMOND */
-{
-    id: 'Opkomst Helmond',
-    type: 'helmond',
-    text: 'Opkomst stalling Helmond',
-    pdf: '/docs/Opkomst stalling Helmond.pdf',
- /*   map: 'https://goo.gl/maps/a5P1qJycoE39Jhnc8?g_st=ac',
-    videos: [
-      { label: 'Heenrit', url: 'https://youtu.be/5kbwv--LCu8' },
-      { label: 'Terugrit', url: 'https://youtu.be/QrLTNx41JWU' }
-    ]*/
-  },
+
 
 {
     id: 'r9',
