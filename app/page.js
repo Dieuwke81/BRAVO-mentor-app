@@ -256,11 +256,11 @@ export default function Home() {
   {/* Helmond: 1 PDF */}
   {routeSubTab === 'helmond' && (
     <button 
-      onClick={() => setPdfModal({ title: 'Overzicht Helmond', pdf: '/docs/helmond-overzicht.pdf' })}
+      onClick={() => setPdfModal({ title: 'Opkomst stalling Helmond', pdf: '/docs/Opkomst stalling Helmond.pdf' })}
       className="rayon-pdf-btn"
     >
       <FileText size={20} />
-      <span>Bekijk rayon overzicht Helmond</span>
+      <span>Opkomst stalling Helmond</span>
     </button>
   )}
 
@@ -268,18 +268,18 @@ export default function Home() {
   {routeSubTab === 'reusel-valkenswaard' && (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       <button 
-        onClick={() => setPdfModal({ title: 'Overzicht Reusel', pdf: '/docs/reusel-overzicht.pdf' })}
+        onClick={() => setPdfModal({ title: 'Opkomst stalling Reusel', pdf: '/docs/Opkomst stalling Reusel.pdf' })}
         className="rayon-pdf-btn"
       >
         <FileText size={20} />
-        <span>Bekijk rayon overzicht Reusel</span>
+        <span>Opkomst stalling Reusel</span>
       </button>
       <button 
-        onClick={() => setPdfModal({ title: 'Overzicht Valkenswaard', pdf: '/docs/valkenswaard-overzicht.pdf' })}
+        onClick={() => setPdfModal({ title: 'Opkomst stalling Valkenswaard', pdf: '/docs/Opkomst stalling Valkenswaard.pdf' })}
         className="rayon-pdf-btn"
       >
         <FileText size={20} />
-        <span>Bekijk rayon overzicht Valkenswaard</span>
+        <span>Opkomst stalling Valkenswaard</span>
       </button>
     </div>
   )}
