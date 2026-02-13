@@ -251,20 +251,39 @@ export default function Home() {
               <div className="labels"><span>VOORTGANG {routeSubTab.toUpperCase()}</span><span>{progressTab}%</span></div>
               <div className="bar-bg"><div className="bar-fill" style={{ width: `${progressTab}%` }}></div></div>
             </div>
-{/* Link voor specifieke rayons bovenaan de lijst */}
-{(routeSubTab === 'reusel-valkenswaard' || routeSubTab === 'helmond') && (
-  <button 
-    onClick={() => setPdfModal({
-      title: `Overzicht ${routeSubTab === 'helmond' ? 'Helmond' : 'Reusel/Valkenswaard'}`,
-      // Hieronder geef je de twee verschillende namen op:
-      pdf: routeSubTab === 'helmond' ? '/docs/Opkomst stalling Helmond.pdf' : '/docs/Opkomst stalling Valkenswaard.pdf'
-    })}
-    className="rayon-pdf-btn"
-  >
-    <FileText size={20} />
-    <span>Bekijk rayon overzicht (PDF)</span>
-  </button>
-)}
+{/* PDF links bovenaan de lijst voor specifieke rayons */}
+<div style={{ marginBottom: '15px' }}>
+  {/* Helmond: 1 PDF */}
+  {routeSubTab === 'helmond' && (
+    <button 
+      onClick={() => setPdfModal({ title: 'Overzicht Helmond', pdf: '/docs/helmond-overzicht.pdf' })}
+      className="rayon-pdf-btn"
+    >
+      <FileText size={20} />
+      <span>Bekijk rayon overzicht Helmond</span>
+    </button>
+  )}
+
+  {/* Reusel-Valkenswaard: 2 PDF's */}
+  {routeSubTab === 'reusel-valkenswaard' && (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <button 
+        onClick={() => setPdfModal({ title: 'Overzicht Reusel', pdf: '/docs/reusel-overzicht.pdf' })}
+        className="rayon-pdf-btn"
+      >
+        <FileText size={20} />
+        <span>Bekijk rayon overzicht Reusel</span>
+      </button>
+      <button 
+        onClick={() => setPdfModal({ title: 'Overzicht Valkenswaard', pdf: '/docs/valkenswaard-overzicht.pdf' })}
+        className="rayon-pdf-btn"
+      >
+        <FileText size={20} />
+        <span>Bekijk rayon overzicht Valkenswaard</span>
+      </button>
+    </div>
+  )}
+</div>
             {currentTabItems.map((item) => (
               <div key={item.id} className="item-row">
                 <div className="top-line">
