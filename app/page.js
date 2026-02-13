@@ -251,6 +251,20 @@ export default function Home() {
               <div className="labels"><span>VOORTGANG {routeSubTab.toUpperCase()}</span><span>{progressTab}%</span></div>
               <div className="bar-bg"><div className="bar-fill" style={{ width: `${progressTab}%` }}></div></div>
             </div>
+{/* Link voor specifieke rayons bovenaan de lijst */}
+{(routeSubTab === 'reusel-valkenswaard' || routeSubTab === 'helmond') && (
+  <button 
+    onClick={() => setPdfModal({
+      title: `Overzicht ${routeSubTab === 'helmond' ? 'Helmond' : 'Reusel/Valkenswaard'}`,
+      // Hieronder geef je de twee verschillende namen op:
+      pdf: routeSubTab === 'helmond' ? '/docs/helmond-overzicht.pdf' : '/docs/reusel-overzicht.pdf'
+    })}
+    className="rayon-pdf-btn"
+  >
+    <FileText size={20} />
+    <span>Bekijk rayon overzicht (PDF)</span>
+  </button>
+)}
             {currentTabItems.map((item) => (
               <div key={item.id} className="item-row">
                 <div className="top-line">
@@ -495,7 +509,25 @@ export default function Home() {
         .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .pdf-body { flex: 1; width: 100%; height: 100%; }
         .pdf-viewer { border: none; width: 100%; height: 100%; }
+.rayon-pdf-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border: 2px dashed var(--bravo-purple);
+  border-radius: 12px;
+  color: var(--bravo-purple);
+  font-weight: bold;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
 
+.rayon-pdf-btn:hover {
+  background: rgba(84, 46, 145, 0.05);
+}
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .print-only { display: none; }
         @media print { 
