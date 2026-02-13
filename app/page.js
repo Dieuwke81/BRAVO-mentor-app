@@ -257,7 +257,7 @@ export default function Home() {
     onClick={() => setPdfModal({
       title: `Overzicht ${routeSubTab === 'helmond' ? 'Helmond' : 'Reusel/Valkenswaard'}`,
       // Hieronder geef je de twee verschillende namen op:
-      pdf: routeSubTab === 'helmond' ? '/docs/helmond-overzicht.pdf' : '/docs/reusel-overzicht.pdf'
+      pdf: routeSubTab === 'helmond' ? '/docs/Opkomst stalling Helmond.pdf' : '/docs/Opkomst stalling Valkenswaard.pdf'
     })}
     className="rayon-pdf-btn"
   >
