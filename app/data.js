@@ -1065,7 +1065,9 @@ export const contactData = [
 
 export const importantDocuments = [
   { id: 'doc-stoel', title: 'Stoelafstelling', pdf: '/docs/stoelafstelling.pdf' },
-{ id: 'doc-Zaagtandgrafiek en OV-planningsbegrippen', title: 'Zaagtandgrafiek en OV-planningsbegrippen', pdf: '/docs/Zaagtandgrafiek en OV-planningsbegrippen.pdf' },
+{ id: 'Zit instructie', title: 'Zit instructie', pdf: '/docs/Zit instructie.pdf' },
+  
+  { id: 'doc-Zaagtandgrafiek en OV-planningsbegrippen', title: 'Zaagtandgrafiek en OV-planningsbegrippen', pdf: '/docs/Zaagtandgrafiek en OV-planningsbegrippen.pdf' },
      { id: 'KAR en VETAG', title: 'KAR en VETAG.', pdf: '/docs/KAR en VETAG.pdf' },
 { id: 'Handleiding 1ste keer inloggen HRM met AFAS', title: 'Handleiding 1ste keer inloggen HRM met AFAS', pdf: '/docs/Handleiding inloggen voor nieuwe gebruikers (Versie 1).pdf' },
 { id: 'Kledingreglement', title: 'Kledingreglement', pdf: '/docs/Kledingreglement.pdf' },
@@ -1073,10 +1075,10 @@ export const importantDocuments = [
 
   { id: 'Busboek-Zuidoost-Brabant-januari-2026', title: 'Busboek-Zuidoost-Brabant-januari-2026', pdf: '/docs/Busboek-Zuidoost-Brabant-januari-2026.pdf' },
 { id: 'Lijnennetkaart 2026', title: 'Lijnennetkaart 2026', pdf: '/docs/Lijnennetkaart 2026.pdf' },
-{ id: 'Vertrouwenspersonen Transdev', title: 'Vertrouwenspersonen Transdev', pdf: '/docs/Vertrouwenspersonen Transdev.pdf' }
+{ id: 'Vertrouwenspersonen Transdev', title: 'Vertrouwenspersonen Transdev', pdf: '/docs/Vertrouwenspersonen Transdev.pdf' },
 
 
-];Vertrouwenspersonen Transdev.pdf
+];
 
 export const busTypes = [
   {
