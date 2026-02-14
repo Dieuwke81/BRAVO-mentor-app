@@ -1073,9 +1073,10 @@ export const importantDocuments = [
 
   { id: 'Busboek-Zuidoost-Brabant-januari-2026', title: 'Busboek-Zuidoost-Brabant-januari-2026', pdf: '/docs/Busboek-Zuidoost-Brabant-januari-2026.pdf' },
 { id: 'Lijnennetkaart 2026', title: 'Lijnennetkaart 2026', pdf: '/docs/Lijnennetkaart 2026.pdf' },
+{ id: 'Vertrouwenspersonen Transdev', title: 'Vertrouwenspersonen Transdev', pdf: '/docs/Vertrouwenspersonen Transdev.pdf' }
 
 
-];
+];Vertrouwenspersonen Transdev.pdf
 
 export const busTypes = [
   {
