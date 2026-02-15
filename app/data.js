@@ -989,7 +989,7 @@ export const initialCategories = [
     title: '2. Aanvang Dienst & Voorbereiding',
     icon: <Clock size={22} />,
     items: [
-      { id: 'a1', text: 'Kledingvoorschrift & schoenen in orde (Zie docs' },
+      { id: 'a1', text: 'Kledingvoorschrift & schoenen in orde (Zie docs)' },
       { id: 'a2', text: 'Zich aanmelden via computer' },
       { id: 'a3', text: 'Mededelingen en aanschrijvingen lezen' },
       { id: 'a4', text: 'Controleren van stallingsplan' },
