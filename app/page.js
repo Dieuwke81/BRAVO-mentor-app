@@ -188,7 +188,7 @@ export default function Home() {
 
   return (
     <div className="main-wrapper">
-      {/* Modals */}
+      {/* PDF Modal */}
       {pdfModal && (
         <div className="pdf-overlay">
            <div className="pdf-header"><span>{pdfModal.text || pdfModal.title}</span><button onClick={() => setPdfModal(null)}>SLUITEN</button></div>
@@ -198,11 +198,21 @@ export default function Home() {
         </div>
       )}
 
+      {/* Video Modal (HERSTELD MET CSS) */}
       {videoModal && (
         <div className="video-overlay" onClick={() => setVideoModal(null)}>
            <div className="video-card" onClick={e => e.stopPropagation()}>
-              <div className="video-card-header"><h3>Video's</h3><button onClick={() => setVideoModal(null)}><X size={24} /></button></div>
-              <div className="video-list">{videoModal.videos.map((v, i) => (<a key={i} href={v.url} target="_blank" className="video-btn"><Youtube size={20} /> {v.label}</a>))}</div>
+              <div className="video-card-header">
+                <h3>Video's</h3>
+                <button className="video-close-icon" onClick={() => setVideoModal(null)}><X size={24} /></button>
+              </div>
+              <div className="video-list">
+                {videoModal.videos.map((v, i) => (
+                  <a key={i} href={v.url} target="_blank" className="video-btn-link">
+                    <Youtube size={20} /> <span>{v.label}</span>
+                  </a>
+                ))}
+              </div>
            </div>
         </div>
       )}
@@ -313,18 +323,18 @@ export default function Home() {
             {/* PDF links bovenaan voertuig checklist */}
             <div style={{ marginBottom: '15px' }}>
               {activeBus === 'iveco' && (
-                <button onClick={() => setPdfModal({ title: 'Instructie IVECO', pdf: '/docs/Instructie IVECO.pdf' })} className="rayon-pdf-btn">
-                  <FileText size={20} /><span>Instructie IVECO</span>
+                <button onClick={() => setPdfModal({ title: 'Handleiding Iveco', pdf: '/docs/iveco-handleiding.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding Iveco</span>
                 </button>
               )}
               {activeBus === '12m-stad' && (
-                <button onClick={() => setPdfModal({ title: 'Instructie VDL 12m elektrisch', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
-                  <FileText size={20} /><span>Instructie VDL 12m elektrisch</span>
+                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LF 122', pdf: '/docs/citea-lf122-handleiding.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding Citea LF 122</span>
                 </button>
               )}
               {activeBus === '12m-streek' && (
-                <button onClick={() => setPdfModal({ title: 'Instructie VDL 12m elektrisch', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
-                  <FileText size={20} /><span>Instructie VDL 12m elektrisch</span>
+                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LE 122', pdf: '/docs/citea-le122-handleiding.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding Citea LE 122</span>
                 </button>
               )}
             </div>
@@ -472,7 +482,7 @@ export default function Home() {
         .row-specs { display: flex; justify-content: space-around; margin-top: 10px; }
         .spec { text-align: center; }
         .spec.full-width { text-align: left; padding-left: 10px; }
-        .spec span { font-size: 0.65rem; color: var(--sub); font-weight: bold; display: block; }
+        .spec span { font-size: 0.65rem; color: var(--sub); font-weight: bold; display: block; margin-bottom: 2px; }
         .spec strong { font-size: 0.95rem; }
         .divider { width: 1px; background: var(--border); margin: 0 5px; }
         .divider-h { height: 1px; background: var(--border); margin: 5px 0; }
@@ -498,11 +508,22 @@ export default function Home() {
         .tally-box { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); height: 34px; }
         .tally-box button { background: transparent; border: none; padding: 0 8px; color: var(--bravo-purple); cursor: pointer; }
         .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
+        
         .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flex-direction: column; }
         .pdf-header { padding: 15px; background: var(--bravo-purple); color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .pdf-body { flex: 1; width: 100%; height: 100%; }
         .pdf-viewer { border: none; width: 100%; height: 100%; }
+
+        /* VIDEO MODAL STYLING HERSTELD */
+        .video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: flex-end; justify-content: center; }
+        .video-card { background: var(--card); width: 100%; max-width: 500px; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 25px; box-sizing: border-box; }
+        .video-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .video-card-header h3 { margin: 0; color: var(--text); }
+        .video-close-icon { background: var(--bg); border: none; border-radius: 50%; padding: 8px; cursor: pointer; color: var(--text); }
+        .video-list { display: flex; flex-direction: column; gap: 12px; }
+        .video-btn-link { display: flex; align-items: center; gap: 15px; padding: 15px; background: #fee2e2; color: var(--bravo-red); text-decoration: none; border-radius: 12px; font-weight: bold; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .print-only { display: none; }
         @media print { 
