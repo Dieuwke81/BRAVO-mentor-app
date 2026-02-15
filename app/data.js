@@ -1002,7 +1002,7 @@ export const initialCategories = [
     icon: <Bus size={22} />,
     items: [
       { id: 'v1', text: 'Stoelinstelling (Zie docs)' },
-      { id: 'v2', text: 'Instellen stuurwiel & spiegels' },
+      { id: 'v2', text: 'Instellen stuurwiel & spiegels (Denk ook aan dag/nacht instelling camera\'s)' },
       { id: 'v3', text: 'Controle op schade' },
       { id: 'v4', text: 'Bediening verlichting' },
       { id: 'v5', text: 'Klimaatbediening & ontwaseming' }
