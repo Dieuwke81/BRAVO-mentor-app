@@ -989,7 +989,7 @@ export const initialCategories = [
     title: '2. Aanvang Dienst & Voorbereiding',
     icon: <Clock size={22} />,
     items: [
-      { id: 'a1', text: 'Kledingvoorschrift & schoenen in orde' },
+      { id: 'a1', text: 'Kledingvoorschrift & schoenen in orde (Zie docs' },
       { id: 'a2', text: 'Zich aanmelden via computer' },
       { id: 'a3', text: 'Mededelingen en aanschrijvingen lezen' },
       { id: 'a4', text: 'Controleren van stallingsplan' },
@@ -1015,7 +1015,7 @@ export const initialCategories = [
     items: [
       { id: 's1', text: 'Inloggen Viribus (pincode via ROV)' },
       { id: 's2', text: 'Juiste omloop invoeren' },
-      { id: 's3', text: 'Gebruik KAR/VETAG (zie docs)' },
+      { id: 's3', text: 'Gebruik KAR/VETAG (Zie docs)' },
       { id: 's4', text: 'Kaartverkoop & Ticketbox' }
     ]
   }
