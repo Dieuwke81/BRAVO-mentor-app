@@ -1064,7 +1064,9 @@ export const contactData = [
 ];
 
 export const importantDocuments = [
- { id: 'Europees schadeformulier', title: 'Europees schadeformulier', pdf: '/docs/Europees schadeformulier.pdf' },
+{ id: 'Uitleg meldingen', title: 'Uitleg meldingen', pdf: '/docs/Uitleg meldingen.pdf' },
+  
+  { id: 'Europees schadeformulier', title: 'Europees schadeformulier', pdf: '/docs/Europees schadeformulier.pdf' },
   
   { id: 'doc-stoel', title: 'Stoelafstelling', pdf: '/docs/stoelafstelling.pdf' },
 { id: 'Zit instructie', title: 'Zit instructie', pdf: '/docs/Zit instructie.pdf' },
