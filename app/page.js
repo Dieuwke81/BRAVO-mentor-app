@@ -338,23 +338,23 @@ export default function Home() {
                 </button>
               )}
               {activeBus === '13 meter' && (
-                <button onClick={() => setPdfModal({ title: 'Handleiding Iveco', pdf: '/docs/Instructie IVECO.pdf' })} className="rayon-pdf-btn">
-                  <FileText size={20} /><span>Bekijk handleiding Iveco</span>
+                <button onClick={() => setPdfModal({ title: 'Handleiding 13 meter', pdf: '/docs/Instructie 13 meter.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding 13 meter</span>
                 </button>
               )}
               {activeBus === '12m-stad' && (
-                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LF 122', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
-                  <FileText size={20} /><span>Bekijk handleiding Citea LF 122</span>
+                <button onClick={() => setPdfModal({ title: 'Handleiding 12 meter', pdf: '/docs/Instructie 12 meter.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding 12 meter</span>
                 </button>
               )}
               {activeBus === '12m-streek' && (
-                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LE 122', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
-                  <FileText size={20} /><span>Bekijk handleiding Citea LE 122</span>
+                <button onClick={() => setPdfModal({ title: 'Handleiding 12 meter', pdf: '/docs/Instructie 12 meter' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding 12 meter</span>
                 </button>
               )}
-              {activeBus === '18 meter' && (
-                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LE 122', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
-                  <FileText size={20} /><span>Bekijk handleiding Citea LE 122</span>
+              {activeBus === '18 meter (BRT/oud)' && (
+                <button onClick={() => setPdfModal({ title: 'Handleiding 18 meter', pdf: '/docs/Instructie 18 meter' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding 18 meter</span>
                 </button>
               )}
             </div>
