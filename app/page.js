@@ -328,12 +328,12 @@ export default function Home() {
                 </button>
               )}
               {activeBus === '12m-stad' && (
-                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LF 122', pdf: '/docs/citea-lf122-handleiding.pdf' })} className="rayon-pdf-btn">
+                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LF 122', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk handleiding Citea LF 122</span>
                 </button>
               )}
               {activeBus === '12m-streek' && (
-                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LE 122', pdf: '/docs/citea-le122-handleiding.pdf' })} className="rayon-pdf-btn">
+                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LE 122', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk handleiding Citea LE 122</span>
                 </button>
               )}
