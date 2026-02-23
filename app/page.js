@@ -323,7 +323,7 @@ export default function Home() {
             {/* PDF links bovenaan voertuig checklist */}
             <div style={{ marginBottom: '15px' }}>
               {activeBus === 'iveco' && (
-                <button onClick={() => setPdfModal({ title: 'Handleiding Iveco', pdf: '/docs/iveco-handleiding.pdf' })} className="rayon-pdf-btn">
+                <button onClick={() => setPdfModal({ title: 'Handleiding Iveco', pdf: '/docs/Instructie IVECO.pdf' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk handleiding Iveco</span>
                 </button>
               )}
