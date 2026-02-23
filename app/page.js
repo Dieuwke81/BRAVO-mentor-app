@@ -337,6 +337,26 @@ export default function Home() {
                   <FileText size={20} /><span>Bekijk handleiding Citea LE 122</span>
                 </button>
               )}
+              {activeBus === '13 meter' && (
+                <button onClick={() => setPdfModal({ title: 'Handleiding Iveco', pdf: '/docs/Instructie IVECO.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding Iveco</span>
+                </button>
+              )}
+              {activeBus === '12m-stad' && (
+                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LF 122', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding Citea LF 122</span>
+                </button>
+              )}
+              {activeBus === '12m-streek' && (
+                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LE 122', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding Citea LE 122</span>
+                </button>
+              )}
+              {activeBus === '18 meter' && (
+                <button onClick={() => setPdfModal({ title: 'Handleiding Citea LE 122', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding Citea LE 122</span>
+                </button>
+              )}
             </div>
 
             {vehicleChecklist.map((section, idx) => (
