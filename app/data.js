@@ -1068,6 +1068,7 @@ export const importantDocuments = [
   { id: 'ABC storingen lijst', title: 'ABC storingen lijst', pdf: '/docs/ABC-storingslijst Transdev OV december 2025.pdf' },
  
   { id: 'Europees schadeformulier', title: 'Europees schadeformulier', pdf: '/docs/Europees schadeformulier.pdf' },
+  { id: 'Brokkenpot', title: 'Brokkenpot', pdf: '/docs/Brokkenpot.pdf' },
   
   { id: 'doc-stoel', title: 'Stoelafstelling', pdf: '/docs/stoelafstelling.pdf' },
 { id: 'Zit instructie', title: 'Zit instructie', pdf: '/docs/Zit instructie.pdf' },
