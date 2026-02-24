@@ -348,12 +348,12 @@ export default function Home() {
                 </button>
               )}
               {activeBus === '12m-streek' && (
-                <button onClick={() => setPdfModal({ title: 'Handleiding 12 meter', pdf: '/docs/Instructie 12 meter' })} className="rayon-pdf-btn">
+                <button onClick={() => setPdfModal({ title: 'Handleiding 12 meter', pdf: '/docs/Instructie 12 meter.pdf' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk handleiding 12 meter</span>
                 </button>
               )}
               {activeBus === '18m-brt' && (
-                <button onClick={() => setPdfModal({ title: 'Handleiding 18 meter', pdf: '/docs/Instructie 18 meter' })} className="rayon-pdf-btn">
+                <button onClick={() => setPdfModal({ title: 'Handleiding 18 meter', pdf: '/docs/Instructie 18 meter.pdf' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk handleiding 18 meter</span>
                 </button>
               )}
