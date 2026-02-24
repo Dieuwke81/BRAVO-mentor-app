@@ -337,7 +337,7 @@ export default function Home() {
                   <FileText size={20} /><span>Bekijk handleiding Citea LE 122</span>
                 </button>
               )}
-              {activeBus === '13 meter' && (
+              {activeBus === '13m' && (
                 <button onClick={() => setPdfModal({ title: 'Handleiding 13 meter', pdf: '/docs/Instructie 13 meter.pdf' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk handleiding 13 meter</span>
                 </button>
@@ -352,7 +352,7 @@ export default function Home() {
                   <FileText size={20} /><span>Bekijk handleiding 12 meter</span>
                 </button>
               )}
-              {activeBus === '18 meter (BRT/oud)' && (
+              {activeBus === '18m brt' && (
                 <button onClick={() => setPdfModal({ title: 'Handleiding 18 meter', pdf: '/docs/Instructie 18 meter' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk handleiding 18 meter</span>
                 </button>
