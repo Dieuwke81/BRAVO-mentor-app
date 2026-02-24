@@ -332,6 +332,11 @@ export default function Home() {
                   <FileText size={20} /><span>Bekijk handleiding Citea LF 122</span>
                 </button>
               )}
+              {activeBus === '18m-noors' && (
+                <button onClick={() => setPdfModal({ title: 'Handleiding 18 meter Noord', pdf: '/docs/Instructie 18m Noors.pdf' })} className="rayon-pdf-btn">
+                  <FileText size={20} /><span>Bekijk handleiding 18 meter Noors</span>
+                </button>
+              )}
               {activeBus === '12m-streek' && (
                 <button onClick={() => setPdfModal({ title: 'Handleiding Citea LE 122', pdf: '/docs/Instructie VDL 12m elektrisch.pdf' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk handleiding Citea LE 122</span>
