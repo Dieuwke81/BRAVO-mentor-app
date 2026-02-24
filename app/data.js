@@ -1065,7 +1065,8 @@ export const contactData = [
 
 export const importantDocuments = [
 { id: 'Uitleg meldingen', title: 'Uitleg meldingen', pdf: '/docs/Uitleg meldingen.pdf' },
-  
+  { id: 'ABC storingen lijst', title: 'ABC storingen lijst', pdf: '/docs/ABC-storingslijst Transdev OV december 2025.pdf' },
+ 
   { id: 'Europees schadeformulier', title: 'Europees schadeformulier', pdf: '/docs/Europees schadeformulier.pdf' },
   
   { id: 'doc-stoel', title: 'Stoelafstelling', pdf: '/docs/stoelafstelling.pdf' },
