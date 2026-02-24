@@ -352,7 +352,7 @@ export default function Home() {
                   <FileText size={20} /><span>Bekijk handleiding 12 meter</span>
                 </button>
               )}
-              {activeBus === '18m brt' && (
+              {activeBus === '18m-brt' && (
                 <button onClick={() => setPdfModal({ title: 'Handleiding 18 meter', pdf: '/docs/Instructie 18 meter' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk handleiding 18 meter</span>
                 </button>
