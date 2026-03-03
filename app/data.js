@@ -1195,5 +1195,7 @@ export const usefulLinks = [
 { name: 'CAO', url: 'https://www.fnv.nl/getmedia/8bca591d-dfa1-445b-a628-0b4725a0d233/500-openbaar-vervoer-cao-01-04-2025-tm-30-06-2026-v29012026.pdf?ext=.pdf' },
   { name: 'FNV', url: 'https://www.fnv.nl/' },
 { name: 'CNV', url: 'https://www.cnv.nl/' },
+  { name: 'Sociaal fonds Transdev', url: 'https://intranet.transdev.nl/Content/Index?guid=84bece41-0287-482a-95fe-c156157b9052' },
+{ name: 'Sociaal fonds Hermes', url: 'https://intranet.transdev.nl/News/Article/?guid=4f412025-f1fe-486a-af9a-4c499b6a679a' },
   
 ];
