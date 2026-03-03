@@ -1193,7 +1193,7 @@ export const usefulLinks = [
 
 { name: 'OVzoeker', url: 'https://ovzoeker.nl/' },
 { name: 'CAO', url: 'https://www.fnv.nl/getmedia/8bca591d-dfa1-445b-a628-0b4725a0d233/500-openbaar-vervoer-cao-01-04-2025-tm-30-06-2026-v29012026.pdf?ext=.pdf' },
-  { name: 'FNV', url: 'https://www.fnv.nl/lidmaatschap/voordelen-van-het-lidmaatschap?utm_source=google&utm_medium=cpc&utm_campaign=3.%20Corporate%20-%20FNV%20Lid%20worden%20(exact)&utm_id=212537343&gad_source=1&gad_campaignid=212537343&gbraid=0AAAAADsEK8WcCbsts4QCxRmBfxUi5gLic&gclid=CjwKCAiAqprNBhB6EiwAMe3yhm5yEHgd9aOKF_HcxFCpFmPpF4NlduYAohp36Yo2FjFKqZF17ZBzcxoCfmYQAvD_BwE' },
-{ name: 'CNV', url: 'https://www.cnv.nl/lid-worden/?utm_source=google&utm_medium=cpc&utm_campaign=search-branded-alwayson-algemeen-activate&bg_source=ga&bg_campaign=21796550332&bg_kw=kwd-295362889096-mi--pi--ppi-&bg_source_id=716479122230&gad_source=1&gad_campaignid=21796550332&gbraid=0AAAAA9_pdDjhw72W6uwIwrpkMJQxYNVnW&gclid=CjwKCAiAqprNBhB6EiwAMe3yhg0YW5aYl8KjMsl1m_jGPFEMFSXl5QotxA3Z1FcqCEyTl83AZPOhuBoCSu0QAvD_BwE=.pdf' },
+  { name: 'FNV', url: 'https://www.fnv.nl/' },
+{ name: 'CNV', url: 'https://www.cnv.nl/' },
   
 ];
