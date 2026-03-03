@@ -168,8 +168,8 @@ export const busRoutes = [
     pdf: '/routes/324.pdf',
     map: 'https://goo.gl/maps/qH9iWy8QDboPPUyk7',
     videos: [
-      { label: 'Heenrit', url: 'https://youtu.be/bqwSqdBEpqU' },
-      { label: 'Terugrit', url: 'https://youtu.be/UUhg-zk6wkc' }
+      { label: 'Heenrit', url: 'https://youtu.be/r1iG6LWvv2o?si=_I6liI-yvvyie_Mj' },
+      { label: 'Terugrit', url: 'https://youtu.be/74BOZjNjjkM?si=Rc9xD6O58Wr0iMui' }
     ]
   },
   {
@@ -854,8 +854,8 @@ export const busRoutes = [
     pdf: '/routes/26.pdf',
     map: 'https://goo.gl/maps/33oHJptjDKoyeTV27?g_st=ac',
     videos: [
-      { label: 'Heenrit', url: '' },
-      { label: 'Terugrit', url: '' }
+      { label: 'Heenrit', url: 'https://youtu.be/A5gGZfBExHk?si=yUr8YnI9mbCYPZ_x' },
+      { label: 'Terugrit', url: 'https://youtu.be/nTwo55cQM-U?si=rHI6zUUGOhgGC0tX' }
     ]
   },
   {
