@@ -1187,7 +1187,8 @@ export const usefulLinks = [
   { name: 'OVinfo App (iOS)', url: 'https://apps.apple.com/nl/app/ovinfo/id1144468923' },
   { name: 'Bussie.app', url: 'https://www.bussie.app/' },
   { name: 'ZOB-buslijnen', url: 'https://sites.google.com/site/zobbuslijnen/' },
-  
+{ name: 'CAO', url: 'https://www.fnv.nl/getmedia/8bca591d-dfa1-445b-a628-0b4725a0d233/500-openbaar-vervoer-cao-01-04-2025-tm-30-06-2026-v29012026.pdf?ext=.pdf' },
+
 { name: 'OVzoeker', url: 'https://ovzoeker.nl/' }
 
 ];
