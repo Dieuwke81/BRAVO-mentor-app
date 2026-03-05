@@ -1053,9 +1053,10 @@ export const contactData = [
     ]
   },
   {
-    category: 'RAYONTEAMS',
+    category: 'RAYONS',
     contacts: [
       { name: 'Michiel Bles', phone: '088-6255731' },
+   { name: 'Debbie Flower', phone: '088-6255730' },
       { name: 'Johan Cuijpers', phone: '088-6255740' },
       { name: 'Mark Zwijnenburg', phone: '088-6255733' },
       { name: 'Patrick Houthooft', phone: '088-6255734' }
