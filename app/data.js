@@ -984,7 +984,8 @@ export const busRoutes = [
 ];
 
 export const initialCategories = [
-     id: 'algemeen',
+  {
+  id: 'algemeen',
     title: '1. Algemeen',
     icon: <Clock size={22} />,
     items: [
