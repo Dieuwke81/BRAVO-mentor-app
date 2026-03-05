@@ -989,7 +989,14 @@ export const initialCategories = [
     title: '1. Algemeen',
     icon: <Clock size={22} />,
     items: [
-      { id: 'aa1', text: 'Op de hoogte van de codes: 999\=storing, 888\=viribus/ticketbox, 777\=camera (niet de spiegelcamera), 555\=reservebus' },
+      { 
+  id: 'aa1', 
+  text: `Op de hoogte van de codes:
+• 999 = Storing
+• 888 = Viribus / Ticketbox
+• 777 = Camera (niet spiegelcamera)
+• 555 = Reservebus` 
+},
       { id: 'aa2', text: '' },
    { id: 'aa3', text: '' },
       { id: 'aa4', text: '' },
