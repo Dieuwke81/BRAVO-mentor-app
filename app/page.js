@@ -488,8 +488,21 @@ export default function Home() {
         .item-row { padding: 15px 0; border-bottom: 1px solid var(--border); }
         .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
         .check-label { display: flex; align-items: center; cursor: pointer; flex: 1; }
-        .check-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer; text-align: left; }
-        .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
+        .check-item { 
+  display: flex; 
+  align-items: flex-start; /* Zorgt dat het vinkje bovenin blijft staan bij lange tekst */
+  padding: 12px 0; 
+  border-bottom: 1px solid var(--border); 
+  cursor: pointer; 
+  text-align: left; 
+}
+
+.check-item span {
+  white-space: pre-wrap; /* Dit zorgt ervoor dat de enters in je tekst zichtbaar zijn */
+  line-height: 1.5;      /* Geeft wat meer ademruimte tussen de regels */
+  margin-top: 2px;       /* Lijnt de tekst mooi uit met de checkbox */
+}
+.check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
         .check-box.checked { background: var(--success); border-color: var(--success); }
         .action-btns { display: flex; gap: 6px; flex-shrink: 0; }
         .act-btn { width: 40px; height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bravo-purple); cursor: pointer; }
