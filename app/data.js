@@ -989,11 +989,12 @@ export const initialCategories = [
     title: '2. Aanvang Dienst & Voorbereiding',
     icon: <Clock size={22} />,
     items: [
-      { id: 'a1', text: 'Kledingvoorschrift & schoenen in orde (Zie docs)' },
+      { id: 'a1', text: 'Kledingvoorschrift in orde (Zie docs)' },
       { id: 'a2', text: 'Zich aanmelden via computer' },
-      { id: 'a3', text: 'Mededelingen en aanschrijvingen lezen' },
-      { id: 'a4', text: 'Controleren van stallingsplan' },
-      { id: 'a5', text: 'Juiste voertuigtype pakken' }
+   { id: 'a3', text: 'Zich uitvoerig op de hoogte stellen van de omleidingen' },
+      { id: 'a4', text: 'Mededelingen en aanschrijvingen lezen' },
+      { id: 'a5', text: 'Controleren van stallingsplan (Zie docs)' },
+      { id: 'a6', text: 'Juiste voertuigtype pakken' }
     ]
   },
   {
@@ -1067,6 +1068,7 @@ export const contactData = [
 export const importantDocuments = [
 { id: 'Uitleg meldingen Viribus', title: 'Uitleg meldingen Viribus', pdf: '/docs/Uitleg meldingen.pdf' },
   { id: 'ABC storingen lijst', title: 'ABC storingen lijst', pdf: '/docs/ABC-storingslijst Transdev OV december 2025.pdf' },
+ { id: 'Stallingsplan', title: 'Stallingsplan', pdf: '/docs/Stallingsplan.pdf' },
  
   { id: 'Europees schadeformulier', title: 'Europees schadeformulier', pdf: '/docs/Europees schadeformulier.pdf' },
   { id: 'Brokkenpot', title: 'Brokkenpot', pdf: '/docs/Brokkenpot.pdf' },
