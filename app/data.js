@@ -984,6 +984,18 @@ export const busRoutes = [
 ];
 
 export const initialCategories = [
+     id: 'algemeen',
+    title: '1. Algemeen',
+    icon: <Clock size={22} />,
+    items: [
+      { id: 'aa1', text: 'Op de hoogte van de codes: 999=storing, 888=viribus/ticketbox, 777=camera (niet de spiegelcamera), 555=reservebus' },
+      { id: 'aa2', text: '' },
+   { id: 'aa3', text: '' },
+      { id: 'aa4', text: '' },
+      { id: 'aa5', text: '' },
+      { id: 'aa6', text: '' }
+    ]
+  },
   {
     id: 'aanvang',
     title: '2. Aanvang Dienst & Voorbereiding',
@@ -991,7 +1003,7 @@ export const initialCategories = [
     items: [
       { id: 'a1', text: 'Kledingvoorschrift in orde (Zie docs)' },
       { id: 'a2', text: 'Zich aanmelden via computer' },
-   { id: 'a3', text: 'Zich uitvoerig op de hoogte stellen van de omleidingen' },
+   { id: 'a3', text: 'Uitvoerig op de hoogte stellen van de omleidingen' },
       { id: 'a4', text: 'Mededelingen en aanschrijvingen lezen' },
       { id: 'a5', text: 'Controleren van stallingsplan (Zie docs)' },
       { id: 'a6', text: 'Juiste voertuigtype pakken' }
