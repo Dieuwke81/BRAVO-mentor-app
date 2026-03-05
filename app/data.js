@@ -995,7 +995,8 @@ export const initialCategories = [
 • 999 = Storing
 • 888 = Viribus / Ticketbox
 • 777 = Camera (niet spiegelcamera)
-• 555 = Reservebus` 
+• 555 = Reservebus
+Deze bussen niet zelf pakken` 
 },
       { id: 'aa2', text: '' },
    { id: 'aa3', text: '' },
