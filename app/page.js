@@ -188,10 +188,23 @@ export default function Home() {
 
   return (
     <div className="main-wrapper">
-      {/* PDF Modal */}
+      {/* PDF Modal AANGEPAST MET PRINT KNOP */}
       {pdfModal && (
         <div className="pdf-overlay">
-           <div className="pdf-header"><span>{pdfModal.text || pdfModal.title}</span><button onClick={() => setPdfModal(null)}>SLUITEN</button></div>
+           <div className="pdf-header">
+              <span>{pdfModal.text || pdfModal.title}</span>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <a 
+                  href={pdfModal.pdf} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="pdf-print-btn"
+                >
+                  <Printer size={18} /> <span>Print / Open</span>
+                </a>
+                <button onClick={() => setPdfModal(null)}>SLUITEN</button>
+              </div>
+           </div>
            <div className="pdf-body">
               <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(baseUrl + pdfModal.pdf)}&embedded=true`} className="pdf-viewer"></iframe>
            </div>
@@ -381,7 +394,7 @@ export default function Home() {
           ))}</div>
         )}
 
-        {/* Docs & Links Tab (AANGEPAST) */}
+        {/* Docs & Links Tab */}
         {mainTab === 'docs' && (
           <>
             <div className="card">
@@ -400,7 +413,7 @@ export default function Home() {
           </>
         )}
 
-        {/* Info Tab (AANGEPAST) */}
+        {/* Info Tab */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren: Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
@@ -488,21 +501,23 @@ export default function Home() {
         .item-row { padding: 15px 0; border-bottom: 1px solid var(--border); }
         .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
         .check-label { display: flex; align-items: center; cursor: pointer; flex: 1; }
+        
         .check-item { 
-  display: flex; 
-  align-items: flex-start; /* Zorgt dat het vinkje bovenin blijft staan bij lange tekst */
-  padding: 12px 0; 
-  border-bottom: 1px solid var(--border); 
-  cursor: pointer; 
-  text-align: left; 
-}
+          display: flex; 
+          align-items: flex-start; 
+          padding: 12px 0; 
+          border-bottom: 1px solid var(--border); 
+          cursor: pointer; 
+          text-align: left; 
+        }
 
-.check-item span {
-  white-space: pre-wrap; /* Dit zorgt ervoor dat de enters in je tekst zichtbaar zijn */
-  line-height: 1.5;      /* Geeft wat meer ademruimte tussen de regels */
-  margin-top: 2px;       /* Lijnt de tekst mooi uit met de checkbox */
-}
-.check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
+        .check-item span {
+          white-space: pre-wrap; 
+          line-height: 1.5;      
+          margin-top: 2px;       
+        }
+
+        .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
         .check-box.checked { background: var(--success); border-color: var(--success); }
         .action-btns { display: flex; gap: 6px; flex-shrink: 0; }
         .act-btn { width: 40px; height: 40px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bravo-purple); cursor: pointer; }
@@ -542,9 +557,25 @@ export default function Home() {
         .tally-box button { background: transparent; border: none; padding: 0 8px; color: var(--bravo-purple); cursor: pointer; }
         .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
         
+        /* PDF MODAL STYLES */
         .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flex-direction: column; }
         .pdf-header { padding: 15px; background: var(--bravo-purple); color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        
+        /* PRINT KNOP STYLE */
+        .pdf-print-btn { 
+          background: var(--success); 
+          color: white; 
+          text-decoration: none; 
+          padding: 8px 15px; 
+          border-radius: 8px; 
+          font-weight: bold; 
+          font-size: 0.8rem; 
+          display: flex; 
+          align-items: center; 
+          gap: 8px; 
+        }
+
         .pdf-body { flex: 1; width: 100%; height: 100%; }
         .pdf-viewer { border: none; width: 100%; height: 100%; }
 
