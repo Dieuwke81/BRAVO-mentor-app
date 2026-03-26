@@ -984,18 +984,19 @@ export const busRoutes = [
 ];
 
 export const initialCategories = [
-  {
-  id: 'algemeen',
-    title: '1. Algemeen',
-    icon: <Clock size={22} />,
-    items: [
+  
       
       { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
    { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen' },
       { id: 'aa4', text: 'Uitleg viribus/ticketbox. (Zie docs)' },
       { id: 'aa5', text: '' },
       { id: 'aa6', text: '' }
-      { 
+    {
+  id: 'algemeen',
+    title: '1. Algemeen',
+    icon: <Clock size={22} />,
+    items: [
+  { 
   id: 'aa1', 
   text: `Op de hoogte van de codes:
 • 999 = Storing
