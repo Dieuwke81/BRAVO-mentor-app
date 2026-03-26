@@ -1209,7 +1209,10 @@ export const vehicleChecklist = [
 ];
 export const usefulLinks = [
  { name: 'WebComm (duurt even, heb geduld)', url: 'https://dmz-wbc-web02.connexxion.nl/WebComm/default.aspx?' },
- { name: 'Intranet Transdev', url: 'https://intranet.transdev.nl/' },
+{ name: 'Bussie.app', url: 'https://www.bussie.app/' },
+ { name: 'ZOB-buslijnen', url: 'https://sites.google.com/site/zobbuslijnen/' },
+  
+  { name: 'Intranet Transdev', url: 'https://intranet.transdev.nl/' },
 { name: 'Team Transdev chauffeur app (Android)', url: 'https://play.google.com/store/apps/details?id=com.transdev.teamtransdev' },
 
   { name: 'Afas Pocket (Android)', url: 'https://play.google.com/store/apps/details?id=nl.afas.pocket2' },
@@ -1217,10 +1220,10 @@ export const usefulLinks = [
 
   { name: 'OVinfo App (Android)', url: 'https://play.google.com/store/apps/details?id=nl.skywave.ovinfo' },
   { name: 'OVinfo App (IOS)', url: 'https://apps.apple.com/nl/app/ovinfo/id1144468923' },
-  { name: 'Bussie.app', url: 'https://www.bussie.app/' },
-  { name: 'ZOB-buslijnen', url: 'https://sites.google.com/site/zobbuslijnen/' },
+ { name: 'OVzoeker', url: 'https://ovzoeker.nl/' },
+  { name: 'Groenendijk Bedrijfskleding (IOS)', url: 'https://apps.apple.com/nl/app/groenendijk/id1604594725' },
 
-{ name: 'OVzoeker', url: 'https://ovzoeker.nl/' },
+  
 { name: 'CAO', url: 'https://www.fnv.nl/getmedia/8bca591d-dfa1-445b-a628-0b4725a0d233/500-openbaar-vervoer-cao-01-04-2025-tm-30-06-2026-v29012026.pdf?ext=.pdf' },
   { name: 'FNV', url: 'https://www.fnv.nl/' },
 { name: 'CNV', url: 'https://www.cnv.nl/' },
