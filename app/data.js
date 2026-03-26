@@ -997,9 +997,9 @@ export const initialCategories = [
       { id: 'aa4', text: 'Uitleg viribus/ticketbox. (Zie docs)' },
       { id: 'aa5', text: 'Digitaal ruilen en snipperdag aanvragen' },
       { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl' },
-      { id: 'aa6', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
-      { id: 'aa6', text: '' },
-      { id: 'aa6', text: '' },
+      { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
+      { id: 'aa8', text: '' },
+      { id: 'aa9', text: '' },
   { 
   id: 'aa1', 
   text: `Op de hoogte van de codes:
@@ -1034,7 +1034,8 @@ Deze bussen niet zelf pakken!`
       { id: 'v2', text: 'Instellen stuurwiel & spiegels (Denk ook aan dag/nacht instelling camera\'s)' },
       { id: 'v3', text: 'Controle op schade' },
       { id: 'v4', text: 'Bediening verlichting' },
-      { id: 'v5', text: 'Klimaatbediening & ontwaseming' }
+      { id: 'v5', text: 'Klimaatbediening & ontwaseming' },
+       { id: 'v6', text: 'Resetprocedure van de bus' }
     ]
   },
   {
