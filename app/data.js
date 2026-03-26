@@ -1012,7 +1012,7 @@ Deze bussen niet zelf pakken!`
     items: [
       { id: 'a1', text: 'Kledingvoorschrift in orde (Zie docs)' },
       { id: 'a2', text: 'Zich aanmelden via computer' },
-   { id: 'a3', text: 'Uitvoerig op de hoogte stellen van de omleidingen' },
+   { id: 'a3', text: 'Uitvoerig op de hoogte stellen van de omleidingen (denk hierbij aan het aanmelden voor de mail. Zie INFO voor het mailadres)' },
       { id: 'a4', text: 'Mededelingen en aanschrijvingen lezen' },
       { id: 'a5', text: 'Controleren van stallingsplan (Zie docs)' },
       { id: 'a6', text: 'Juiste voertuigtype pakken' }
