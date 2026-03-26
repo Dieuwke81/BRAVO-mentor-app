@@ -998,8 +998,8 @@ export const initialCategories = [
 • 555 = Reservebus
 Deze bussen niet zelf pakken!` 
 },
-      { id: 'aa2', text: '' },
-   { id: 'aa3', text: '' },
+      { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
+   { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen' },
       { id: 'aa4', text: '' },
       { id: 'aa5', text: '' },
       { id: 'aa6', text: '' }
