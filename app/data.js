@@ -998,9 +998,11 @@ export const initialCategories = [
       { id: 'aa5', text: 'Digitaal ruilen en snipperdag aanvragen' },
       { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
-      { id: 'aa8', text: '' },
-      { id: 'aa9', text: '' },
-  { 
+      { id: 'aa8', text: 'Voorsorteren richting 18 septemberplein' },
+      { id: 'aa9', text: 'Waarom ben je verplicht om om het paaltje te rijden bij hotel Eindhoven?' },
+{ id: 'aa10', text: 'Muurtje beursgebouw' },
+      
+      { 
   id: 'aa1', 
   text: `Op de hoogte van de codes:
 • 999 = Storing
