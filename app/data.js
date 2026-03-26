@@ -989,6 +989,12 @@ export const initialCategories = [
     title: '1. Algemeen',
     icon: <Clock size={22} />,
     items: [
+      
+      { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
+   { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen' },
+      { id: 'aa4', text: 'Uitleg viribus/ticketbox. (Zie docs)' },
+      { id: 'aa5', text: '' },
+      { id: 'aa6', text: '' }
       { 
   id: 'aa1', 
   text: `Op de hoogte van de codes:
@@ -998,11 +1004,6 @@ export const initialCategories = [
 • 555 = Reservebus
 Deze bussen niet zelf pakken!` 
 },
-      { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
-   { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen' },
-      { id: 'aa4', text: '' },
-      { id: 'aa5', text: '' },
-      { id: 'aa6', text: '' }
     ]
   },
   {
