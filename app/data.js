@@ -995,7 +995,10 @@ export const initialCategories = [
       { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
    { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen' },
       { id: 'aa4', text: 'Uitleg viribus/ticketbox. (Zie docs)' },
-      { id: 'aa5', text: '' },
+      { id: 'aa5', text: 'Digitaal ruilen en snipperdag aanvragen' },
+      { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl' },
+      { id: 'aa6', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
+      { id: 'aa6', text: '' },
       { id: 'aa6', text: '' },
   { 
   id: 'aa1', 
