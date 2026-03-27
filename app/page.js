@@ -6,7 +6,7 @@ import {
   Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, 
   Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, 
   Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck, 
-  Files, Sun, Moon, ExternalLink 
+  Files, Sun, Moon, ExternalLink, PenTool 
 } from 'lucide-react';
 
 export default function Home() {
@@ -27,6 +27,11 @@ export default function Home() {
   const [pdfModal, setPdfModal] = useState(null);
   const [newStudentName, setNewStudentName] = useState('');
   const [theme, setTheme] = useState('light');
+
+  // Handtekening state & refs
+  const [signatureImage, setSignatureImage] = useState(null);
+  const canvasRef = useRef(null);
+  const isDrawing = useRef(false);
 
   const textareaRefs = useRef({});
   const reportNoteRef = useRef(null);
@@ -70,6 +75,11 @@ export default function Home() {
       setNotes(safeParse(`bravo_notes_${activeStudent}`, {}));
       setDates(safeParse(`bravo_dates_${activeStudent}`, { start: '', end: '' }));
       setReportNote(localStorage.getItem(`bravo_report_note_${activeStudent}`) || '');
+      
+      // Laad handtekening
+      const savedSig = localStorage.getItem(`bravo_signature_${activeStudent}`);
+      setSignatureImage(savedSig || null);
+      
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
@@ -88,11 +98,63 @@ export default function Home() {
     }
   }, [notes, reportNote, mainTab, routeSubTab]);
 
+  // HANDTEKENING LOGICA
+  const startDrawing = (e) => {
+    isDrawing.current = true;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+    const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#000';
+  };
+
+  const draw = (e) => {
+    if (!isDrawing.current) return;
+    if (e.touches) e.preventDefault();
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+    const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    if (!isDrawing.current) return;
+    isDrawing.current = false;
+    const canvas = canvasRef.current;
+    const dataURL = canvas.toDataURL();
+    setSignatureImage(dataURL);
+    localStorage.setItem(`bravo_signature_${activeStudent}`, dataURL);
+  };
+
+  const clearSignature = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setSignatureImage(null);
+    localStorage.removeItem(`bravo_signature_${activeStudent}`);
+  };
+
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { studentName: activeStudent, progress: JSON.stringify(completed), tallies: JSON.stringify(tallies), notes: JSON.stringify(notes), dates: JSON.stringify(dates), reportNote: reportNote };
+    const data = { 
+      studentName: activeStudent, 
+      progress: JSON.stringify(completed), 
+      tallies: JSON.stringify(tallies), 
+      notes: JSON.stringify(notes), 
+      dates: JSON.stringify(dates), 
+      reportNote: reportNote,
+      signature: signatureImage
+    };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -116,6 +178,7 @@ export default function Home() {
         localStorage.setItem(`bravo_notes_${name}`, ensureString(incoming.notes));
         if (incoming.dates) localStorage.setItem(`bravo_dates_${name}`, ensureString(incoming.dates));
         if (incoming.reportNote) localStorage.setItem(`bravo_report_note_${name}`, incoming.reportNote);
+        if (incoming.signature) localStorage.setItem(`bravo_signature_${name}`, incoming.signature);
         window.location.reload();
       } catch (err) { alert("Fout bij importeren."); }
     };
@@ -424,7 +487,33 @@ export default function Home() {
                <div className="form-row"><div className="form-group"><label>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div><div className="form-group"><label>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div></div>
                <div className="form-group" style={{ marginTop: '10px' }}><label>Algemene Opmerking Rapport</label><textarea ref={reportNoteRef} value={reportNote} onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }} placeholder="Typ hier een toelichting voor het rapport..." className="note-area" style={{ marginLeft: 0, width: '100%' }} rows={2} /></div>
             </div>
-            <div className="card center"><button onClick={() => window.print()} className="btn success">Rapport maken</button><button onClick={exportData} className="btn purple">Download data</button><label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label></div>
+
+            {/* HANDTEKENING VAK */}
+            <div className="card handtekening">
+              <h3><PenTool size={20} style={{marginRight: '8px', verticalAlign: 'middle'}} />Handtekening Leerling</h3>
+              <div className="canvas-container" style={{background: '#fff', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', touchAction: 'none', marginTop: '10px'}}>
+                <canvas 
+                  ref={canvasRef}
+                  width={400} 
+                  height={150}
+                  style={{width: '100%', height: 'auto', display: 'block', cursor: 'crosshair'}}
+                  onMouseDown={startDrawing}
+                  onMouseMove={draw}
+                  onMouseUp={stopDrawing}
+                  onMouseLeave={stopDrawing}
+                  onTouchStart={startDrawing}
+                  onTouchMove={draw}
+                  onTouchEnd={stopDrawing}
+                />
+              </div>
+              <button onClick={clearSignature} className="btn outline" style={{ marginTop: '10px', borderColor: 'var(--bravo-red)', color: 'var(--bravo-red)' }}>Wis handtekening</button>
+            </div>
+
+            <div className="card center">
+              <button onClick={() => window.print()} className="btn success">Rapport maken</button>
+              <button onClick={exportData} className="btn purple">Download data</button>
+              <label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
+            </div>
             {contactData.map((group, idx) => (
               <div key={idx} className="card"><h3 className="group-title">{group.category}</h3>{group.contacts.map((c, i) => (<div key={i} className="contact-row"><span className="name">{c.name}</span><div className="links">{c.phone && <a href={`tel:${c.phone}`} className="phone">{c.phone}</a>}{c.email && <a href={`mailto:${c.email}`} className="email">{c.email}</a>}</div></div>))}</div>
             ))}
@@ -442,6 +531,7 @@ export default function Home() {
           </div>
         </div>
         {reportNote && <div style={{ marginBottom: '30px', border: '1px solid #ccc', padding: '15px', borderRadius: '10px', background: '#f9f9f9' }}><h3 style={{ marginTop: 0, fontSize: '16px', color: 'var(--bravo-purple)' }}>Algemene toelichting</h3><div style={{ whiteSpace: 'pre-wrap', fontSize: '14px' }}>{reportNote}</div></div>}
+        
         <h3>1. Gereden Lijnen & Resultaten</h3>
         <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '30px' }}>
           <thead><tr style={{ background: '#f0f0f0' }}><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Lijn</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Status</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>M</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Z</th><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Opmerkingen</th></tr></thead>
@@ -451,6 +541,7 @@ export default function Home() {
             ))}
           </tbody>
         </table>
+
         <h3>2. Voertuigbeheersing (Afgevinkt)</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '30px' }}>
           {busTypes.map(bus => {
@@ -464,6 +555,14 @@ export default function Home() {
           <><h3>3. Algemene Checklists (Afgevinkt)</h3>{reportChecklists.map(cat => (
             <div key={cat.id} style={{ marginBottom: '15px' }}><strong style={{ color: 'var(--bravo-purple)', borderBottom: '1px solid #eee', display: 'block', paddingBottom: '3px' }}>{cleanTitle(cat.title)}</strong><ul style={{ margin: '5px 0', paddingLeft: '20px', fontSize: '13px' }}>{cat.checkedItems.map(item => <li key={item.id}>{item.text}</li>)}</ul></div>
           ))}</>
+        )}
+
+        {/* HANDTEKENING IN PRINT */}
+        {signatureImage && (
+          <div style={{ marginTop: '50px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
+            <strong>Handtekening leerling:</strong><br />
+            <img src={signatureImage} alt="Handtekening" style={{ maxWidth: '200px', height: 'auto', marginTop: '10px' }} />
+          </div>
         )}
       </div>
 
@@ -557,28 +656,12 @@ export default function Home() {
         .tally-box button { background: transparent; border: none; padding: 0 8px; color: var(--bravo-purple); cursor: pointer; }
         .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
         
-        /* PDF MODAL STYLES */
         .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flex-direction: column; }
         .pdf-header { padding: 15px; background: var(--bravo-purple); color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        
-        /* PRINT KNOP STYLE */
-        .pdf-print-btn { 
-          background: var(--success); 
-          color: white; 
-          text-decoration: none; 
-          padding: 8px 15px; 
-          border-radius: 8px; 
-          font-weight: bold; 
-          font-size: 0.8rem; 
-          display: flex; 
-          align-items: center; 
-          gap: 8px; 
-        }
-
+        .pdf-print-btn { background: var(--success); color: white; text-decoration: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; }
         .pdf-body { flex: 1; width: 100%; height: 100%; }
         .pdf-viewer { border: none; width: 100%; height: 100%; }
-
         .video-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; display: flex; align-items: flex-end; justify-content: center; }
         .video-card { background: var(--card); width: 100%; max-width: 500px; border-top-left-radius: 24px; border-top-right-radius: 24px; padding: 25px; box-sizing: border-box; }
         .video-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -586,7 +669,6 @@ export default function Home() {
         .video-close-icon { background: var(--bg); border: none; border-radius: 50%; padding: 8px; cursor: pointer; color: var(--text); }
         .video-list { display: flex; flex-direction: column; gap: 12px; }
         .video-btn-link { display: flex; align-items: center; gap: 15px; padding: 15px; background: #fee2e2; color: var(--bravo-red); text-decoration: none; border-radius: 12px; font-weight: bold; }
-
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .print-only { display: none; }
         @media print { 
