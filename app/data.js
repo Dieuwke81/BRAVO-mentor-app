@@ -996,7 +996,7 @@ export const initialCategories = [
    { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen' },
       { id: 'aa4', text: 'Uitleg viribus/ticketbox. (Zie docs)' },
       { id: 'aa5', text: 'Digitaal ruilen en snipperdag aanvragen' },
-      { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl' },
+      { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
       { id: 'aa8', text: 'Voorsorteren richting 18 septemberplein' },
       { id: 'aa9', text: 'Waarom ben je verplicht om om het paaltje te rijden bij hotel Eindhoven?' },
