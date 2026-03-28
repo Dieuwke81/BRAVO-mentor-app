@@ -1178,6 +1178,8 @@ export const vehicleChecklist = [
   {
     category: '1. Algemene uitleg voertuig',
     items: [
+      { id: 'v_omlooen', text: '18meter Noorse bus: omlopen 41 t/m 45, 131 t/m 138, 331 t/m 335. 18 meter BRT: omlopen 1 t/m 40' },
+  
       { id: 'v_motor', text: 'Type motor (diesel / elektrisch) & Hoge spanning' },
       { id: 'v_dimensies', text: 'Lengte / breedte / hoogte & Wielbasis (let op de rechterspiegel van de 18m Noors en de 13m!)' },
       { id: 'v_spiegels', text: 'Spiegels/camera\'s instellen' },
