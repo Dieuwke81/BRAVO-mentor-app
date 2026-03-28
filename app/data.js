@@ -1100,6 +1100,7 @@ export const contactData = [
 
 export const importantDocuments = [
 { id: 'Ticketbox Gebruikshandleiding', title: 'Ticketbox Gebruikshandleiding', pdf: '/docs/Ticketbox Gebruikshandleiding.pdf' },
+  { id: 'Rolstoel Protocol', title: 'Rolstoel Protocol', pdf: '/docs/Rolstoel Protocol.pdf' },
   
   { id: 'Uitleg meldingen Viribus', title: 'Uitleg meldingen Viribus', pdf: '/docs/Uitleg meldingen.pdf' },
   { id: 'ABC storingen lijst', title: 'ABC storingen lijst', pdf: '/docs/ABC-storingslijst Transdev OV december 2025.pdf' },
