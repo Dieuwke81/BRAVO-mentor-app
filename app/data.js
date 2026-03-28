@@ -995,7 +995,7 @@ export const initialCategories = [
       { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
    { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen' },
       { id: 'aa4', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
-      { id: 'aa5', text: 'Korte uitleg Webcomm en digitaal ruilen en snipperdag aanvragen' },
+      { id: 'aa5', text: 'Korte uitleg Webcomm. Digitaal ruilen en snipperdag aanvragen' },
       { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
    { id: 'aa8', text: 'Op de buffer de hoofdschakelaar van een diesel altijd uitzetten. Bij een elektrische bus zet je de hoofdschakelaar uit als deze langer dan een half uur op de buffer moet staan.' },
