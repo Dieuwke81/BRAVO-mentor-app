@@ -998,8 +998,9 @@ export const initialCategories = [
       { id: 'aa5', text: 'Digitaal ruilen en snipperdag aanvragen' },
       { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
-      { id: 'aa8', text: 'Voorsorteren richting 18 septemberplein' },
-      { id: 'aa9', text: 'Waarom ben je verplicht om om het paaltje te rijden bij hotel Eindhoven?' },
+   { id: 'aa8', text: 'Op de buffer de hoofdschakelaar van een diesel altijd uitzetten. Bij een elektrische bus zet je de hoofdschakelaar uit als deze langer dan een half uur op de buffer moet staan.' },
+      { id: 'aa9', text: 'Voorsorteren richting 18 septemberplein' },
+      { id: 'aa10', text: 'Waarom ben je verplicht om om het paaltje te rijden bij hotel Eindhoven?' },
 { id: 'aa10', text: 'Muurtje beursgebouw' },
       
       { 
