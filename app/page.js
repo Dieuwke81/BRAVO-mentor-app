@@ -76,13 +76,27 @@ export default function Home() {
       setDates(safeParse(`bravo_dates_${activeStudent}`, { start: '', end: '' }));
       setReportNote(localStorage.getItem(`bravo_report_note_${activeStudent}`) || '');
       
-      // Laad handtekening
+      // Laad handtekening uit opslag
       const savedSig = localStorage.getItem(`bravo_signature_${activeStudent}`);
       setSignatureImage(savedSig || null);
       
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
+
+  // NIEUW: Deze effect zorgt ervoor dat de handtekening zichtbaar wordt op het canvas als je naar de Info tab gaat
+  useEffect(() => {
+    if (mainTab === 'info' && signatureImage && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+      };
+      img.src = signatureImage;
+    }
+  }, [mainTab, signatureImage]);
 
   useEffect(() => {
     Object.keys(textareaRefs.current).forEach(id => {
@@ -104,23 +118,35 @@ export default function Home() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
-    const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+    
+    // Bereken juiste schaal voor mobiel (ivm responsive canvas)
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    
+    const x = ((e.clientX || (e.touches && e.touches[0].clientX)) - rect.left) * scaleX;
+    const y = ((e.clientY || (e.touches && e.touches[0].clientY)) - rect.top) * scaleY;
+    
     ctx.beginPath();
     ctx.moveTo(x, y);
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
     ctx.strokeStyle = '#000';
   };
 
   const draw = (e) => {
     if (!isDrawing.current) return;
-    if (e.touches) e.preventDefault();
+    if (e.touches) e.preventDefault(); // Voorkom scrollen op iPhone tijdens tekenen
+    
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
-    const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+    
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    
+    const x = ((e.clientX || (e.touches && e.touches[0].clientX)) - rect.left) * scaleX;
+    const y = ((e.clientY || (e.touches && e.touches[0].clientY)) - rect.top) * scaleY;
+    
     ctx.lineTo(x, y);
     ctx.stroke();
   };
@@ -136,8 +162,10 @@ export default function Home() {
 
   const clearSignature = () => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
     setSignatureImage(null);
     localStorage.removeItem(`bravo_signature_${activeStudent}`);
   };
@@ -146,15 +174,7 @@ export default function Home() {
   if (!mounted) return null;
 
   const exportData = () => {
-    const data = { 
-      studentName: activeStudent, 
-      progress: JSON.stringify(completed), 
-      tallies: JSON.stringify(tallies), 
-      notes: JSON.stringify(notes), 
-      dates: JSON.stringify(dates), 
-      reportNote: reportNote,
-      signature: signatureImage
-    };
+    const data = { studentName: activeStudent, progress: JSON.stringify(completed), tallies: JSON.stringify(tallies), notes: JSON.stringify(notes), dates: JSON.stringify(dates), reportNote: reportNote, signature: signatureImage };
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -257,12 +277,7 @@ export default function Home() {
            <div className="pdf-header">
               <span>{pdfModal.text || pdfModal.title}</span>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <a 
-                  href={pdfModal.pdf} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="pdf-print-btn"
-                >
+                <a href={pdfModal.pdf} target="_blank" rel="noopener noreferrer" className="pdf-print-btn">
                   <Printer size={18} /> <span>Print / Open</span>
                 </a>
                 <button onClick={() => setPdfModal(null)}>SLUITEN</button>
