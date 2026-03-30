@@ -79,7 +79,7 @@ export default function Home() {
       
       const savedSig = localStorage.getItem(`bravo_signature_${activeStudent}`);
       setSignatureImage(savedSig || null);
-      setIsEditingSignature(!savedSig); // Toon canvas alleen als er nog geen handtekening is
+      setIsEditingSignature(!savedSig);
       
       localStorage.setItem('bravo_active_student', activeStudent);
     }
@@ -489,7 +489,7 @@ export default function Home() {
                <div className="form-group" style={{ marginTop: '10px' }}><label>Algemene Opmerking Rapport</label><textarea ref={reportNoteRef} value={reportNote} onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }} placeholder="Typ hier een toelichting voor het rapport..." className="note-area" style={{ marginLeft: 0, width: '100%' }} rows={2} /></div>
             </div>
 
-            {/* HANDTEKENING VAK AANGEPAST MET OPSLAAN FUNCTIE */}
+            {/* HANDTEKENING VAK */}
             <div className="card handtekening">
               <h3><PenTool size={20} style={{marginRight: '8px', verticalAlign: 'middle'}} />Handtekening Leerling</h3>
               
@@ -511,7 +511,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="form-row" style={{ marginTop: '10px' }}>
-                    <button onClick={clearSignature} className="btn outline" style={{ borderColor: var(--sub), color: var(--sub) }}><RotateCcw size={18} /> Wissen</button>
+                    <button onClick={clearSignature} className="btn outline" style={{ borderColor: 'var(--sub)', color: 'var(--sub)' }}><RotateCcw size={18} /> Wissen</button>
                     <button onClick={saveSignature} className="btn success"><Save size={18} /> Opslaan</button>
                   </div>
                 </div>
