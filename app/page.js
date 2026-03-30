@@ -6,7 +6,7 @@ import {
   Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, 
   Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, 
   Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck, 
-  Files, Sun, Moon, ExternalLink, PenTool 
+  Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw
 } from 'lucide-react';
 
 export default function Home() {
@@ -30,6 +30,7 @@ export default function Home() {
 
   // Handtekening state & refs
   const [signatureImage, setSignatureImage] = useState(null);
+  const [isEditingSignature, setIsEditingSignature] = useState(false);
   const canvasRef = useRef(null);
   const isDrawing = useRef(false);
 
@@ -76,27 +77,13 @@ export default function Home() {
       setDates(safeParse(`bravo_dates_${activeStudent}`, { start: '', end: '' }));
       setReportNote(localStorage.getItem(`bravo_report_note_${activeStudent}`) || '');
       
-      // Laad handtekening uit opslag
       const savedSig = localStorage.getItem(`bravo_signature_${activeStudent}`);
       setSignatureImage(savedSig || null);
+      setIsEditingSignature(!savedSig); // Toon canvas alleen als er nog geen handtekening is
       
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
-
-  // NIEUW: Deze effect zorgt ervoor dat de handtekening zichtbaar wordt op het canvas als je naar de Info tab gaat
-  useEffect(() => {
-    if (mainTab === 'info' && signatureImage && canvasRef.current) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
-      const img = new Image();
-      img.onload = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-      };
-      img.src = signatureImage;
-    }
-  }, [mainTab, signatureImage]);
 
   useEffect(() => {
     Object.keys(textareaRefs.current).forEach(id => {
@@ -118,14 +105,10 @@ export default function Home() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
-    
-    // Bereken juiste schaal voor mobiel (ivm responsive canvas)
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-    
     const x = ((e.clientX || (e.touches && e.touches[0].clientX)) - rect.left) * scaleX;
     const y = ((e.clientY || (e.touches && e.touches[0].clientY)) - rect.top) * scaleY;
-    
     ctx.beginPath();
     ctx.moveTo(x, y);
     ctx.lineWidth = 2.5;
@@ -135,39 +118,42 @@ export default function Home() {
 
   const draw = (e) => {
     if (!isDrawing.current) return;
-    if (e.touches) e.preventDefault(); // Voorkom scrollen op iPhone tijdens tekenen
-    
+    if (e.touches) e.preventDefault();
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
-    
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-    
     const x = ((e.clientX || (e.touches && e.touches[0].clientX)) - rect.left) * scaleX;
     const y = ((e.clientY || (e.touches && e.touches[0].clientY)) - rect.top) * scaleY;
-    
     ctx.lineTo(x, y);
     ctx.stroke();
   };
 
   const stopDrawing = () => {
-    if (!isDrawing.current) return;
     isDrawing.current = false;
-    const canvas = canvasRef.current;
-    const dataURL = canvas.toDataURL();
-    setSignatureImage(dataURL);
-    localStorage.setItem(`bravo_signature_${activeStudent}`, dataURL);
+  };
+
+  const saveSignature = () => {
+    if (canvasRef.current) {
+      const dataURL = canvasRef.current.toDataURL();
+      setSignatureImage(dataURL);
+      localStorage.setItem(`bravo_signature_${activeStudent}`, dataURL);
+      setIsEditingSignature(false);
+    }
   };
 
   const clearSignature = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (canvasRef.current) {
+        const ctx = canvasRef.current.getContext('2d');
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     }
+  };
+
+  const deleteSignature = () => {
     setSignatureImage(null);
     localStorage.removeItem(`bravo_signature_${activeStudent}`);
+    setIsEditingSignature(true);
   };
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
@@ -271,7 +257,7 @@ export default function Home() {
 
   return (
     <div className="main-wrapper">
-      {/* PDF Modal AANGEPAST MET PRINT KNOP */}
+      {/* PDF Modal */}
       {pdfModal && (
         <div className="pdf-overlay">
            <div className="pdf-header">
@@ -503,25 +489,40 @@ export default function Home() {
                <div className="form-group" style={{ marginTop: '10px' }}><label>Algemene Opmerking Rapport</label><textarea ref={reportNoteRef} value={reportNote} onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }} placeholder="Typ hier een toelichting voor het rapport..." className="note-area" style={{ marginLeft: 0, width: '100%' }} rows={2} /></div>
             </div>
 
-            {/* HANDTEKENING VAK */}
+            {/* HANDTEKENING VAK AANGEPAST MET OPSLAAN FUNCTIE */}
             <div className="card handtekening">
               <h3><PenTool size={20} style={{marginRight: '8px', verticalAlign: 'middle'}} />Handtekening Leerling</h3>
-              <div className="canvas-container" style={{background: '#fff', border: '1px solid var(--border)', borderRadius: '12px', overflow: 'hidden', touchAction: 'none', marginTop: '10px'}}>
-                <canvas 
-                  ref={canvasRef}
-                  width={400} 
-                  height={150}
-                  style={{width: '100%', height: 'auto', display: 'block', cursor: 'crosshair'}}
-                  onMouseDown={startDrawing}
-                  onMouseMove={draw}
-                  onMouseUp={stopDrawing}
-                  onMouseLeave={stopDrawing}
-                  onTouchStart={startDrawing}
-                  onTouchMove={draw}
-                  onTouchEnd={stopDrawing}
-                />
-              </div>
-              <button onClick={clearSignature} className="btn outline" style={{ marginTop: '10px', borderColor: 'var(--bravo-red)', color: 'var(--bravo-red)' }}>Wis handtekening</button>
+              
+              {isEditingSignature ? (
+                <div className="sig-editor">
+                  <div className="canvas-container" style={{background: '#fff', border: '2px solid var(--bravo-purple)', borderRadius: '12px', overflow: 'hidden', touchAction: 'none', marginTop: '10px'}}>
+                    <canvas 
+                      ref={canvasRef}
+                      width={400} 
+                      height={150}
+                      style={{width: '100%', height: 'auto', display: 'block', cursor: 'crosshair'}}
+                      onMouseDown={startDrawing}
+                      onMouseMove={draw}
+                      onMouseUp={stopDrawing}
+                      onMouseLeave={stopDrawing}
+                      onTouchStart={startDrawing}
+                      onTouchMove={draw}
+                      onTouchEnd={stopDrawing}
+                    />
+                  </div>
+                  <div className="form-row" style={{ marginTop: '10px' }}>
+                    <button onClick={clearSignature} className="btn outline" style={{ borderColor: var(--sub), color: var(--sub) }}><RotateCcw size={18} /> Wissen</button>
+                    <button onClick={saveSignature} className="btn success"><Save size={18} /> Opslaan</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="sig-display" style={{ marginTop: '10px' }}>
+                  <div style={{ background: '#fff', padding: '10px', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
+                    <img src={signatureImage} alt="Handtekening" style={{ maxWidth: '100%', height: '60px' }} />
+                  </div>
+                  <button onClick={deleteSignature} className="btn outline" style={{ marginTop: '10px', borderColor: 'var(--bravo-purple)', color: 'var(--bravo-purple)' }}>Handtekening aanpassen</button>
+                </div>
+              )}
             </div>
 
             <div className="card center">
