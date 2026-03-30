@@ -1112,7 +1112,7 @@ export const importantDocuments = [
   
   { id: 'doc-stoel', title: 'Stoelafstelling', pdf: '/docs/stoelafstelling.pdf' },
 { id: 'Zit instructie', title: 'Zit instructie', pdf: '/docs/Zit instructie.pdf' },
-  { id: 'Rolstoel Protocol', title: 'Rolstoel Protocol', pdf: '/docs/Rolstoel Protocol.pdf' },
+  { id: 'Rolstoel Protocol', title: 'Rolstoel Protocol', pdf: '/docs/Rolstoel Protocol .pdf' },
   
   { id: 'doc-Zaagtandgrafiek en OV-planningsbegrippen', title: 'Zaagtandgrafiek en OV-planningsbegrippen', pdf: '/docs/Zaagtandgrafiek en OV-planningsbegrippen.pdf' },
      { id: 'KAR en VETAG', title: 'KAR en VETAG.', pdf: '/docs/KAR en VETAG.pdf' },
