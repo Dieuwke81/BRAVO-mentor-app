@@ -1000,7 +1000,7 @@ export const initialCategories = [
    { id: 'aa8', text: 'Op de buffer de hoofdschakelaar van een diesel altijd uitzetten. Bij een elektrische bus zet je de hoofdschakelaar uit als deze langer dan een half uur op de buffer moet staan.' },
       { id: 'aa9', text: 'Voorsorteren richting 18 septemberplein' },
       { id: 'aa10', text: 'Waarom ben je verplicht om om het paaltje te rijden bij hotel Eindhoven?' },
-{ id: 'aa10', text: 'Muurtje beursgebouw' },
+{ id: 'aa11', text: 'Muurtje beursgebouw' },
       
       { 
   id: 'aa1', 
@@ -1105,6 +1105,7 @@ export const importantDocuments = [
   { id: 'ABC storingen lijst', title: 'ABC storingen lijst', pdf: '/docs/ABC-storingslijst Transdev OV december 2025.pdf' },
  { id: 'Stallingsplan', title: 'Stallingsplan', pdf: '/docs/Stallingsplan.pdf' },
  { id: 'Perronindeling', title: 'Perronindeling', pdf: '/docs/Perronindeling.pdf' },
+  { id: 'Afkortingenlijst', title: 'Afkortingenlijst', pdf: '/docs/Afkortingenlijst.pdf' },
   
   { id: 'Europees schadeformulier', title: 'Europees schadeformulier', pdf: '/docs/Europees schadeformulier.pdf' },
   { id: 'Brokkenpot', title: 'Brokkenpot', pdf: '/docs/Brokkenpot.pdf' },
