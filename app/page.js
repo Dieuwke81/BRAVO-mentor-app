@@ -6,7 +6,7 @@ import {
   Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, 
   Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, 
   Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck, 
-  Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw
+  Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw, Lock, Unlock
 } from 'lucide-react';
 
 export default function Home() {
@@ -36,6 +36,9 @@ export default function Home() {
 
   const textareaRefs = useRef({});
   const reportNoteRef = useRef(null);
+
+  // Check of de boel vergrendeld is
+  const isLocked = !!signatureImage && !isEditingSignature;
 
   const cleanTitle = (str) => str.replace(/^\d+\.\s*/, '');
 
@@ -101,6 +104,7 @@ export default function Home() {
 
   // HANDTEKENING LOGICA
   const startDrawing = (e) => {
+    if (isLocked) return;
     isDrawing.current = true;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -151,9 +155,11 @@ export default function Home() {
   };
 
   const deleteSignature = () => {
-    setSignatureImage(null);
-    localStorage.removeItem(`bravo_signature_${activeStudent}`);
-    setIsEditingSignature(true);
+    if (confirm("Handtekening verwijderen en rapport ontgrendelen?")) {
+      setSignatureImage(null);
+      localStorage.removeItem(`bravo_signature_${activeStudent}`);
+      setIsEditingSignature(true);
+    }
   };
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
@@ -192,16 +198,19 @@ export default function Home() {
   };
 
   const updateTally = (id, type, d) => {
+    if (isLocked) return;
     const next = { ...tallies, [id]: { ...(tallies[id] || { m: 0, z: 0 }), [type]: Math.max(0, (tallies[id]?.[type] || 0) + d) } };
     setTallies(next); localStorage.setItem(`bravo_tallies_${activeStudent}`, JSON.stringify(next));
   };
 
   const updateNote = (id, val) => {
+    if (isLocked) return;
     const next = { ...notes, [id]: val };
     setNotes(next); localStorage.setItem(`bravo_notes_${activeStudent}`, JSON.stringify(next));
   };
 
   const toggleItem = (id) => {
+    if (isLocked) return;
     const next = completed.includes(id) ? completed.filter(i => i !== id) : [...completed, id];
     setCompleted(next); localStorage.setItem(`bravo_progress_${activeStudent}`, JSON.stringify(next));
   };
@@ -256,7 +265,7 @@ export default function Home() {
     .filter(cat => cat.checkedItems.length > 0);
 
   return (
-    <div className="main-wrapper">
+    <div className={`main-wrapper ${isLocked ? 'is-locked' : ''}`}>
       {/* PDF Modal */}
       {pdfModal && (
         <div className="pdf-overlay">
@@ -301,17 +310,22 @@ export default function Home() {
             <div className="logo-container"><img src="/logo.png" alt="Logo" /></div>
             <div className="brand-text"><h1>BRAVO Mentor</h1><span>HERMES</span></div>
           </div>
-          <button onClick={toggleTheme} className="theme-btn">{theme === 'light' ? <Moon size={24} /> : <Sun size={24} />}</button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {isLocked && <div className="lock-indicator"><Lock size={18} /></div>}
+            <button onClick={toggleTheme} className="theme-btn">{theme === 'light' ? <Moon size={24} /> : <Sun size={24} />}</button>
+          </div>
         </div>
         
         <div className="student-box">
           <div className="row">
             <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} className="student-select">{students.map(s => <option key={s} value={s}>{s}</option>)}</select>
-            <button onClick={() => deleteStudent(activeStudent)} className="del-btn"><Trash2 size={20} /></button>
+            {!isLocked && <button onClick={() => deleteStudent(activeStudent)} className="del-btn"><Trash2 size={20} /></button>}
           </div>
-          <div className="row">
-            <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." className="student-input" /><button onClick={addStudent} className="add-btn"><Plus size={20} /></button>
-          </div>
+          {!isLocked && (
+            <div className="row">
+              <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)} placeholder="Naam leerling..." className="student-input" /><button onClick={addStudent} className="add-btn"><Plus size={20} /></button>
+            </div>
+          )}
         </div>
 
         <div className="total-progress">
@@ -355,7 +369,7 @@ export default function Home() {
               <div className="bar-bg"><div className="bar-fill" style={{ width: `${progressTab}%` }}></div></div>
             </div>
             {currentTabItems.map((item) => (
-              <div key={item.id} className="item-row">
+              <div key={item.id} className={`item-row ${isLocked ? 'locked-row' : ''}`}>
                 <div className="top-line">
                   <div className="check-label" onClick={() => toggleItem(item.id)}>
                     <div className={`check-box ${completed.includes(item.id) ? 'checked' : ''}`}>{completed.includes(item.id) && <CheckCircle2 size={18} />}</div>
@@ -368,10 +382,26 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="tally-row">
-                  <div className="tally-box"><button onClick={() => updateTally(item.id, 'm', -1)}><Minus size={16} /></button><div className="score"><Eye size={16} /> M: {tallies[item.id]?.m || 0}</div><button onClick={() => updateTally(item.id, 'm', 1)}><Plus size={16} /></button></div>
-                  <div className="tally-box green"><button onClick={() => updateTally(item.id, 'z', -1)}><Minus size={16} /></button><div className="score"><Navigation size={16} /> Z: {tallies[item.id]?.z || 0}</div><button onClick={() => updateTally(item.id, 'z', 1)}><Plus size={16} /></button></div>
+                  <div className="tally-box">
+                    <button onClick={() => updateTally(item.id, 'm', -1)} disabled={isLocked}><Minus size={16} /></button>
+                    <div className="score"><Eye size={16} /> M: {tallies[item.id]?.m || 0}</div>
+                    <button onClick={() => updateTally(item.id, 'm', 1)} disabled={isLocked}><Plus size={16} /></button>
+                  </div>
+                  <div className="tally-box green">
+                    <button onClick={() => updateTally(item.id, 'z', -1)} disabled={isLocked}><Minus size={16} /></button>
+                    <div className="score"><Navigation size={16} /> Z: {tallies[item.id]?.z || 0}</div>
+                    <button onClick={() => updateTally(item.id, 'z', 1)} disabled={isLocked}><Plus size={16} /></button>
+                  </div>
                 </div>
-                <textarea ref={el => textareaRefs.current[item.id] = el} value={notes[item.id] || ''} onChange={(e) => updateNote(item.id, e.target.value)} placeholder="Opmerking..." className="note-area" rows={1} />
+                <textarea 
+                  ref={el => textareaRefs.current[item.id] = el} 
+                  value={notes[item.id] || ''} 
+                  onChange={(e) => updateNote(item.id, e.target.value)} 
+                  placeholder={isLocked ? "" : "Opmerking..."} 
+                  className="note-area" 
+                  rows={1} 
+                  readOnly={isLocked}
+                />
               </div>
             ))}
           </div>
@@ -396,6 +426,7 @@ export default function Home() {
               </div>
             )}
 
+            {/* Handleiding knoppen ... */}
             <div style={{ marginBottom: '15px' }}>
               {activeBus === 'iveco' && (
                 <button onClick={() => setPdfModal({ title: 'Handleiding Iveco', pdf: '/docs/Instructie IVECO.pdf' })} className="rayon-pdf-btn">
@@ -433,7 +464,7 @@ export default function Home() {
               <div key={idx} className="checklist-section">
                 <h3>{cleanTitle(section.category)}</h3>
                 {section.items.map(item => (
-                  <div key={item.id} className="check-item" onClick={() => toggleItem(`${activeBus}_${item.id}`)}>
+                  <div key={item.id} className={`check-item ${isLocked ? 'locked-row' : ''}`} onClick={() => toggleItem(`${activeBus}_${item.id}`)}>
                     <div className={`check-box ${completed.includes(`${activeBus}_${item.id}`) ? 'checked' : ''}`}>{completed.includes(`${activeBus}_${item.id}`) && <CheckCircle2 size={16} />}</div>
                     <span>{item.text}</span>
                   </div>
@@ -449,7 +480,7 @@ export default function Home() {
             <div key={cat.id} className="card">
               <div className="cat-title">{cat.icon}<span>{cleanTitle(cat.title)}</span></div>
               {cat.items.map((it) => (
-                <div key={it.id} className="check-item" onClick={() => toggleItem(it.id)}>
+                <div key={it.id} className={`check-item ${isLocked ? 'locked-row' : ''}`} onClick={() => toggleItem(it.id)}>
                   <div className={`check-box ${completed.includes(it.id) ? 'checked' : ''}`}>{completed.includes(it.id) && <CheckCircle2 size={18} />}</div>
                   <span className={completed.includes(it.id) ? 'strikethrough' : ''}>{it.text}</span>
                 </div>
@@ -484,9 +515,33 @@ export default function Home() {
             
             <div className="card rapportage">
                <h3>Rapportage Gegevens</h3>
-               <div className="form-group"><label>Mentor</label><input type="text" value={mentorName} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} /></div>
-               <div className="form-row"><div className="form-group"><label>Start</label><input type="text" value={dates.start} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div><div className="form-group"><label>Eind</label><input type="text" value={dates.end} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} /></div></div>
-               <div className="form-group" style={{ marginTop: '10px' }}><label>Algemene Opmerking Rapport</label><textarea ref={reportNoteRef} value={reportNote} onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }} placeholder="Typ hier een toelichting voor het rapport..." className="note-area" style={{ marginLeft: 0, width: '100%' }} rows={2} /></div>
+               <div className="form-group">
+                 <label>Mentor</label>
+                 <input type="text" value={mentorName} readOnly={isLocked} onChange={(e) => { setMentorName(e.target.value); localStorage.setItem('bravo_mentor_name', e.target.value); }} />
+               </div>
+               <div className="form-row">
+                 <div className="form-group">
+                   <label>Start</label>
+                   <input type="text" value={dates.start} readOnly={isLocked} onChange={(e) => { const d = { ...dates, start: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} />
+                 </div>
+                 <div className="form-group">
+                   <label>Eind</label>
+                   <input type="text" value={dates.end} readOnly={isLocked} onChange={(e) => { const d = { ...dates, end: e.target.value }; setDates(d); localStorage.setItem(`bravo_dates_${activeStudent}`, JSON.stringify(d)); }} />
+                 </div>
+               </div>
+               <div className="form-group" style={{ marginTop: '10px' }}>
+                 <label>Algemene Opmerking Rapport</label>
+                 <textarea 
+                   ref={reportNoteRef} 
+                   value={reportNote} 
+                   readOnly={isLocked}
+                   onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }} 
+                   placeholder={isLocked ? "" : "Typ hier een toelichting voor het rapport..."} 
+                   className="note-area" 
+                   style={{ marginLeft: 0, width: '100%' }} 
+                   rows={2} 
+                 />
+               </div>
             </div>
 
             {/* HANDTEKENING VAK */}
@@ -594,6 +649,7 @@ export default function Home() {
         .brand-text h1 { color: white; margin: 0; font-size: 1.4rem; }
         .brand-text span { color: rgba(255,255,255,0.8); font-size: 0.8rem; }
         .theme-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px; border-radius: 50%; cursor: pointer; }
+        .lock-indicator { background: rgba(255,255,255,0.2); color: #fbbf24; padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .student-box { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 14px; margin-bottom: 15px; }
         .student-box .row { display: flex; gap: 8px; margin-bottom: 8px; }
         .student-select, .student-input { flex: 1; padding: 10px; border-radius: 8px; border: none; outline: none; font-size: 0.9rem; }
@@ -614,6 +670,8 @@ export default function Home() {
         .rayon-progress .bar-bg { background: var(--border); height: 6px; border-radius: 3px; overflow: hidden; }
         .rayon-progress .bar-fill { background: var(--bravo-purple); height: 100%; }
         .item-row { padding: 15px 0; border-bottom: 1px solid var(--border); }
+        .locked-row { opacity: 0.75; cursor: not-allowed !important; }
+        .locked-row .check-label, .locked-row .act-btn { pointer-events: none; }
         .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
         .check-label { display: flex; align-items: center; cursor: pointer; flex: 1; }
         
@@ -670,6 +728,7 @@ export default function Home() {
         .tally-row { display: flex; gap: 10px; margin-left: 38px; margin-bottom: 8px; flex-wrap: wrap; }
         .tally-box { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); height: 34px; }
         .tally-box button { background: transparent; border: none; padding: 0 8px; color: var(--bravo-purple); cursor: pointer; }
+        .tally-box button:disabled { opacity: 0.3; cursor: not-allowed; }
         .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
         
         .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flex-direction: column; }
