@@ -308,7 +308,13 @@ export default function Home() {
         <div className="header-top">
           <div className="brand-box">
             <div className="logo-container"><img src="/logo.png" alt="Logo" /></div>
-            <div className="brand-text"><h1>BRAVO Mentor</h1><span>HERMES</span></div>
+            <div className="brand-text">
+              <h1>BRAVO Mentor</h1>
+              <span>HERMES</span>
+              <div className="feedback-link">
+                Op- of aanmerkingen?: <a href="mailto:dieuwke.vanberkom@transdev.nl">dieuwke.vanberkom@transdev.nl</a>
+              </div>
+            </div>
           </div>
           <div style={{ display: 'flex', gap: '10px' }}>
             {isLocked && <div className="lock-indicator"><Lock size={18} /></div>}
@@ -648,6 +654,8 @@ export default function Home() {
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .brand-text h1 { color: white; margin: 0; font-size: 1.4rem; }
         .brand-text span { color: rgba(255,255,255,0.8); font-size: 0.8rem; }
+        .feedback-link { color: rgba(255,255,255,0.8); font-size: 0.75rem; margin-top: 5px; }
+        .feedback-link a { color: white; text-decoration: underline; }
         .theme-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px; border-radius: 50%; cursor: pointer; }
         .lock-indicator { background: rgba(255,255,255,0.2); color: #fbbf24; padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .student-box { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 14px; margin-bottom: 15px; }
