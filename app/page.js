@@ -517,7 +517,7 @@ export default function Home() {
         {/* Info Tab */}
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
-            <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren: Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
+            <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren (indien mogelijk voor 9:00): Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
             
             <div className="card rapportage">
                <h3>Rapportage Gegevens</h3>
