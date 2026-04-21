@@ -993,7 +993,7 @@ export const initialCategories = [
     icon: <Clock size={22} />,
     items: [
       { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
-   { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen' },
+   { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen (Zie docs)' },
       { id: 'aa4', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
          { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
