@@ -993,7 +993,7 @@ export const initialCategories = [
     icon: <Clock size={22} />,
     items: [
       { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
-   { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen (Zie docs)' },
+   { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen (Zie docs en links)' },
       { id: 'aa4', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
          { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
@@ -1243,7 +1243,8 @@ export const usefulLinks = [
   
   { name: 'Groenendijk Bedrijfskleding (IOS)', url: 'https://apps.apple.com/nl/app/groenendijk/id1604594725' },
 
-  
+  { name: 'Vervoersbewijzen', url: 'https://www.hermes.nl/nl/vervoerbewijzen' },
+
 { name: 'CAO', url: 'https://www.fnv.nl/getmedia/8bca591d-dfa1-445b-a628-0b4725a0d233/500-openbaar-vervoer-cao-01-04-2025-tm-30-06-2026-v29012026.pdf?ext=.pdf' },
   { name: 'FNV', url: 'https://www.fnv.nl/' },
 { name: 'CNV', url: 'https://www.cnv.nl/' },
