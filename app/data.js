@@ -1056,7 +1056,7 @@ Deze bussen niet zelf pakken!`
     items: [
       { id: 'a7', text: 'Korte uitleg Webcomm. Digitaal ruilen en snipperdag aanvragen' },
       { id: 'a1', text: 'Kledingvoorschrift in orde (Zie docs)' },
-      { id: 'a2', text: 'Zich aanmelden via computer' },
+      { id: 'a2', text: 'Zich aanmelden via computer en het bekijken van de RBS meldingen' },
       { id: 'a3', text: 'Uitvoerig op de hoogte stellen van de omleidingen (denk hierbij aan het aanmelden voor de mail. Zie INFO voor het mailadres)' },
       { id: 'a4', text: 'Mededelingen en aanschrijvingen lezen' },
       { id: 'a5', text: 'Controleren van stallingsplan (Zie docs)' },
@@ -1072,7 +1072,7 @@ Deze bussen niet zelf pakken!`
       { id: 'v2', text: 'Instellen stuurwiel & spiegels (Denk ook aan dag/nacht instelling camera\'s)' },
       { id: 'v3', text: 'Controle op schade' },
       { id: 'v4', text: 'Bediening verlichting' },
-      { id: 'v5', text: 'Klimaatbediening & ontwaseming' },
+      { id: 'v5', text: 'Klimaatbediening & ontwaseming. (denk hierbij ook aan niet extreme temperaturen instellen. Dit werkt vaak averechts)' },
       { id: 'v6', text: 'Resetprocedure van de bus' }
     ]
   },
@@ -1082,7 +1082,7 @@ Deze bussen niet zelf pakken!`
     icon: <Radio size={22} />,
     items: [
       { id: 's1', text: 'Inloggen Viribus (pincode via ROV)' },
-      { id: 's2', text: 'Juiste omloop invoeren' },
+      { id: 's2', text: 'Juiste omloop op het omloopbordje' },
       { id: 's3', text: 'Gebruik KAR/VETAG (Zie docs)' },
       { id: 's4', text: 'Kaartverkoop & Ticketbox' }
     ]
