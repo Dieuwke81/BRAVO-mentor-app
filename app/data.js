@@ -993,7 +993,18 @@ export const initialCategories = [
     icon: <Clock size={22} />,
     items: [
       { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
-   { id: 'aa3', text: 'Verschillende soorten vervoersbewijzen (Zie docs en links)' },
+   { id: 'aa3', 
+    text: `Verschillende soorten vervoersbewijzen (Zie docs en links)
+      Met als aanvulling P&R.
+     We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde.
+     Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5.
+     Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. 
+     Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.`
+   
+  }
+      ]
+    },
+      
       { id: 'aa4', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
          { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
