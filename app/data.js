@@ -1093,41 +1093,41 @@ export const contactData = [
   {
     category: 'ALGEMEEN',
     contacts: [
-      { name: 'ROV UTRECHT', phone: '030-2849494' },
-      { name: 'Neckerspoel', phone: '088-6255737' },
-      { name: 'Opkomstlokaal Dorgelolaan 50', phone: '040-2466373' },
-      { name: 'Kantoor MER Neckerspoel', phone: '088-6255736' },
-      { name: 'Planning Dorgelolaan 50', phone: '040-2358630' },
-      { name: 'Hermes Verloftelefoon', phone: '040-2358639' }
+      { name: 'ROV UTRECHT', phone: ['030-2849494'] },
+      { name: 'Neckerspoel', phone: ['088-6255737'] },
+      { name: 'Opkomstlokaal Dorgelolaan 50', phone: ['040-2466373'] },
+      { name: 'Kantoor MER Neckerspoel', phone: ['088-6255736'] },
+      { name: 'Planning Dorgelolaan 50', phone: ['040-2358630'] },
+      { name: 'Hermes Verloftelefoon', phone: ['040-2358639'] }
     ]
   },
   {
     category: 'OMLEIDINGEN & SCHADE',
     contacts: [
       { name: 'E-mail omleidingen', email: 'omleidingen@hermesgroep.nl' },
-      { name: 'Manager logistiek', phone: '088-6255735' },
-      { name: 'Schadetelefoon', phone: '06-38076828' },
+      { name: 'Manager logistiek', phone: ['088-6255735'] },
+      { name: 'Schadetelefoon', phone: ['06-38076828'] },
       { name: 'E-mail schades', email: 'Schade_eindhoven@connexxion.nl' },
-      { name: 'Klantenservice (tegenpartij)', phone: '0800-0222277' }
+      { name: 'Klantenservice (tegenpartij)', phone: ['0800-0222277'] }
     ]
   },
   {
     category: 'GPD (Management)',
     contacts: [
-      { name: 'Twan Smid', phone: '088-6255732' , phone: '06-21600876' },
-      { name: 'Thirza van Diepen', phone: '040-2358628' , phone: '06-41245304'},
-      { name: 'Erik Feijen', phone: '040-2358638' , phone: '06-81177009'},
-      { name: 'John Gijsbers', phone: '040-2358657' , phone: '06-42466431' }
+      { name: 'Twan Smid', phone: ['088-6255732', '06-21600876'] },
+      { name: 'Thirza van Diepen', phone: ['040-2358628', '06-41245304'] },
+      { name: 'Erik Feijen', phone: ['040-2358638', '06-81177009'] },
+      { name: 'John Gijsbers', phone: ['040-2358657', '06-42466431'] }
     ]
   },
   {
     category: 'RAYONS',
     contacts: [
-      { name: 'Michiel Bles', phone: '088-6255731', phone: '06-11350708' },
-   { name: 'Debbie Flower', phone: '088-6255730' , phone: '06-14232803'},
-      { name: 'Johan Cuijpers', phone: '088-6255740' , phone: '06-49941490' },
-      { name: 'Mark Zwijnenburg', phone: '088-6255733' , phone: '06-34709792'},
-      { name: 'Patrick Houthooft', phone: '088-6255734' ,phone: '06-28460890' }
+      { name: 'Michiel Bles', phone: ['088-6255731', '06-11350708'] },
+      { name: 'Debbie Flower', phone: ['088-6255730', '06-14232803'] },
+      { name: 'Johan Cuijpers', phone: ['088-6255740', '06-49941490'] },
+      { name: 'Mark Zwijnenburg', phone: ['088-6255733', '06-34709792'] },
+      { name: 'Patrick Houthooft', phone: ['088-6255734', '06-28460890'] }
     ]
   }
 ];
