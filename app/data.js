@@ -1039,8 +1039,8 @@ export const initialCategories = [
       { id: 'aa10', text: 'Waarom ben je verplicht om om het paaltje te rijden bij hotel Eindhoven?' },
       { id: 'aa11', text: 'Muurtje beursgebouw' },
       { id: 'aa12', text: `Busbaan Aalsterweg:
-      Stad uit= Binnen de ring is jouw busbaan. Buiten de ring tot aan de eerstvolgende verkeerslichten even samen bekijken wie het het drukste heeft. Na die verkeerslichten kijk je ver vooruit. Zie je geen bus, dan kun je oo de busbaan. Zie je wel een bus in de verte, dan ga je direct na het verkeerslicht de reguliere baan oo. Net voor halte Kortonjo kun je de busbaan weer oo. Zorg dat je tegenligger NOOIT op jou hoeft te wachten!
-      Stad in= Na halte Kortonjo is in principe jouw busbaan. Na de verkeerslichten even samen bekijken wie het het drukste heeft. Binnen de ring is tot aan halte Loo8akkerstraat NIET jouw busbaan. `
+      Stad uit= Binnen de ring is jouw busbaan. Buiten de ring tot aan de eerstvolgende verkeerslichten even samen bekijken wie het het drukste heeft. Na die verkeerslichten kijk je ver vooruit. Zie je geen bus, dan kun je op de busbaan. Zie je wel een bus in de verte, dan ga je direct na het verkeerslicht de reguliere baan op. Net voor halte Kortonjo kun je de busbaan weer op. Zorg dat je tegenligger NOOIT op jou hoeft te wachten!
+      Stad in= Na halte Kortonjo is in principe jouw busbaan. Na de verkeerslichten even samen bekijken wie het het drukste heeft. Binnen de ring is tot aan halte Looiakkerstraat NIET jouw busbaan. `
       },
 
       {
