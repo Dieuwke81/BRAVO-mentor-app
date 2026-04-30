@@ -1114,20 +1114,20 @@ export const contactData = [
   {
     category: 'GPD (Management)',
     contacts: [
-      { name: 'Twan Smid', phone: '0886255732' , phone: '06-21600876' },
-      { name: 'Thirza van Diepen', phone: '040-2358628' , phone: '0641245304'},
-      { name: 'Erik Feijen', phone: '040-2358638' , phone: '0681177009'},
-      { name: 'John Gijsbers', phone: '040-2358657' , phone: '0642466431' }
+      { name: 'Twan Smid', phone: '088-6255732' , phone: '06-21600876' },
+      { name: 'Thirza van Diepen', phone: '040-2358628' , phone: '06-41245304'},
+      { name: 'Erik Feijen', phone: '040-2358638' , phone: '06-81177009'},
+      { name: 'John Gijsbers', phone: '040-2358657' , phone: '06-42466431' }
     ]
   },
   {
     category: 'RAYONS',
     contacts: [
-      { name: 'Michiel Bles', phone: '088-6255731', phone: '0611350708' },
-   { name: 'Debbie Flower', phone: '088-6255730' , phone: '0614232803'},
-      { name: 'Johan Cuijpers', phone: '088-6255740' , phone: '0649941490' },
-      { name: 'Mark Zwijnenburg', phone: '088-6255733' , phone: '0634709792'},
-      { name: 'Patrick Houthooft', phone: '088-6255734' ,phone: '0628460890' }
+      { name: 'Michiel Bles', phone: '088-6255731', phone: '06-11350708' },
+   { name: 'Debbie Flower', phone: '088-6255730' , phone: '06-14232803'},
+      { name: 'Johan Cuijpers', phone: '088-6255740' , phone: '06-49941490' },
+      { name: 'Mark Zwijnenburg', phone: '088-6255733' , phone: '06-34709792'},
+      { name: 'Patrick Houthooft', phone: '088-6255734' ,phone: '06-28460890' }
     ]
   }
 ];
