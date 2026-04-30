@@ -993,11 +993,9 @@ export const initialCategories = [
       {
         id: 'aa3',
         text: `Verschillende soorten vervoersbewijzen (Zie docs en links)
-      Met als aanvulling P&R.
-     We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde.
-     Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5.
-     Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur.
-     Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.`
+      Met als aanvulling P&R en de NS kaartjes richting airport.
+      • We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde. Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5. Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.
+      • De NS kaartjes werken niet met inchecken. Je kunt ze op zicht conteoleren. Let er dan op dat ze naar airport geen. Als er alleen Eindhoven centraal staat, is dit NIET tot airport!`
       },
       { id: 'aa4', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
       { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
