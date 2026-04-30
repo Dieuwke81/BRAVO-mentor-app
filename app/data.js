@@ -984,45 +984,37 @@ export const busRoutes = [
 ];
 
 export const initialCategories = [
-  
-      
-      
-    {
-  id: 'algemeen',
+  {
+    id: 'algemeen',
     title: '1. Algemeen',
     icon: <Clock size={22} />,
     items: [
       { id: 'aa2', text: 'Rondje langs de kantoren. Wie is wie?' },
-   { id: 'aa3', 
-    text: `Verschillende soorten vervoersbewijzen (Zie docs en links)
+      {
+        id: 'aa3',
+        text: `Verschillende soorten vervoersbewijzen (Zie docs en links)
       Met als aanvulling P&R.
      We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde.
      Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5.
-     Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. 
+     Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur.
      Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.`
-   
-  }
-      ]
-    },
-      
+      },
       { id: 'aa4', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
-         { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
+      { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
-   { id: 'aa8', text: 'Op de buffer de hoofdschakelaar van een diesel altijd uitzetten. Bij een elektrische bus zet je de hoofdschakelaar uit als deze langer dan een half uur op de buffer moet staan.' },
+      { id: 'aa8', text: 'Op de buffer de hoofdschakelaar van een diesel altijd uitzetten. Bij een elektrische bus zet je de hoofdschakelaar uit als deze langer dan een half uur op de buffer moet staan.' },
       { id: 'aa9', text: 'Voorsorteren richting 18 septemberplein' },
       { id: 'aa10', text: 'Waarom ben je verplicht om om het paaltje te rijden bij hotel Eindhoven?' },
-{ id: 'aa11', text: 'Muurtje beursgebouw' },
-      
-      { 
-  id: 'aa1', 
-  text: `Op de hoogte van de codes:
+      { id: 'aa11', text: 'Muurtje beursgebouw' },
+      {
+        id: 'aa1',
+        text: `Op de hoogte van de codes:
 • 999 = Storing
 • 888 = Viribus / Ticketbox
 • 777 = Camera (niet spiegelcamera)
 • 555 = Reservebus
-Deze bussen niet zelf pakken!` 
-}
-      
+Deze bussen niet zelf pakken!`
+      }
     ]
   },
   {
@@ -1030,11 +1022,10 @@ Deze bussen niet zelf pakken!`
     title: '2. Aanvang Dienst & Voorbereiding',
     icon: <Clock size={22} />,
     items: [
-     { id: 'a7', text: 'Korte uitleg Webcomm. Digitaal ruilen en snipperdag aanvragen' },
-   
+      { id: 'a7', text: 'Korte uitleg Webcomm. Digitaal ruilen en snipperdag aanvragen' },
       { id: 'a1', text: 'Kledingvoorschrift in orde (Zie docs)' },
       { id: 'a2', text: 'Zich aanmelden via computer' },
-   { id: 'a3', text: 'Uitvoerig op de hoogte stellen van de omleidingen (denk hierbij aan het aanmelden voor de mail. Zie INFO voor het mailadres)' },
+      { id: 'a3', text: 'Uitvoerig op de hoogte stellen van de omleidingen (denk hierbij aan het aanmelden voor de mail. Zie INFO voor het mailadres)' },
       { id: 'a4', text: 'Mededelingen en aanschrijvingen lezen' },
       { id: 'a5', text: 'Controleren van stallingsplan (Zie docs)' },
       { id: 'a6', text: 'Juiste voertuigtype pakken' }
@@ -1050,7 +1041,7 @@ Deze bussen niet zelf pakken!`
       { id: 'v3', text: 'Controle op schade' },
       { id: 'v4', text: 'Bediening verlichting' },
       { id: 'v5', text: 'Klimaatbediening & ontwaseming' },
-       { id: 'v6', text: 'Resetprocedure van de bus' }
+      { id: 'v6', text: 'Resetprocedure van de bus' }
     ]
   },
   {
