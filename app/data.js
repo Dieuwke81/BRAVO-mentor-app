@@ -1105,7 +1105,7 @@ export const contactData = [
     category: 'OMLEIDINGEN & SCHADE',
     contacts: [
       { name: 'E-mail omleidingen', email: 'omleidingen@hermesgroep.nl' },
-      { name: 'Michel van Bakel', phone: '088-6255735' },
+      { name: 'Manager logistiek', phone: '088-6255735' },
       { name: 'Schadetelefoon', phone: '06-38076828' },
       { name: 'E-mail schades', email: 'Schade_eindhoven@connexxion.nl' },
       { name: 'Klantenservice (tegenpartij)', phone: '0800-0222277' }
@@ -1114,20 +1114,20 @@ export const contactData = [
   {
     category: 'GPD (Management)',
     contacts: [
-      { name: 'Twan Smid', phone: '06-21600876' },
-      { name: 'Thirza van Diepen', phone: '040-2358628' },
-      { name: 'Erik Feijen', phone: '040-2358638' },
-      { name: 'John Gijsbers', phone: '040-2358657' }
+      { name: 'Twan Smid', phone: '0886255732' , phone: '06-21600876' },
+      { name: 'Thirza van Diepen', phone: '040-2358628' , phone: '0641245304'},
+      { name: 'Erik Feijen', phone: '040-2358638' , phone: '0681177009'},
+      { name: 'John Gijsbers', phone: '040-2358657' , phone: '0642466431' }
     ]
   },
   {
     category: 'RAYONS',
     contacts: [
-      { name: 'Michiel Bles', phone: '088-6255731' },
-   { name: 'Debbie Flower', phone: '088-6255730' },
-      { name: 'Johan Cuijpers', phone: '088-6255740' },
-      { name: 'Mark Zwijnenburg', phone: '088-6255733' },
-      { name: 'Patrick Houthooft', phone: '088-6255734' }
+      { name: 'Michiel Bles', phone: '088-6255731', phone: '0611350708' },
+   { name: 'Debbie Flower', phone: '088-6255730' , phone: '0614232803'},
+      { name: 'Johan Cuijpers', phone: '088-6255740' , phone: '0649941490' },
+      { name: 'Mark Zwijnenburg', phone: '088-6255733' , phone: '0634709792'},
+      { name: 'Patrick Houthooft', phone: '088-6255734' ,phone: '0628460890' }
     ]
   }
 ];
