@@ -1031,13 +1031,16 @@ export const initialCategories = [
       • We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde. Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5. Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.
       • De NS kaartjes werken niet met inchecken. Je kunt ze op zicht controleren. Let er dan op dat ze naar airport geen. Als er alleen Eindhoven centraal staat, is dit NIET tot airport!`
       },
-      { id: 'aa4', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
+      { id: 'aa4', text: '' },
       { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
       { id: 'aa8', text: 'Op de buffer de hoofdschakelaar van een diesel altijd uitzetten. Bij een elektrische bus zet je de hoofdschakelaar uit als deze langer dan een half uur op de buffer moet staan.' },
       { id: 'aa9', text: 'Voorsorteren richting 18 septemberplein' },
       { id: 'aa10', text: 'Waarom ben je verplicht om om het paaltje te rijden bij hotel Eindhoven?' },
       { id: 'aa11', text: 'Muurtje beursgebouw' },
+      { id: 'aa12', text: `Busbaan Aalsterweg:
+      Stad uit= Binnen de ring is jouw busbaan. Buiten de ring tot aan de eerstvolgende verkeerslichten even samen bekijken wie het het drukste heeft. Na die verkeerslichten kijk je ver vooruit. Zie je geen bus, dan kun je oo de busbaan. Zie je wel een bus in de verte, dan ga je direct na het verkeerslicht de reguliere baan oo. Net voor halte Kortonjo kun je de busbaan weer oo. Zorg dat je tegenligger NOOIT op jou hoeft te wachten!
+      Stad in= Na halte Kortonjo is in principe jouw busbaan. Na de verkeerslichten even samen bekijken wie het het drukste heeft. Binnen de ring is tot aan halte Loo8akkerstraat NIET jouw busbaan. `]
       {
         id: 'aa1',
         text: `Op de hoogte van de codes:
@@ -1054,6 +1057,7 @@ Deze bussen niet zelf pakken!`
     title: '2. Aanvang Dienst & Voorbereiding',
     icon: <Clock size={22} />,
     items: [
+      { id: 'a8', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
       { id: 'a7', text: 'Korte uitleg Webcomm. Digitaal ruilen en snipperdag aanvragen' },
       { id: 'a1', text: 'Kledingvoorschrift in orde (Zie docs)' },
       { id: 'a2', text: 'Zich aanmelden via computer en het bekijken van de RBS meldingen' },
