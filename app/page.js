@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { busRoutes, initialCategories, contactData, importantDocuments, busTypes, vehicleChecklist, usefulLinks } from './data';
-import { 
-  Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock, 
-  Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck, 
-  Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck, 
+import {
+  Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock,
+  Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck,
+  Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck,
   Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw, Lock, Unlock
 } from 'lucide-react';
 
@@ -50,8 +50,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') { 
-      setBaseUrl(window.location.origin); 
+    if (typeof window !== 'undefined') {
+      setBaseUrl(window.location.origin);
       const savedTheme = localStorage.getItem('bravo_theme') || 'light';
       setTheme(savedTheme);
       document.body.className = savedTheme === 'dark' ? 'dark-mode' : '';
@@ -79,11 +79,11 @@ export default function Home() {
       setNotes(safeParse(`bravo_notes_${activeStudent}`, {}));
       setDates(safeParse(`bravo_dates_${activeStudent}`, { start: '', end: '' }));
       setReportNote(localStorage.getItem(`bravo_report_note_${activeStudent}`) || '');
-      
+
       const savedSig = localStorage.getItem(`bravo_signature_${activeStudent}`);
       setSignatureImage(savedSig || null);
       setIsEditingSignature(!savedSig);
-      
+
       localStorage.setItem('bravo_active_student', activeStudent);
     }
   }, [activeStudent, mounted]);
@@ -321,7 +321,7 @@ export default function Home() {
             <button onClick={toggleTheme} className="theme-btn">{theme === 'light' ? <Moon size={24} /> : <Sun size={24} />}</button>
           </div>
         </div>
-        
+
         <div className="student-box">
           <div className="row">
             <select value={activeStudent} onChange={(e) => setActiveStudent(e.target.value)} className="student-select">{students.map(s => <option key={s} value={s}>{s}</option>)}</select>
@@ -399,13 +399,13 @@ export default function Home() {
                     <button onClick={() => updateTally(item.id, 'z', 1)} disabled={isLocked}><Plus size={16} /></button>
                   </div>
                 </div>
-                <textarea 
-                  ref={el => textareaRefs.current[item.id] = el} 
-                  value={notes[item.id] || ''} 
-                  onChange={(e) => updateNote(item.id, e.target.value)} 
-                  placeholder={isLocked ? "" : "Opmerking..."} 
-                  className="note-area" 
-                  rows={1} 
+                <textarea
+                  ref={el => textareaRefs.current[item.id] = el}
+                  value={notes[item.id] || ''}
+                  onChange={(e) => updateNote(item.id, e.target.value)}
+                  placeholder={isLocked ? "" : "Opmerking..."}
+                  className="note-area"
+                  rows={1}
                   readOnly={isLocked}
                 />
               </div>
@@ -518,7 +518,7 @@ export default function Home() {
         {mainTab === 'info' && (
           <div style={{ paddingBottom: '40px' }}>
             <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren (indien mogelijk voor 9:00): Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
-            
+
             <div className="card rapportage">
                <h3>Rapportage Gegevens</h3>
                <div className="form-group">
@@ -537,15 +537,15 @@ export default function Home() {
                </div>
                <div className="form-group" style={{ marginTop: '10px' }}>
                  <label>Algemene Opmerking Rapport</label>
-                 <textarea 
-                   ref={reportNoteRef} 
-                   value={reportNote} 
+                 <textarea
+                   ref={reportNoteRef}
+                   value={reportNote}
                    readOnly={isLocked}
-                   onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }} 
-                   placeholder={isLocked ? "" : "Typ hier een toelichting voor het rapport..."} 
-                   className="note-area" 
-                   style={{ marginLeft: 0, width: '100%' }} 
-                   rows={2} 
+                   onChange={(e) => { setReportNote(e.target.value); localStorage.setItem(`bravo_report_note_${activeStudent}`, e.target.value); }}
+                   placeholder={isLocked ? "" : "Typ hier een toelichting voor het rapport..."}
+                   className="note-area"
+                   style={{ marginLeft: 0, width: '100%' }}
+                   rows={2}
                  />
                </div>
             </div>
@@ -553,13 +553,13 @@ export default function Home() {
             {/* HANDTEKENING VAK */}
             <div className="card handtekening">
               <h3><PenTool size={20} style={{marginRight: '8px', verticalAlign: 'middle'}} />Handtekening Leerling</h3>
-              
+
               {isEditingSignature ? (
                 <div className="sig-editor">
                   <div className="canvas-container" style={{background: '#fff', border: '2px solid var(--bravo-purple)', borderRadius: '12px', overflow: 'hidden', touchAction: 'none', marginTop: '10px'}}>
-                    <canvas 
+                    <canvas
                       ref={canvasRef}
-                      width={400} 
+                      width={400}
                       height={150}
                       style={{width: '100%', height: 'auto', display: 'block', cursor: 'crosshair'}}
                       onMouseDown={startDrawing}
@@ -592,7 +592,22 @@ export default function Home() {
               <label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
             {contactData.map((group, idx) => (
-              <div key={idx} className="card"><h3 className="group-title">{group.category}</h3>{group.contacts.map((c, i) => (<div key={i} className="contact-row"><span className="name">{c.name}</span><div className="links">{c.phone && <a href={`tel:${c.phone}`} className="phone">{c.phone}</a>}{c.email && <a href={`mailto:${c.email}`} className="email">{c.email}</a>}</div></div>))}</div>
+              <div key={idx} className="card">
+                <h3 className="group-title">{group.category}</h3>
+                {group.contacts.map((c, i) => (
+                  <div key={i} className="contact-row">
+                    <span className="name">{c.name}</span>
+                    <div className="links">
+                      {/* Aangepaste code voor telefoonnummers */}
+                      {c.phone && Array.isArray(c.phone) && c.phone.map((number, numIdx) => (
+                        <a key={numIdx} href={`tel:${number.replace(/-/g, '')}`} className="phone">{number}</a>
+                      ))}
+                      {/* Bestaande code voor e-mail */}
+                      {c.email && <a href={`mailto:${c.email}`} className="email">{c.email}</a>}
+                    </div>
+                  </div>
+                ))}
+              </div>
             ))}
           </div>
         )}
@@ -608,7 +623,7 @@ export default function Home() {
           </div>
         </div>
         {reportNote && <div style={{ marginBottom: '30px', border: '1px solid #ccc', padding: '15px', borderRadius: '10px', background: '#f9f9f9' }}><h3 style={{ marginTop: 0, fontSize: '16px', color: 'var(--bravo-purple)' }}>Algemene toelichting</h3><div style={{ whiteSpace: 'pre-wrap', fontSize: '14px' }}>{reportNote}</div></div>}
-        
+
         <h3>1. Gereden Lijnen & Resultaten</h3>
         <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '30px' }}>
           <thead><tr style={{ background: '#f0f0f0' }}><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Lijn</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Status</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>M</th><th style={{ border: '1px solid #ccc', padding: '10px' }}>Z</th><th style={{ border: '1px solid #ccc', padding: '10px', textAlign: 'left' }}>Opmerkingen</th></tr></thead>
@@ -682,20 +697,20 @@ export default function Home() {
         .locked-row .check-label, .locked-row .act-btn { pointer-events: none; }
         .top-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
         .check-label { display: flex; align-items: center; cursor: pointer; flex: 1; }
-        
-        .check-item { 
-          display: flex; 
-          align-items: flex-start; 
-          padding: 12px 0; 
-          border-bottom: 1px solid var(--border); 
-          cursor: pointer; 
-          text-align: left; 
+
+        .check-item {
+          display: flex;
+          align-items: flex-start;
+          padding: 12px 0;
+          border-bottom: 1px solid var(--border);
+          cursor: pointer;
+          text-align: left;
         }
 
         .check-item span {
-          white-space: pre-wrap; 
-          line-height: 1.5;      
-          margin-top: 2px;       
+          white-space: pre-wrap;
+          line-height: 1.5;
+          margin-top: 2px;
         }
 
         .check-box { width: 26px; height: 26px; border: 2px solid var(--border); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; transition: 0.2s; }
@@ -729,7 +744,7 @@ export default function Home() {
         .btn.purple { background: var(--bravo-purple); color: white; }
         .btn.outline { background: var(--card); border: 2px solid var(--bravo-purple); color: var(--bravo-purple); text-align: center; display: block; box-sizing: border-box; }
         .contact-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 5px; flex-wrap: wrap; }
-        .contact-row .links { display: flex; gap: 4px; }
+        .contact-row .links { display: flex; gap: 8px; flex-wrap: wrap; } /* Aangepast: Verhoogd gap voor betere spacing tussen nummers */
         .contact-row a { padding: 6px 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.75rem; border: 1px solid; }
         .contact-row .phone { color: var(--bravo-purple); border-color: var(--bravo-purple); background: rgba(84,46,145,0.05); }
         .contact-row .email { color: var(--bravo-blue); border-color: var(--bravo-blue); background: white; }
@@ -738,7 +753,7 @@ export default function Home() {
         .tally-box button { background: transparent; border: none; padding: 0 8px; color: var(--bravo-purple); cursor: pointer; }
         .tally-box button:disabled { opacity: 0.3; cursor: not-allowed; }
         .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
-        
+
         .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flex-direction: column; }
         .pdf-header { padding: 15px; background: var(--bravo-purple); color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
@@ -754,9 +769,9 @@ export default function Home() {
         .video-btn-link { display: flex; align-items: center; gap: 15px; padding: 15px; background: #fee2e2; color: var(--bravo-red); text-decoration: none; border-radius: 12px; font-weight: bold; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .print-only { display: none; }
-        @media print { 
-          .no-print { display: none !important; } 
-          .print-only { display: block !important; padding: 20px; color: black; background: white; } 
+        @media print {
+          .no-print { display: none !important; }
+          .print-only { display: block !important; padding: 20px; color: black; background: white; }
           body { background: white !important; }
         }
       `}</style>
