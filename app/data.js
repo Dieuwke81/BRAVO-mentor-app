@@ -658,13 +658,46 @@ export const busRoutes = [
     ]
   },
   {
+    id: 'r23',
+    type: 'helmond',
+    text: '23 Boxmeer',
+    pdf: '/routes/23.pdf',
+    map: 'https://goo.gl/maps/pBPPvrjBJjB3d4N89?g_st=ac',
+    videos: [
+      { label: 'Heenrit', url: '' },
+      { label: 'Terugrit', url: '' }
+    ]
+  },
+  {
     id: 'r24',
-    type: 'reusel-valkenswaard',
+    type: 'helmond',
     text: '24 Eindhoven - Helmond via Geldrop',
     pdf: '/routes/24.pdf',
     map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac',
     videos: [
       { label: 'Terugrit', url: 'https://youtu.be/zbocSyi5x2s?si=CELx50dE77tmp9J2' }
+    ]
+  },
+  {
+    id: 'r25',
+    type: 'helmond',
+    text: '25 Helmond - Gemert Pelgrimsrust',
+    pdf: '/routes/25.pdf',
+    map: 'https://goo.gl/maps/D5RWqdKkpQLaceaA8?g_st=ac',
+    videos: [
+      { label: 'Heenrit', url: 'https://youtu.be/whpyiLIN43A?si=2y40M1n7RBDHuIpA' },
+      { label: 'Terugrit', url: 'https://youtu.be/PJmDfBdkRds?si=6927MdIt_Z1Pk_AP' }
+    ]
+  },
+  {
+    id: 'r26',
+    type: 'helmond',
+    text: '26 Helmond - Gemert',
+    pdf: '/routes/26.pdf',
+    map: 'https://goo.gl/maps/33oHJptjDKoyeTV27?g_st=ac',
+    videos: [
+      { label: 'Heenrit', url: 'https://youtu.be/A5gGZfBExHk?si=yUr8YnI9mbCYPZ_x' },
+      { label: 'Terugrit', url: 'https://youtu.be/nTwo55cQM-U?si=rHI6zUUGOhgGC0tX' }
     ]
   },
   {
@@ -993,9 +1026,10 @@ export const initialCategories = [
       {
         id: 'aa3',
         text: `Verschillende soorten vervoersbewijzen (Zie docs en links)
-      Met als aanvulling P&R en de NS kaartjes richting airport.
+      Met als aanvulling P&R en de
+      NS kaartjes richting airport.
       • We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde. Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5. Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.
-      • De NS kaartjes werken niet met inchecken. Je kunt ze op zicht conteoleren. Let er dan op dat ze naar airport geen. Als er alleen Eindhoven centraal staat, is dit NIET tot airport!`
+      • De NS kaartjes werken niet met inchecken. Je kunt ze op zicht controleren. Let er dan op dat ze naar airport geen. Als er alleen Eindhoven centraal staat, is dit NIET tot airport!`
       },
       { id: 'aa4', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
       { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
