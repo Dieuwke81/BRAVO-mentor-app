@@ -1043,7 +1043,7 @@ NS kaartjes richting airport.
 • Stad in= Na halte Kortonjo is in principe jouw busbaan. Na de verkeerslichten even samen bekijken wie het het drukste heeft. Binnen de ring is tot aan halte Looiakkerstraat NIET jouw busbaan. `
       },
 { id: 'aa4', text: 'Indien je een bus in het storingsvak (garage dorgelolaan) moet plaatsen, zet de bus dan in vak 55,56,43 en 44. (Dit zijn de 3de en 4de vakken vanaf de TD gezien)' },
-    
+      { id: 'aa15', text: 'Indien er geen plek meer is op de buffer waar je je bus neer had moeten zetten, zorg dan dat je dit aangeeft op het omloopbordje in de kantine. Zet hier je omloop op en de buffer waar de bus nu staat.'},
       {
         id: 'aa1',
         text: `Op de hoogte van de codes:
