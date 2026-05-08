@@ -1031,7 +1031,7 @@ export const initialCategories = [
       • We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde. Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5. Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.
       • De NS kaartjes werken niet met inchecken. Je kunt ze op zicht controleren. Let er dan op dat ze naar airport geen. Als er alleen Eindhoven centraal staat, is dit NIET tot airport!`
       },
-      { id: 'aa4', text: '' },
+      
       { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
       { id: 'aa7', text: 'Bij verlaten van de bus: stoel naar achteren en stuurwiel omhoog' },
       { id: 'aa8', text: 'Op de buffer de hoofdschakelaar van een diesel altijd uitzetten. Bij een elektrische bus zet je de hoofdschakelaar uit als deze langer dan een half uur op de buffer moet staan.' },
@@ -1051,9 +1051,10 @@ export const initialCategories = [
 • 777 = Camera (niet spiegelcamera)
 • 555 = Reservebus
 Deze bussen niet zelf pakken!`
-      }
+      },
+      { id: 'aa4', text: 'Indien je een bus in het storingsvak (garage dorgelolaan) moet plaatsen, zet de bus dan in vak 55,56,43 en 44. (Dit zijn de 3de en 4de vakken vanaf de TD gezien)' },
     ]
-  },
+  }
   {
     id: 'aanvang',
     title: '2. Aanvang Dienst & Voorbereiding',
