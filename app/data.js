@@ -1283,7 +1283,7 @@ export const vehicleChecklist = [
 ];
 export const usefulLinks = [
  { name: 'WebComm (duurt even, heb geduld)', url: 'https://dmz-wbc-web02.connexxion.nl/WebComm/default.aspx?' },
-{ name: 'Bussie.app', url: 'https://www.bussie.app/' },
+{ name: 'Bussie.app (let op! Hermes is niet verantwoordelijk voor deze app)', url: 'https://www.bussie.app/' },
  { name: 'ZOB-buslijnen', url: 'https://sites.google.com/site/zobbuslijnen/' },
   { name: 'Rijwijzer (Android)', url: 'https://play.google.com/store/apps/details?id=com.drivetag.sycada.rijwijzer' },
   { name: 'Rijwijzer (IOS)', url: 'https://apps.apple.com/nl/app/rijwijzer/id1180241428' },
