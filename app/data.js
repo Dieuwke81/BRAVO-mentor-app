@@ -1058,7 +1058,12 @@ Deze bussen niet zelf pakken!`
         text: 'Halteer bij een halte altijd aan het begin van de halte. (rij dus zover mogelijk door)'},
       {
         id: 'aa14',
-        text: 'Gebruik van het U perron: Alle 400 en 300 lijnen (met uitzondering van 400 en 401) rijden eerst naar het U perron en daarna pas naar het vak. (het gaat hierbij om de lijn die je wordt) Rijdt op het U perron ALTIJD door naar het einde!! Indien je moet gaan laden, mag je de mensen uit laten stappen richting de garage.'}
+        text: `Gebruik van het U perron:
+        • Alle 400 en 300 lijnen (met uitzondering van 400 en 401) rijden eerst naar het U perron en daarna pas naar het vak. (het gaat hierbij om de lijn die je wordt)
+        • Rijdt op het U perron ALTIJD door naar het einde!!
+        • Het U perron is geen officiële bushalte. Hier geldt dan dus ook niet de regel dat andere bestuurders je voor moeten laten gaan als je wilt vertrekken.
+        • Indien je moet gaan laden, mag je de mensen uit laten stappen richting de garage.`
+       }
           
       ]
   },
