@@ -1042,7 +1042,8 @@ export const initialCategories = [
       Stad uit= Binnen de ring is jouw busbaan. Buiten de ring tot aan de eerstvolgende verkeerslichten even samen bekijken wie het het drukste heeft. Na die verkeerslichten kijk je ver vooruit. Zie je geen bus, dan kun je op de busbaan. Zie je wel een bus in de verte, dan ga je direct na het verkeerslicht de reguliere baan op. Net voor halte Kortonjo kun je de busbaan weer op. Zorg dat je tegenligger NOOIT op jou hoeft te wachten!
       Stad in= Na halte Kortonjo is in principe jouw busbaan. Na de verkeerslichten even samen bekijken wie het het drukste heeft. Binnen de ring is tot aan halte Looiakkerstraat NIET jouw busbaan. `
       },
-
+{ id: 'aa4', text: 'Indien je een bus in het storingsvak (garage dorgelolaan) moet plaatsen, zet de bus dan in vak 55,56,43 en 44. (Dit zijn de 3de en 4de vakken vanaf de TD gezien)' },
+    
       {
         id: 'aa1',
         text: `Op de hoogte van de codes:
@@ -1051,10 +1052,10 @@ export const initialCategories = [
 • 777 = Camera (niet spiegelcamera)
 • 555 = Reservebus
 Deze bussen niet zelf pakken!`
-      },
-      { id: 'aa4', text: 'Indien je een bus in het storingsvak (garage dorgelolaan) moet plaatsen, zet de bus dan in vak 55,56,43 en 44. (Dit zijn de 3de en 4de vakken vanaf de TD gezien)' },
-    ]
-  }
+      }
+      ]
+  },
+  
   {
     id: 'aanvang',
     title: '2. Aanvang Dienst & Voorbereiding',
