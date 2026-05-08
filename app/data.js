@@ -1052,7 +1052,14 @@ export const initialCategories = [
 • 777 = Camera (niet spiegelcamera)
 • 555 = Reservebus
 Deze bussen niet zelf pakken!`
-      }
+      },
+      {
+        id: 'aa13',
+        text: 'Halteer bij een halte altijd aan het begin van de halte. (rij dus zover mogelijk door)'},
+      {
+        id: 'aa14',
+        text: 'Gebruik van het U perron: Alle 400 en 300 lijnen (met uitzondering van 400 en 401) rijden eerst naar het U perron en daarna pas naar het vak. (het gaat hierbij om de lijn die je wordt) Rijdt op het U oerron ALTIJD door naar het einde! Indien je noet gaan laden, mag je de mensen uit laten stapen richting de garage.'}
+          
       ]
   },
   
