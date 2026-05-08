@@ -1309,4 +1309,6 @@ export const usefulLinks = [
   { name: 'Sociaal fonds Transdev', url: 'https://intranet.transdev.nl/Content/Index?guid=84bece41-0287-482a-95fe-c156157b9052' },
 { name: 'Sociaal fonds Hermes', url: 'https://intranet.transdev.nl/News/Article/?guid=4f412025-f1fe-486a-af9a-4c499b6a679a' },
   
+  { name: 'Villandry', url: 'https://www.villandry.nl/' },
+  
 ];
