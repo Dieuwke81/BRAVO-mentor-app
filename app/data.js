@@ -659,7 +659,7 @@ export const busRoutes = [
   },
   {
     id: 'r23',
-    type: 'helmond',
+    type: 'reusel-valkenswaard',
     text: '23 Boxmeer',
     pdf: '/routes/23.pdf',
     map: 'https://goo.gl/maps/pBPPvrjBJjB3d4N89?g_st=ac',
@@ -670,7 +670,7 @@ export const busRoutes = [
   },
   {
     id: 'r24',
-    type: 'helmond',
+    type: 'reusel-valkenswaard',
     text: '24 Eindhoven - Helmond via Geldrop',
     pdf: '/routes/24.pdf',
     map: 'https://goo.gl/maps/x8JAUt1SAJZcLfem7?g_st=ac',
@@ -680,7 +680,7 @@ export const busRoutes = [
   },
   {
     id: 'r25',
-    type: 'helmond',
+    type: 'reusel-valkenswaard',
     text: '25 Helmond - Gemert Pelgrimsrust',
     pdf: '/routes/25.pdf',
     map: 'https://goo.gl/maps/D5RWqdKkpQLaceaA8?g_st=ac',
@@ -691,7 +691,7 @@ export const busRoutes = [
   },
   {
     id: 'r26',
-    type: 'helmond',
+    type: 'reusel-valkenswaard',
     text: '26 Helmond - Gemert',
     pdf: '/routes/26.pdf',
     map: 'https://goo.gl/maps/33oHJptjDKoyeTV27?g_st=ac',
