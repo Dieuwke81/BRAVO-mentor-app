@@ -1240,28 +1240,28 @@ export const vehicleChecklist = [
   {
     category: '1. Algemene uitleg voertuig',
     items: [
-      { id: 'v_omlooen', text: `Welk type op bus op welke omloop:
-• Omlopen 001 t/m 040 = 18 meter BRT
-• Omlopen 041 t/m 060 = 18 meter Noors
-• Omlopen 061 t/m 090 = 12m Ebus stad
+      { id: 'v_omlooen', text: `Welk type bus op welke omloop:
+• Omloop 001 t/m 040 = 18 meter BRT
+• Omloop 041 t/m 060 = 18 meter Noors
+• Omloop 061 t/m 090 = 12m Ebus stad
 
-• Omlopen 101 t/m 130 = Diesel
-• Omlopen 131 t/m 150 = 18 meter Noors
-• Omlopen 151 t/m 180 = 12m Ebus streek
-• Omlopen 191 t/m 199 = POD auto
+• Omloop 101 t/m 130 = Diesel
+• Omloop 131 t/m 150 = 18 meter Noors
+• Omloop 151 t/m 180 = 12m Ebus streek
+• Omloop 191 t/m 199 = POD auto
 
-• Omlopen 201 t/m 230 = Diesel
-• Omlopen 251 t/m 280 = 12m Ebus streek
-• Omlopen 291 t/m 299 = POD auto
+• Omloop 201 t/m 230 = Diesel
+• Omloop 251 t/m 280 = 12m Ebus streek
+• Omloop 291 t/m 299 = POD auto
 
-• Omlopen 301 t/m 330 = Diesel
-• Omlopen 331 t/m 350 = 18 meter Noors
-• Omlopen 351 t/m 380 = 12m Ebus streek
-• Omlopen 391 t/m 399 = POD auto
+• Omloop 301 t/m 330 = Diesel
+• Omlooo 331 t/m 350 = 18 meter Noors
+• Omloop 351 t/m 380 = 12m Ebus streek
+• Omloop 391 t/m 399 = POD auto
 
-• Omlopen 401 t/m 430 = Diesel
-• Omlopen 451 t/m 480 = 12m Ebus streek
-• Omlopen 491 t/m 499 = POD auto` },
+• Omloop 401 t/m 430 = Diesel
+• Omloop 451 t/m 480 = 12m Ebus streek
+• Omloop 491 t/m 499 = POD auto` },
   
       { id: 'v_motor', text: 'Type motor (diesel / elektrisch) & Hoge spanning' },
       { id: 'v_dimensies', text: 'Lengte / breedte / hoogte & Wielbasis (let op de rechterspiegel van de 18m Noors en de 13m!)' },
