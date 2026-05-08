@@ -1267,7 +1267,8 @@ export const vehicleChecklist = [
       { id: 'v_dimensies', text: 'Lengte / breedte / hoogte & Wielbasis (let op de rechterspiegel van de 18m Noors en de 13m!)' },
       { id: 'v_spiegels', text: 'Spiegels/camera\'s instellen' },
       { id: 'v_veiligheid', text: 'Veiligheidsvoorzieningen & Noodknoppen' },
-      { id: 'v_retarder', text: 'Retarder (automatisch en 3 standen)' }
+      { id: 'v_retarder', text: 'Retarder (automatisch en 3 standen)' },
+      { id: 'v_reset', text: 'Soft reset procedure'}
     ]
   },
   {
