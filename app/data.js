@@ -1240,7 +1240,24 @@ export const vehicleChecklist = [
   {
     category: '1. Algemene uitleg voertuig',
     items: [
-      { id: 'v_omlooen', text: '18meter Noorse bus: omlopen 41 t/m 45, 131 t/m 138, 331 t/m 335. 18 meter BRT: omlopen 1 t/m 40' },
+      { id: 'v_omlooen', text: `Welk type op bus op welke omloop:
+• Omlopen 001 t/m 040 = 18 meter BRT
+• Omlopen 041 t/m 060 = 18 meter Noors
+• Omlopen 061 t/m 090 = 12m elektrische bus stad
+• Omlopen 101 t/m 130 = Diesel
+• Omlopen 131 t/m 150 = 18 meter Noors
+• Omlopen 151 t/m 180 = 12m elektrische bus streek
+• Omlopen 191 t/m 199 = POD auto
+• Omlopen 201 t/m 230 = Diesel
+• Omlopen 251 t/m 280 = 12m elektrische bus streek
+• Omlopen 291 t/m 299 = POD auto
+• Omlopen 301 t/m 330 = Diesel
+• Omlopen 331 t/m 350 = 18 meter Noors
+• Omlopen 351 t/m 380 = 12m elektrische streek
+• Omlopen 391 t/m 399 = POD auto
+• Omlopen 401 t/m 430 = Diesel
+• Omlopen 451 t/m 480 = 12m elektrische streek
+• Omlopen 491 t/m 499 = POD auto` },
   
       { id: 'v_motor', text: 'Type motor (diesel / elektrisch) & Hoge spanning' },
       { id: 'v_dimensies', text: 'Lengte / breedte / hoogte & Wielbasis (let op de rechterspiegel van de 18m Noors en de 13m!)' },
