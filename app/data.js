@@ -1026,10 +1026,10 @@ export const initialCategories = [
       {
         id: 'aa3',
         text: `Verschillende soorten vervoersbewijzen (Zie docs en links)
-      Met als aanvulling P&R en de
-      NS kaartjes richting airport.
-      • We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde. Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5. Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.
-      • De NS kaartjes werken niet met inchecken. Je kunt ze op zicht controleren. Let er dan op dat ze naar airport geen. Als er alleen Eindhoven centraal staat, is dit NIET tot airport!`
+Met als aanvulling P&R en de
+NS kaartjes richting airport.
+• We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde. Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5. Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.
+• De NS kaartjes werken niet met inchecken. Je kunt ze op zicht controleren. Let er dan op dat ze naar airport geen. Als er alleen Eindhoven centraal staat, is dit NIET tot airport!`
       },
       
       { id: 'aa6', text: 'Gevonden voorwerpen (Ilost.nl)' },
@@ -1039,8 +1039,8 @@ export const initialCategories = [
       { id: 'aa10', text: 'Waarom ben je verplicht om om het paaltje te rijden bij hotel Eindhoven?' },
       { id: 'aa11', text: 'Muurtje beursgebouw: Hou je aan de wegenverkeerswet en hou niet vast aan de oude ongeschreven regels' },
       { id: 'aa12', text: `Busbaan Aalsterweg:
-      Stad uit= Binnen de ring is jouw busbaan. Buiten de ring tot aan de eerstvolgende verkeerslichten even samen bekijken wie het het drukste heeft. Na die verkeerslichten kijk je ver vooruit. Zie je geen bus, dan kun je op de busbaan. Zie je wel een bus in de verte, dan ga je direct na het verkeerslicht de reguliere baan op. Net voor halte Kortonjo kun je de busbaan weer op. Zorg dat je tegenligger NOOIT op jou hoeft te wachten!
-      Stad in= Na halte Kortonjo is in principe jouw busbaan. Na de verkeerslichten even samen bekijken wie het het drukste heeft. Binnen de ring is tot aan halte Looiakkerstraat NIET jouw busbaan. `
+• Stad uit= Binnen de ring is jouw busbaan. Buiten de ring tot aan de eerstvolgende verkeerslichten even samen bekijken wie het het drukste heeft. Na die verkeerslichten kijk je ver vooruit. Zie je geen bus, dan kun je op de busbaan. Zie je wel een bus in de verte, dan ga je direct na het verkeerslicht de reguliere baan op. Net voor halte Kortonjo kun je de busbaan weer op. Zorg dat je tegenligger NOOIT op jou hoeft te wachten!
+• Stad in= Na halte Kortonjo is in principe jouw busbaan. Na de verkeerslichten even samen bekijken wie het het drukste heeft. Binnen de ring is tot aan halte Looiakkerstraat NIET jouw busbaan. `
       },
 { id: 'aa4', text: 'Indien je een bus in het storingsvak (garage dorgelolaan) moet plaatsen, zet de bus dan in vak 55,56,43 en 44. (Dit zijn de 3de en 4de vakken vanaf de TD gezien)' },
     
