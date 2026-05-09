@@ -354,16 +354,16 @@ export default function Home() {
 
             <div style={{ marginBottom: '15px' }}>
               {routeSubTab === 'helmond' && (
-                <button onClick={() => setPdfModal({ title: 'Overzicht Helmond', pdf: '/docs/helmond-overzicht.pdf' })} className="rayon-pdf-btn">
+                <button onClick={() => setPdfModal({ title: 'Overzicht Helmond', pdf: '/docs/Opkomst stalling Helmond.pdf' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk rayon overzicht Helmond</span>
                 </button>
               )}
               {routeSubTab === 'reusel-valkenswaard' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <button onClick={() => setPdfModal({ title: 'Overzicht Reusel', pdf: '/docs/reusel-overzicht.pdf' })} className="rayon-pdf-btn">
+                  <button onClick={() => setPdfModal({ title: 'Overzicht Reusel', pdf: '/docs/Opkomst stalling Reusel.pdf' })} className="rayon-pdf-btn">
                     <FileText size={20} /><span>Bekijk rayon overzicht Reusel</span>
                   </button>
-                  <button onClick={() => setPdfModal({ title: 'Overzicht Valkenswaard', pdf: '/docs/valkenswaard-overzicht.pdf' })} className="rayon-pdf-btn">
+                  <button onClick={() => setPdfModal({ title: 'Overzicht Valkenswaard', pdf: '/docs/Opkomst stalling Valkenswaard.pdf' })} className="rayon-pdf-btn">
                     <FileText size={20} /><span>Bekijk rayon overzicht Valkenswaard</span>
                   </button>
                 </div>
