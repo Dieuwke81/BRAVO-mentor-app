@@ -6,7 +6,7 @@ import {
   Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock,
   Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck,
   Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck,
-  Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw, Lock, Unlock
+  Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw, Lock, Unlock, BookOpenText // Toegevoegde icon voor handleiding
 } from 'lucide-react';
 
 export default function Home() {
@@ -316,7 +316,15 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            {/* NIEUWE HANDLEIDING KNOP HIER */}
+            <button
+              onClick={() => setPdfModal({ title: 'Handleiding MentorApp', pdf: '/docs/Handleiding.pdf' })}
+              className="header-action-btn" // Nieuwe class voor styling
+              title="Open handleiding"
+            >
+              <BookOpenText size={24} />
+            </button>
             {isLocked && <div className="lock-indicator"><Lock size={18} /></div>}
             <button onClick={toggleTheme} className="theme-btn">{theme === 'light' ? <Moon size={24} /> : <Sun size={24} />}</button>
           </div>
@@ -354,16 +362,16 @@ export default function Home() {
 
             <div style={{ marginBottom: '15px' }}>
               {routeSubTab === 'helmond' && (
-                <button onClick={() => setPdfModal({ title: 'Overzicht Helmond', pdf: '/docs/Opkomst stalling Helmond.pdf' })} className="rayon-pdf-btn">
+                <button onClick={() => setPdfModal({ title: 'Overzicht Helmond', pdf: '/docs/helmond-overzicht.pdf' })} className="rayon-pdf-btn">
                   <FileText size={20} /><span>Bekijk rayon overzicht Helmond</span>
                 </button>
               )}
               {routeSubTab === 'reusel-valkenswaard' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <button onClick={() => setPdfModal({ title: 'Overzicht Reusel', pdf: '/docs/Opkomst stalling Reusel.pdf' })} className="rayon-pdf-btn">
+                  <button onClick={() => setPdfModal({ title: 'Overzicht Reusel', pdf: '/docs/reusel-overzicht.pdf' })} className="rayon-pdf-btn">
                     <FileText size={20} /><span>Bekijk rayon overzicht Reusel</span>
                   </button>
-                  <button onClick={() => setPdfModal({ title: 'Overzicht Valkenswaard', pdf: '/docs/Opkomst stalling Valkenswaard.pdf' })} className="rayon-pdf-btn">
+                  <button onClick={() => setPdfModal({ title: 'Overzicht Valkenswaard', pdf: '/docs/valkenswaard-overzicht.pdf' })} className="rayon-pdf-btn">
                     <FileText size={20} /><span>Bekijk rayon overzicht Valkenswaard</span>
                   </button>
                 </div>
@@ -671,7 +679,7 @@ export default function Home() {
         .brand-text span { color: rgba(255,255,255,0.8); font-size: 0.8rem; }
         .feedback-link { color: rgba(255,255,255,0.8); font-size: 0.75rem; margin-top: 5px; }
         .feedback-link a { color: white; text-decoration: underline; }
-        .theme-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px; border-radius: 50%; cursor: pointer; }
+        .theme-btn, .header-action-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;} /* Nieuwe style voor header-action-btn */
         .lock-indicator { background: rgba(255,255,255,0.2); color: #fbbf24; padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .student-box { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 14px; margin-bottom: 15px; }
         .student-box .row { display: flex; gap: 8px; margin-bottom: 8px; }
@@ -744,7 +752,7 @@ export default function Home() {
         .btn.purple { background: var(--bravo-purple); color: white; }
         .btn.outline { background: var(--card); border: 2px solid var(--bravo-purple); color: var(--bravo-purple); text-align: center; display: block; box-sizing: border-box; }
         .contact-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 5px; flex-wrap: wrap; }
-        .contact-row .links { display: flex; gap: 8px; flex-wrap: wrap; } /* Aangepast: Verhoogd gap voor betere spacing tussen nummers */
+        .contact-row .links { display: flex; gap: 8px; flex-wrap: wrap; }
         .contact-row a { padding: 6px 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.75rem; border: 1px solid; }
         .contact-row .phone { color: var(--bravo-purple); border-color: var(--bravo-purple); background: rgba(84,46,145,0.05); }
         .contact-row .email { color: var(--bravo-blue); border-color: var(--bravo-blue); background: white; }
