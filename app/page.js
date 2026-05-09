@@ -6,7 +6,7 @@ import {
   Bus, CheckCircle2, Map, ShieldAlert, Users, Radio, FileText, MapPin, Clock,
   Zap, Plus, Minus, Trash2, Youtube, X, Navigation, Eye, ClipboardCheck,
   Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck,
-  Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw, Lock, Unlock, BookOpenText // Toegevoegde icon voor handleiding
+  Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw, Lock, Unlock, HelpCircle // Aangepast icon voor handleiding
 } from 'lucide-react';
 
 export default function Home() {
@@ -323,7 +323,7 @@ export default function Home() {
               className="header-action-btn" // Nieuwe class voor styling
               title="Open handleiding"
             >
-              <BookOpenText size={24} />
+              <HelpCircle size={24} /> {/* Aangepast naar HelpCircle icon */}
             </button>
             {isLocked && <div className="lock-indicator"><Lock size={18} /></div>}
             <button onClick={toggleTheme} className="theme-btn">{theme === 'light' ? <Moon size={24} /> : <Sun size={24} />}</button>
