@@ -1029,8 +1029,8 @@ export const initialCategories = [
 Met als aanvulling:
 • P&R
 • De NS kaartjes richting airport
-• Vrij vervoer voor de mensen met een lager inkomen van Eindhoven`),
- { id: 'aa16', text: 'We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde. Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5. Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.'},
+• Vrij vervoer voor de mensen met een lager inkomen van Eindhoven`},
+      { id: 'aa16', text: 'We hebben P&R Meerhoven en P&R Aalsterweg. Beide werken hetzelfde. Men krijgt bij inrijden een uitrij-kaart. Met die kaart gaan ze naar het automaat. Daar geven ze in met hoeveel personen ze met de bus willen. Max 5. Dan krijgen ze nog een kaartje. Op dat kaartje staat dat ze beide kaarten moeten laten zien aan de buschauffeur. Ze kunnen hier niet mee inchecken. Het is alleen geldig op het traject tussen de P&R en het centrum/station, NIET de andere kant op zoals richting airport bijvoorbeeld.'},
       { id: 'aa17', text: 'De NS kaartjes werken niet met inchecken. Je kunt ze op zicht controleren. Let er dan op dat ze naar airport gaan. Als er alleen Eindhoven centraal staat, is dit NIET tot airport!'},
       { id: 'aa18', text: ''},
       
