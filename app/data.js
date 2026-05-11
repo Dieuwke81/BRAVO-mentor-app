@@ -1079,7 +1079,7 @@ Deze bussen niet zelf pakken!`
 • Snipperdag aanvragen via de holidayplanner op webcomm. Dit kan 2 maanden min 1 dag van te voren. Binnen 8 dagen moet via de planning geregeld worden. (GECONCRETISEERD betekent dat je buiten de garantie staat)
 • Een uitzendkracht en dagcontractant dient tot na 16.30 op webcomm te kijken voor de dag erna. De dienst kan tot die tijd nog wijzigen
 • Voor de R-diensten in een roulering geldt dat er 3 dagen van te voren (einde dag) een dienst op zou moeten staan.`},
-      { id: 'a9', text: 'Er bestaan 2 whatsapp groepen voor mensen die graag extra willen werken. In die whatsapp groepen worden, indien nodig, de nog openstaande diensten vermeld. 1 groep voor uitzendkrachten en dagcontractanten en 1 voor vaste mensen. Meld je hiervoor bij de planning via de mail.
+      { id: 'a9', text: 'Er bestaan 2 whatsapp groepen voor mensen die graag extra willen werken. In die whatsapp groepen worden, indien nodig, de nog openstaande diensten vermeld. 1 groep voor uitzendkrachten en dagcontractanten en 1 voor vaste mensen. Meld je hiervoor bij de planning via de mail.'},
       { id: 'a8', text: 'Uitleg Viribus/ticketbox. (Zie docs)' },
   
       { id: 'a1', text: 'Kledingvoorschrift in orde (Zie docs)' },
