@@ -8,6 +8,7 @@ import {
   Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck,
   Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw, Lock, Unlock, HelpCircle // Aangepast icon voor handleiding
 } from 'lucide-react';
+import NotepadTab from './components/NotepadTab';
 
 export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
@@ -348,7 +349,24 @@ export default function Home() {
         </div>
 
         <div className="main-tabs no-scrollbar">
-          {['routes', 'vehicle', 'checklist', 'docs', 'info'].map(t => (<button key={t} onClick={() => setMainTab(t)} className={mainTab === t ? 'active' : ''}>{t === 'routes' ? 'Lijnen' : t === 'vehicle' ? 'Voertuig' : t === 'checklist' ? 'Checklists' : t === 'docs' ? 'Docs & Links' : 'Info'}</button>))}
+          {[
+ 'routes',
+ 'vehicle',
+ 'checklist',
+ 'docs',
+ 'notepad',
+ 'info'
+].map(t => (<button key={t} onClick={() => setMainTab(t)} className={mainTab === t ? 'active' : ''}>{t === 'routes'
+ ? 'Lijnen'
+ : t === 'vehicle'
+ ? 'Voertuig'
+ : t === 'checklist'
+ ? 'Checklists'
+ : t === 'docs'
+ ? 'Docs'
+ : t === 'notepad'
+ ? 'Kladblok'
+ : 'Info'}</button>))}
         </div>
       </div>
 
@@ -521,6 +539,17 @@ export default function Home() {
             </div>
           </>
         )}
+
+{/* Kladblok */}
+
+{mainTab === 'notepad' && (
+
+    <NotepadTab
+        activeStudent={activeStudent}
+        isLocked={isLocked}
+    />
+
+)}
 
         {/* Info Tab */}
         {mainTab === 'info' && (
