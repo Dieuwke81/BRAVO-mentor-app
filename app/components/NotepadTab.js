@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Edit2 } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 
 export default function NotepadTab({
   activeStudent,
@@ -113,7 +113,7 @@ export default function NotepadTab({
         }}
       >
 
-        <Edit2 size={18}/>
+        <Pencil size={18} />
 
         &nbsp;
 
