@@ -543,12 +543,9 @@ export default function Home() {
 {/* Kladblok */}
 
 {mainTab === 'notepad' && (
-
-    <NotepadTab
-        activeStudent={activeStudent}
-        isLocked={isLocked}
-    />
-
+  <div className="card">
+    <h2>Kladblok werkt</h2>
+  </div>
 )}
 
         {/* Info Tab */}
