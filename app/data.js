@@ -1126,7 +1126,7 @@ export const contactData = [
       { name: 'Neckerspoel', phone: ['088-6255737'] },
       { name: 'Opkomstlokaal Dorgelolaan 50', phone: ['040-2466373'] },
       { name: 'Kantoor MER Neckerspoel', phone: ['088-6255736'] },
-      { name: 'Planning Dorgelolaan 50', phone: ['040-2358630'] },
+      { name: 'Hermes Planning', phone: ['040-2358629'] },
       { name: 'Hermes Verloftelefoon', phone: ['040-2358639'] }
     ]
   },
