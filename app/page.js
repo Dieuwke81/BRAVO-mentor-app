@@ -8,7 +8,7 @@ import {
   Phone, Mail, Info, MessageSquare, Download, Upload, Printer, UserCheck,
   Files, Sun, Moon, ExternalLink, PenTool, Save, RotateCcw, Lock, Unlock, HelpCircle // Aangepast icon voor handleiding
 } from 'lucide-react';
-import NotepadTab from './components/NotepadTab';
+
 
 export default function Home() {
   const [students, setStudents] = useState(['Standaard']);
