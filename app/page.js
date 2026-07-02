@@ -548,9 +548,11 @@ export default function Home() {
 
 )}
 
-        {/* Info Tab */}
-        {mainTab === 'info' && (
+      {/* Contact Tab */}
+
+{mainTab === 'contact' && (
           <div style={{ paddingBottom: '40px' }}>
+  <h2 style={{marginBottom:'15px'}}>Contact</h2>
             <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren (indien mogelijk voor 9:00): Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
 
             <div className="card rapportage">
