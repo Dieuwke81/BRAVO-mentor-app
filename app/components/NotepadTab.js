@@ -83,7 +83,7 @@ export default function NotepadTab({
         Kladblok
       </h2>
 
-      <div className="sub-tabs no-scrollbar">
+      <div className="notepad-tabs no-scrollbar">
 
         {tabs.map((tab,index)=>(
 
