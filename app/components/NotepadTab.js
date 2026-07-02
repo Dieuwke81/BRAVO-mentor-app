@@ -109,12 +109,34 @@ export default function NotepadTab({
       saveTabs(copy);
 
     }}
-    onBlur={() => setEditingTab(null)}
+    onBlur={() => {
+
+  const copy = [...tabs];
+
+  if (copy[index].title.trim() === '') {
+    copy[index].title = `Tab ${index + 1}`;
+    saveTabs(copy);
+  }
+
+  setEditingTab(null);
+
+}}
     onKeyDown={(e) => {
-      if (e.key === 'Enter') {
-        setEditingTab(null);
-      }
-    }}
+
+  if (e.key === 'Enter') {
+
+    const copy = [...tabs];
+
+    if (copy[index].title.trim() === '') {
+      copy[index].title = `Tab ${index + 1}`;
+      saveTabs(copy);
+    }
+
+    setEditingTab(null);
+
+  }
+
+}}
     style={{
       width: '100%',
       border: 'none',
