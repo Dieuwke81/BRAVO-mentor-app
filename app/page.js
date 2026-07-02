@@ -29,6 +29,7 @@ export default function Home() {
   const [pdfModal, setPdfModal] = useState(null);
   const [newStudentName, setNewStudentName] = useState('');
   const [theme, setTheme] = useState('light');
+  const [showNotepad, setShowNotepad] = useState(false);
 
   // Handtekening state & refs
   const [signatureImage, setSignatureImage] = useState(null);
@@ -705,6 +706,13 @@ export default function Home() {
         )}
       </div>
 
+        <button
+  className="floating-note-btn"
+  onClick={() => setShowNotepad(true)}
+>
+  📝
+</button>
+
       <style jsx global>{`
         :root { --bravo-purple: #542e91; --bravo-blue: #009fe3; --bravo-red: #e3004f; --bg: #f3f4f6; --card: #ffffff; --text: #1f2937; --sub: #6b7280; --border: #e5e7eb; --success: #10b981; }
         body.dark-mode { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --sub: #94a3b8; --border: #334155; }
@@ -811,7 +819,21 @@ export default function Home() {
         .tally-box button { background: transparent; border: none; padding: 0 8px; color: var(--bravo-purple); cursor: pointer; }
         .tally-box button:disabled { opacity: 0.3; cursor: not-allowed; }
         .tally-box .score { padding: 0 5px; font-weight: bold; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; }
-
+.floating-note-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bravo-purple);
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+  z-index: 999;
+}
         .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flex-direction: column; }
         .pdf-header { padding: 15px; background: var(--bravo-purple); color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
         .pdf-header button { background: white; color: var(--bravo-purple); border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
@@ -831,6 +853,7 @@ export default function Home() {
           .no-print { display: none !important; }
           .print-only { display: block !important; padding: 20px; color: black; background: white; }
           body { background: white !important; }
+      
         }
       `}</style>
     </div>
