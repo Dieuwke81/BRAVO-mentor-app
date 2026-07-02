@@ -349,24 +349,20 @@ export default function Home() {
         </div>
 
         <div className="main-tabs no-scrollbar">
-          {[
- 'routes',
- 'vehicle',
- 'checklist',
- 'docs',
- 'notepad',
- 'info'
-].map(t => (<button key={t} onClick={() => setMainTab(t)} className={mainTab === t ? 'active' : ''}>{t === 'routes'
+          {['routes', 'vehicle', 'checklist', 'docs', 'contact', 'report']
+           .map(t => (<button key={t} onClick={() => setMainTab(t)} className={mainTab === t ? 'active' : ''}>
+        {t === 'routes'
  ? 'Lijnen'
  : t === 'vehicle'
  ? 'Voertuig'
  : t === 'checklist'
- ? 'Checklists'
+ ? 'Checklist'
  : t === 'docs'
  ? 'Docs'
- : t === 'notepad'
- ? 'Kladblok'
- : 'Info'}</button>))}
+ : t === 'contact'
+ ? 'Contact'
+ : 'Rapport'}
+          </button>))}
         </div>
       </div>
 
