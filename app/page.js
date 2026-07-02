@@ -775,8 +775,19 @@ export default function Home() {
         .container { padding: 15px; max-width: 600px; margin: 0 auto; box-sizing: border-box; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .sub-tabs { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; touch-action: pan-x; scrollbar-width: none; }
-        .sub-tabs button { padding: 8px 15px; border-radius: 8px; border: none; background: var(--bg); color: var(--sub); font-weight: bold; font-size: 0.7rem; white-space: nowrap; cursor: pointer; }
-        .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .sub-tabs button {
+  flex: 0 0 auto;
+  min-width: 70px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background: var(--bg);
+  color: var(--sub);
+  font-weight: bold;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  cursor: pointer;
+}     .sub-tabs button.active { background: white; color: var(--bravo-purple); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .rayon-progress .labels { display: flex; justify-content: space-between; gap: 20px; font-size: 0.75rem; font-weight: bold; color: var(--sub); margin-bottom: 5px; }
         .rayon-progress .bar-bg { background: var(--border); height: 6px; border-radius: 3px; overflow: hidden; }
         .rayon-progress .bar-fill { background: var(--bravo-purple); height: 100%; }
