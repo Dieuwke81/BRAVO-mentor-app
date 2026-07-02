@@ -659,6 +659,7 @@ export default function Home() {
 </div>
 
 )}
+</div>
       {/* RAPPORT (PRINT) */}
       <div className="print-only">
         <div style={{ textAlign: 'center', borderBottom: '3px solid var(--bravo-purple)', paddingBottom: '20px', marginBottom: '30px' }}>
