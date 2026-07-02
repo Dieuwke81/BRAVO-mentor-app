@@ -715,8 +715,19 @@ export default function Home() {
         .bar-bg { background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
         .bar-fill { height: 100%; background: white; transition: width 0.5s ease; }
         .total-progress .labels { display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; }
-        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow-x: auto; scrollbar-width: none; }
-        .main-tabs button { flex: 1; padding: 10px; border-radius: 8px; background: transparent; color: white; border: none; font-weight: bold; font-size: 0.75rem; cursor: pointer; white-space: nowrap; }
+        .main-tabs { display: flex; gap: 4px; background: rgba(255,255,255,0.2); padding: 4px; border-radius: 12px; overflow: hidden; scrollbar-width: none; }
+        .main-tabs button {
+  flex: 1;
+  padding: 8px 3px;
+  border-radius: 8px;
+  background: transparent;
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 0.66rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
         .main-tabs button.active { background: white; color: var(--bravo-purple); }
         .container { padding: 15px; max-width: 600px; margin: 0 auto; box-sizing: border-box; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
