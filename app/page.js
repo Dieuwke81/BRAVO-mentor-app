@@ -538,16 +538,7 @@ export default function Home() {
           </>
         )}
 
-{/* Kladblok */}
 
-{mainTab === 'notepad' && (
-
-    <NotepadTab
-        activeStudent={activeStudent}
-        isLocked={isLocked}
-    />
-
-)}
 
       {/* Contact Tab */}
 
@@ -733,9 +724,10 @@ export default function Home() {
         </button>
       </div>
 
-      <p style={{padding:"20px"}}>
-        Hier komt straks het kladblok.
-      </p>
+      <NotepadTab
+  activeStudent={activeStudent}
+  isLocked={isLocked}
+/>
 
     </div>
   </div>
