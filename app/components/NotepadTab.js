@@ -129,13 +129,25 @@ export default function NotepadTab({
 ) : (
 
   <span
-    onDoubleClick={(e) => {
-      e.stopPropagation();
-      if (!isLocked) setEditingTab(index);
-    }}
-  >
-    {tab.title}
-  </span>
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px'
+  }}
+>
+  {tab.title}
+
+  {activeTab === index && !isLocked && (
+    <Pencil
+      size={14}
+      onClick={(e) => {
+        e.stopPropagation();
+        setEditingTab(index);
+      }}
+    />
+  )}
+</span>
 
 )}
 
