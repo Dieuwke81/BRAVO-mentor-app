@@ -771,6 +771,37 @@ export default function Home() {
   cursor: pointer;
   white-space: nowrap;
 }
+/* Kladblok tabs */
+.notepad-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 15px;
+}
+
+.notepad-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.notepad-tabs button {
+  flex: 0 0 auto;
+  min-width: 70px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--sub);
+  font-weight: bold;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.notepad-tabs button.active {
+  background: var(--bravo-purple);
+  color: white;
+}
         .main-tabs button.active { background: white; color: var(--bravo-purple); }
         .container { padding: 15px; max-width: 600px; margin: 0 auto; box-sizing: border-box; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
