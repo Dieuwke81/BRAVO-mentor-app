@@ -576,7 +576,6 @@ export default function Home() {
             ))}
           </div>
         )}
-      </div>
 
 {/* Rapport Tab */}
 
