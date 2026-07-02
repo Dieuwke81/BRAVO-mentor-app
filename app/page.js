@@ -713,6 +713,34 @@ export default function Home() {
   📝
 </button>
 
+    {showNotepad && (
+  <div
+    className="notepad-overlay"
+    onClick={() => setShowNotepad(false)}
+  >
+    <div
+      className="notepad-sheet"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="sheet-header">
+        <h3>📝 Persoonlijk kladblok</h3>
+
+        <button
+          onClick={() => setShowNotepad(false)}
+          className="sheet-close"
+        >
+          ✕
+        </button>
+      </div>
+
+      <p style={{padding:"20px"}}>
+        Hier komt straks het kladblok.
+      </p>
+
+    </div>
+  </div>
+)}
+
       <style jsx global>{`
         :root { --bravo-purple: #542e91; --bravo-blue: #009fe3; --bravo-red: #e3004f; --bg: #f3f4f6; --card: #ffffff; --text: #1f2937; --sub: #6b7280; --border: #e5e7eb; --success: #10b981; }
         body.dark-mode { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --sub: #94a3b8; --border: #334155; }
@@ -833,6 +861,53 @@ export default function Home() {
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(0,0,0,.25);
   z-index: 999;
+}
+.notepad-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:998;
+  display:flex;
+  align-items:flex-end;
+}
+
+.notepad-sheet{
+  width:100%;
+  background:var(--card);
+  border-top-left-radius:24px;
+  border-top-right-radius:24px;
+  min-height:75vh;
+  max-height:90vh;
+  overflow:auto;
+  animation:slideUp .25s ease;
+}
+
+.sheet-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  background:var(--card);
+}
+
+.sheet-close{
+  border:none;
+  background:none;
+  font-size:22px;
+  cursor:pointer;
+  color:var(--text);
+}
+
+@keyframes slideUp{
+  from{
+    transform:translateY(100%);
+  }
+  to{
+    transform:translateY(0);
+  }
 }
         .pdf-overlay { position: fixed; inset: 0; background: var(--card); z-index: 2000; display: flex; flex-direction: column; }
         .pdf-header { padding: 15px; background: var(--bravo-purple); color: white; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
