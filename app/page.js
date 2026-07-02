@@ -714,15 +714,17 @@ export default function Home() {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="sheet-header">
-        <h3>📝 Persoonlijk kladblok</h3>
 
-        <button
-          onClick={() => setShowNotepad(false)}
-          className="sheet-close"
-        >
-          ✕
-        </button>
-      </div>
+  <div></div>
+
+  <button
+    onClick={() => setShowNotepad(false)}
+    className="sheet-close"
+  >
+    ✕
+  </button>
+
+</div>
 
       <NotepadTab
   activeStudent={activeStudent}
