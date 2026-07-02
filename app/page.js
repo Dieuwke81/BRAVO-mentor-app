@@ -555,7 +555,36 @@ export default function Home() {
   <h2 style={{marginBottom:'15px'}}>Contact</h2>
             <div className="card ziekmelden"><div className="alert-head"><ShieldAlert size={20} /> ZIEKMELDEN</div><p>Binnen kantooruren (indien mogelijk voor 9:00): Bij je leidinggevende</p><p>Buiten kantooruren: Bel ROV (030-2849494)</p></div>
 
-            <div className="card rapportage">
+      
+            {contactData.map((group, idx) => (
+              <div key={idx} className="card">
+                <h3 className="group-title">{group.category}</h3>
+                {group.contacts.map((c, i) => (
+                  <div key={i} className="contact-row">
+                    <span className="name">{c.name}</span>
+                    <div className="links">
+                      {/* Aangepaste code voor telefoonnummers */}
+                      {c.phone && Array.isArray(c.phone) && c.phone.map((number, numIdx) => (
+                        <a key={numIdx} href={`tel:${number.replace(/-/g, '')}`} className="phone">{number}</a>
+                      ))}
+                      {/* Bestaande code voor e-mail */}
+                      {c.email && <a href={`mailto:${c.email}`} className="email">{c.email}</a>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+{/* Rapport Tab */}
+
+{mainTab === 'report' && (
+
+<div style={{paddingBottom:'40px'}}>
+
+         <div className="card rapportage">
                <h3>Rapportage Gegevens</h3>
                <div className="form-group">
                  <label>Mentor</label>
@@ -627,28 +656,10 @@ export default function Home() {
               <button onClick={exportData} className="btn purple">Download data</button>
               <label className="btn outline">Importeer data<input type="file" onChange={importData} style={{ display: 'none' }} /></label>
             </div>
-            {contactData.map((group, idx) => (
-              <div key={idx} className="card">
-                <h3 className="group-title">{group.category}</h3>
-                {group.contacts.map((c, i) => (
-                  <div key={i} className="contact-row">
-                    <span className="name">{c.name}</span>
-                    <div className="links">
-                      {/* Aangepaste code voor telefoonnummers */}
-                      {c.phone && Array.isArray(c.phone) && c.phone.map((number, numIdx) => (
-                        <a key={numIdx} href={`tel:${number.replace(/-/g, '')}`} className="phone">{number}</a>
-                      ))}
-                      {/* Bestaande code voor e-mail */}
-                      {c.email && <a href={`mailto:${c.email}`} className="email">{c.email}</a>}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
 
+</div>
+
+)}
       {/* RAPPORT (PRINT) */}
       <div className="print-only">
         <div style={{ textAlign: 'center', borderBottom: '3px solid var(--bravo-purple)', paddingBottom: '20px', marginBottom: '30px' }}>
