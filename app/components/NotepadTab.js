@@ -18,6 +18,7 @@ export default function NotepadTab({
 
   const [tabs, setTabs] = useState(defaultTabs);
   const [activeTab, setActiveTab] = useState(0);
+  const [editingTab, setEditingTab] = useState(null);
 
   useEffect(() => {
 
@@ -79,7 +80,7 @@ export default function NotepadTab({
           color:'var(--bravo-purple)'
         }}
       >
-        Persoonlijk kladblok
+        Kladblok
       </h2>
 
       <div className="sub-tabs no-scrollbar">
@@ -96,7 +97,47 @@ export default function NotepadTab({
             }
           >
 
-            {tab.title}
+            {editingTab === index ? (
+
+  <input
+    autoFocus
+    value={tab.title}
+    onChange={(e) => {
+
+      const copy = [...tabs];
+      copy[index].title = e.target.value;
+      saveTabs(copy);
+
+    }}
+    onBlur={() => setEditingTab(null)}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter') {
+        setEditingTab(null);
+      }
+    }}
+    style={{
+      width: '100%',
+      border: 'none',
+      background: 'transparent',
+      textAlign: 'center',
+      fontWeight: 'bold',
+      outline: 'none',
+      color: 'inherit'
+    }}
+  />
+
+) : (
+
+  <span
+    onDoubleClick={(e) => {
+      e.stopPropagation();
+      if (!isLocked) setEditingTab(index);
+    }}
+  >
+    {tab.title}
+  </span>
+
+)}
 
           </button>
 
@@ -104,22 +145,7 @@ export default function NotepadTab({
 
       </div>
 
-      <button
-        className="btn outline"
-        disabled={isLocked}
-        onClick={()=>changeTitle(activeTab)}
-        style={{
-          marginBottom:15
-        }}
-      >
-
-        <Pencil size={18} />
-
-        &nbsp;
-
-        Naam tabblad wijzigen
-
-      </button>
+      
 
       <textarea
 
